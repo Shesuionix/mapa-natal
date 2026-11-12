@@ -1,0 +1,33 @@
+MAPA NATAL — PREPARAÇÃO DO PILOTO
+
+Formulário de encomenda
+• Nome ou forma de tratamento para o PDF.
+• Data de nascimento, horário local e cidade com estado e país.
+• Confirmação de que o horário foi informado e revisado pelo cliente.
+• E-mail ou outro canal de entrega previamente combinado.
+• Campo opcional para explicar uma grafia ou esclarecer o local.
+
+Fluxo do pedido
+1. Conferir data, horário e local antes de aceitar a encomenda.
+2. Gerar os quatro blocos e rodar o validador. Examinar avisos no log.
+3. Compilar o PDF duas vezes, conferir síntese, roda, destaques e apêndice.
+4. Entregar o PDF. Guardar o log local junto do identificador do pedido.
+5. Registrar minutos de atendimento, conferência, cálculo, revisão e envio.
+6. Em caso de correção, conservar a identificação do arquivo anterior e da reemissão no registro interno.
+
+Preço e condições
+Custo por pedido = tempo total em horas × valor-hora + custo variável + parcela do custo fixo.
+Preço de referência = custo por pedido ÷ (1 − taxa proporcional − margem desejada).
+Prazo de entrega, valor-hora, taxas, margem, prazo da reemissão e canal de venda aguardam definição. Medir revisão e envio em um piloto antes de assumir a meta operacional de 15 minutos. A compilação local do mapa D em duas passagens levou 20,8 segundos.
+
+Referência de velocidades
+A documentação da Astrodienst indica como obter a velocidade em longitude eclíptica geocêntrica com Swiss Ephemeris, usando SEFLG_SPEED. A fonte fornece velocidades por instante. Para publicar uma tabela própria, registrar versão da efeméride, período, passo e a definição da média do módulo da velocidade. Documentar as convenções de Nodo Norte e Lilith e conferir se correspondem à exportação. Gerar o arquivo de referência em graus por dia no formato versao=IDENTIFICADOR seguido de linhas como Sun=VALOR.
+Fonte: https://www.astro.com/swisseph-download/doc/swephprg.pdf
+O Horizons do JPL fornece longitude eclíptica aparente observada a partir da Terra para comparação por diferenças de longitude.
+Fonte: https://ssd.jpl.nasa.gov/horizons/manual.html
+A referência do campo “avg speed” da exportação ainda precisa ser identificada. Conferir com o fornecedor do cálculo antes de apresentar qualquer tabela como equivalente. O motor continua preservando as razões recebidas.
+
+Recursos
+A Symbola instalada declara versão 9.00, George Douros, 2016, e autorização de uso no próprio arquivo. Latin Modern tem licença GUST documentada no CTAN.
+Fonte: https://ctan.org/tex-archive/fonts/lm
+A origem e a licença do pacote natalreport.sty continuam pendentes. Swiss Ephemeris é uma fonte candidata para derivar a tabela. A Astrodienst documenta licenciamento AGPL ou profissional para sua biblioteca. O motor atual recebe valores de um arquivo e não incorpora essa biblioteca.

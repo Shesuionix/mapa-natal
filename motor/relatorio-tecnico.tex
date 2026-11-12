@@ -3,6 +3,7 @@
 \usepackage{array}
 \IfFileExists{../base/natalreport.sty}{\usepackage{../base/natalreport}}{\usepackage{../natalreport}}
 \usepackage{booktabs,longtable}
+\usepackage[hidelinks]{hyperref}
 \newcolumntype{L}[1]{w{l}{#1}}
 \newcolumntype{C}[1]{w{c}{#1}}
 \newcolumntype{D}[1]{w{r}{#1}}
@@ -28,8 +29,8 @@
   \csname NatalCasaTexto#1\endcsname\par
   \endgroup
 }
-\newcommand{\NatalLeituraAspecto}[6]{%
-  \subsection*{#2 e #4 · #3}
+\newcommand{\NatalLeituraAspecto}[7]{%
+  \subsection*{#2 e #4 · #3}\phantomsection\label{aspecto:#7}
   \textit{Orbe #5 · #6}\par\smallskip
   \csname NatalAspectoTexto#1\endcsname\par
 }
@@ -49,13 +50,25 @@
 \pdfvariable suppressoptionalinfo 767\relax
 \begin{document}
 \maketitle
+\section{Roda do mapa}
+\begin{center}\NatalChartInternal\end{center}
+\clearpage
 \ifnum\NatalTemLeitura=1
   \input{leitura-demonstrativa-v1.tex}
 \else
   \section*{Síntese temática}
   \NatalSinteseTematica
 \fi
+\ifnum\NatalTotalDestaques>0
+  \section*{Aspectos em destaque}
+  Os links levam às interpretações completas. O orbe indica a diferença em relação ao ângulo exato.
+  \begin{itemize}
+    \NatalDestaques
+  \end{itemize}
+\fi
 \clearpage
+\appendix
+\section{Leituras detalhadas}
   \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas+\NatalTotalAspectos\relax>0
     \section*{Leitura temática e dados do mapa}
     O relatório apresenta \NatalTotalLeituras\space leituras de posições.\par
@@ -78,11 +91,7 @@
       \NatalLeiturasAspectos
     \fi
     \clearpage
-    \appendix
   \fi
-\section{Roda do mapa}
-\begin{center}\NatalChartInternal\end{center}
-\clearpage
 \section{Posições}
 R indica retrogradação na entrada.
 \begin{longtable}{@{}L{.27\linewidth}L{.25\linewidth}D{.17\linewidth}C{.10\linewidth}C{.06\linewidth}@{}}

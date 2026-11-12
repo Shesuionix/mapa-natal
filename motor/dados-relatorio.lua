@@ -444,6 +444,7 @@ local contextual_aspects = {
   ["IC:Sextile:Vertex:Aquarius:Vertex|Aries|5|false"] = 151,
 }
 local selected_aspects, specific_aspects = {}, 0
+local aspect_ids = {}
 do
   local current_positions = editorial_facts(chart)
   local reviewed_positions = editorial_facts(reviewed)
@@ -451,7 +452,8 @@ do
   for name, cusp in pairs(chart.angles) do locations[name] = cusp end
   for _, p in ipairs(chart.positions) do locations[p.name] = p end
   for index, aspect in ipairs(reviewed.aspects) do library[aspect_key(aspect)] = index end
-  for _, aspect in ipairs(chart.aspects) do
+  for id, aspect in ipairs(chart.aspects) do
+    aspect_ids[aspect_key(aspect)] = id
     local index = library[aspect_key(aspect)]
     if current_positions[aspect.first] ~= reviewed_positions[aspect.first] or
       current_positions[aspect.second] ~= reviewed_positions[aspect.second] then index = nil end
@@ -460,9 +462,9 @@ do
     local key = table.concat({first,aspect.kind,second,current_positions[first],current_positions[second]}, ":")
     index = contextual_aspects[key] or index
     if index then specific_aspects = specific_aspects + 1 end
-    selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}"):format(
+    selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}{%d}"):format(
         index or 0, names[aspect.first], types[aspect.kind][1], names[aspect.second],
-        angle(aspect.orb), phases[aspect.phase])
+        angle(aspect.orb), phases[aspect.phase], id)
     if not index then selected_aspects[#selected_aspects] = selected_aspects[#selected_aspects] ..
       composed.aspect(aspect, locations) .. "\\par " end
   end
@@ -484,11 +486,23 @@ local topics = {
   {title="Trabalho e direção", bodies={Mars=true,Saturn=true,MC=true}, houses={[2]=true,[6]=true,[10]=true},
     action="Escolha uma entrega concreta e mostre qual decisão sua ajudou a produzir o resultado."}
 }
+local synthesis_notes = {
+  ["Ascendant|Trine|Sun:Gemini:Sun|Aquarius|9|false"]="Uma pergunta bem feita pode mudar o rumo de um estudo ou de uma conversa. Quando perceber que duas pessoas estão partindo de premissas diferentes, diga qual delas quer testar e proponha uma situação em que a diferença possa ser observada.",
+  ["Pluto|Conjunction|Venus:Pluto|Sagittarius|7|false:Venus|Sagittarius|7|false"]="Uma parceria ganha intensidade quando vocês encontram algo importante para descobrir juntos. Antes de investir muito tempo, combinem o que farão em conjunto e o que cada pessoa quer manter como decisão própria.",
+  ["MC|Square|Mars:Pisces:Mars|Sagittarius|7|false"]="Você pode querer responder logo ao pedido de um parceiro e perceber depois que ele compete com uma entrega do trabalho. Antes de confirmar, diga qual prazo precisaria mudar e proponha uma ordem para as duas demandas.",
+  ["Pluto|Conjunction|Sun:Pluto|Sagittarius|1|false:Sun|Sagittarius|1|false"]="Quando uma convicção muda, suas escolhas tendem a mudar junto. Ao comunicar uma decisão, explique primeiro o problema que fez você rever sua posição e depois qual passo pretende dar.",
+  ["Moon|Trine|Venus:Moon|Pisces|4|false:Venus|Scorpio|12|false"]="Um tempo protegido em casa ajuda você a reconhecer o afeto que ainda estava elaborando em silêncio. Quando o que sente ficar mais claro, escolha um gesto ou uma frase que dê à outra pessoa algo concreto para reconhecer.",
+  ["Jupiter|Conjunction|MC:Jupiter|Leo|10|true:Leo"]="Seu trabalho ganha alcance quando você mostra como uma ideia pode ser usada. Ao apresentar um resultado, conte qual problema assumiu, o que mudou e como outras pessoas podem aproveitar a solução.",
+  ["Ascendant|Opposition|Sun:Aries:Sun|Libra|6|false"]="Você pode entrar numa situação com vontade de resolver logo e, na rotina, descobrir que a tarefa exige acordo entre várias pessoas. Nomeie o primeiro passo que consegue dar e consulte quem será afetado antes de mudar o procedimento.",
+  ["Moon|Trine|Venus:Moon|Pisces|11|false:Venus|Scorpio|7|false"]="Você percebe com facilidade quando alguém fica à margem de um grupo e tende a cuidar de vínculos próximos com atenção mais concentrada. Se uma pessoa importante precisar de apoio, pergunte que tipo de presença faria diferença antes de assumir a tarefa.",
+  ["MC|Square|Sun:Capricorn:Sun|Libra|6|false"]="Uma responsabilidade visível pode exigir prazo e decisão enquanto a equipe ainda está ajustando a divisão do trabalho. Antes de apresentar uma data, confirme quem assume cada parte e diga o que precisa estar resolvido para que a entrega seja viável."
+}
 local function synthesis()
   local placements = {}
   for _, p in ipairs(chart.positions) do placements[p.name] = p end
   for name, cusp in pairs(chart.angles) do placements[name] = cusp end
   local used = {}
+  local positions = editorial_facts(chart)
   local result = {
     ("O Sol em %s na casa %d, a Lua em %s na casa %d e o Ascendente em %s orientam a leitura."):format(
       signs[placements.Sun.sign], placements.Sun.house,
@@ -514,15 +528,45 @@ local function synthesis()
     result[#result+1] = "\\subsection*{" .. topic.title .. "}"
     if best then
       used[aspect_key(best)] = true
-      result[#result+1] = ("%s e %s em %s. %s"):format(
-        names[best.first], names[best.second], types[best.kind][1]:lower(), composed.aspect(best, placements))
+      local first, second = best.first, best.second
+      if second < first then first, second = second, first end
+      local key = aspect_key(best) .. ":" .. positions[first] .. ":" .. positions[second]
+      local note = synthesis_notes[key]
+      result[#result+1] = ("\\hyperref[aspecto:%d]{%s e %s em %s}. %s"):format(
+        aspect_ids[aspect_key(best)], names[best.first], names[best.second],
+        types[best.kind][1]:lower(), note or composed.aspect(best, placements))
+      if not note then result[#result+1] = "\\par\\smallskip " .. topic.action end
     else
       local p = placements[({["Expressão e aprendizado"]="Mercury",["Relações e compromissos"]="Venus",["Trabalho e direção"]="Saturn"})[topic.title]]
-      result[#result+1] = composed.position(p)
+      result[#result+1] = composed.position(p) .. "\\par\\smallskip " .. topic.action
     end
-    result[#result+1] = "\\par\\smallskip " .. topic.action .. "\\par "
+    result[#result+1] = "\\par "
   end
   return table.concat(result, " ")
 end
 
 if not matched then token.set_macro("NatalSinteseTematica", synthesis(), "global") end
+local ranked = {}
+for _, aspect in ipairs(chart.aspects) do ranked[#ranked+1] = aspect end
+table.sort(ranked, function(a, b)
+  if a.orb ~= b.orb then return a.orb < b.orb end
+  return aspect_key(a) < aspect_key(b)
+end)
+
+-- Opposite angles often restate the same geometry. Keep one highlight per axis and partner.
+local axis_group = {Ascendant="horizonte",DSC="horizonte",MC="meridiano",IC="meridiano"}
+local seen, highlights = {}, {}
+for _, aspect in ipairs(ranked) do
+  local first, second = axis_group[aspect.first] or aspect.first, axis_group[aspect.second] or aspect.second
+  if second < first then first, second = second, first end
+  local key = first .. "|" .. second
+  if not seen[key] then
+    seen[key] = true
+    highlights[#highlights+1] = ("\\item \\hyperref[aspecto:%d]{%s e %s em %s} · %s."):format(
+      aspect_ids[aspect_key(aspect)], names[aspect.first], names[aspect.second],
+      types[aspect.kind][1]:lower(), angle(aspect.orb))
+    if #highlights == 10 then break end
+  end
+end
+token.set_macro("NatalTotalDestaques", tostring(#highlights), "global")
+token.set_macro("NatalDestaques", table.concat(highlights, " "), "global")
