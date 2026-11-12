@@ -1,0 +1,64 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[margin=23mm]{geometry}
+\IfFileExists{../base/natalreport.sty}{\usepackage{../base/natalreport}}{\usepackage{../natalreport}}
+\usepackage{booktabs,longtable}
+\directlua{dofile("dados-relatorio.lua")}
+\NatalConfig{chart radius=0.38\linewidth}
+\title{Mapa natal\\\large Relatório técnico}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\section{Roda do mapa}
+\begin{center}\NatalChartInternal\end{center}
+\clearpage
+\section{Posições}
+R indica retrogradação na entrada.
+\begin{longtable}{@{}llrcc@{}}
+\toprule Corpo ou ponto & Signo & Posição & Casa & R\\ \midrule
+\endhead
+\NatalPosicoes
+\bottomrule
+\end{longtable}
+
+\section{Cúspides}
+\begin{longtable}{@{}clrl@{}}
+\toprule Casa & Signo & Posição & Ângulo\\ \midrule
+\endhead
+\NatalCusps
+\bottomrule
+\end{longtable}
+
+\clearpage
+\section{Grade de aspectos}
+A numeração das colunas segue a ordem das linhas. Cj é conjunção, Sx é sextil,
+Qd é quadratura, Tr é trígono e Op é oposição.
+\begin{center}
+\small\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}l*{15}{c}@{}}
+\toprule
+Corpo ou ponto & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15\\
+\midrule
+\NatalGrade
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Lista completa de aspectos}
+A lista inclui as relações com os ângulos.
+\begin{longtable}{@{}lllrl@{}}
+\toprule Origem & Destino & Tipo & Orbe & Fase\\ \midrule
+\endhead
+\NatalAspectos
+\bottomrule
+\end{longtable}
+
+\section{Velocidades informadas}
+A direção vem do sinal do delta. O rótulo e a razão reproduzem os valores do arquivo.
+\begin{longtable}{@{}lrlrr@{}}
+\toprule Corpo & Delta & Direção & Rótulo & Razão\\ \midrule
+\endhead
+\NatalVelocidades
+\bottomrule
+\end{longtable}
+\end{document}
