@@ -33,6 +33,7 @@
   \textit{Orbe #5 · #6}\par\smallskip
   \csname NatalAspectoTexto#1\endcsname\par
 }
+\newcommand{\NatalCasaComposta}[3]{\subsection*{Casa #1}\textit{Cúspide em #2, #3}\par\smallskip}
 \directlua{dofile("dados-relatorio.lua")}
 \ifnum\NatalTemLeitura=1
   \title{Seu mapa natal}
@@ -51,11 +52,10 @@
 \ifnum\NatalTemLeitura=1
   \input{leitura-demonstrativa-v1.tex}
   \clearpage
-  \appendix
-\else
+\fi
   \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas+\NatalTotalAspectos\relax>0
     \section*{Leituras disponíveis}
-    A biblioteca tem textos revisados para \NatalTotalLeituras\space das 15 posições deste mapa.
+    O relatório apresenta \NatalTotalLeituras\space leituras de posições.\par
     \input{leituras-posicoes-v1.tex}
     \NatalLeiturasSelecionadas
     \ifnum\NatalTotalEixos>0
@@ -64,20 +64,19 @@
     \fi
     \ifnum\NatalTotalCasas>0
       \section*{Casas do mapa}
-      Há leituras revisadas para \NatalTotalCasas\space das 12 casas deste mapa.
+      O relatório apresenta \NatalTotalCasas\space leituras de casas.\par
       \input{leituras-casas-v1.tex}
       \NatalLeiturasCasas
     \fi
     \ifnum\NatalTotalAspectos>0
       \section*{Aspectos do mapa}
-      Há leituras revisadas para \NatalTotalAspectos\space dos \NatalAspectosEntrada\space aspectos deste mapa.\par
+      O relatório apresenta \NatalTotalAspectos\space leituras de aspectos.\par
       \input{leituras-aspectos-v1.tex}
       \NatalLeiturasAspectos
     \fi
     \clearpage
     \appendix
   \fi
-\fi
 \section{Roda do mapa}
 \begin{center}\NatalChartInternal\end{center}
 \clearpage

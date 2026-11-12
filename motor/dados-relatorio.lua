@@ -1,3 +1,4 @@
+local composed = dofile("leitura-composta.lua")
 local reader = dofile("entrada.lua")
 local chart, raw = reader.read(os.getenv("NATAL_ENTRADA") or "exemplo.txt")
 local digest = require("sha2").digest256(raw)
@@ -201,20 +202,19 @@ for index, position in ipairs(reviewed.positions) do
   position_library[position_key(position)] = index
 end
 local selected = {}
-if not matched then
+do
   for _, position in ipairs(chart.positions) do
     local index = position_library[position_key(position)]
-    if index then
-      selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
-        index, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
+    selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
+        index or 0, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
         position.house, position.retrograde and " · Retrógrado" or "")
-    end
+    if not index then selected[#selected] = selected[#selected] .. composed.position(position) .. "\\par " end
   end
 end
 token.set_macro("NatalTotalLeituras", tostring(#selected), "global")
 token.set_macro("NatalLeiturasSelecionadas", table.concat(selected), "global")
 if #selected > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de posições 1.1: %d de %d leituras"):format(
+  texio.write_nl("log", ("[Mapa Natal] Posições apresentadas: %d de %d leituras"):format(
     #selected, #chart.positions))
 end
 local axis_pairs = {
@@ -226,21 +226,21 @@ local axis_library = {
   [2] = {["Cancer|Capricorn"]=2, ["Pisces|Virgo"]=4, ["Leo|Aquarius"]=6}
 }
 local selected_axes = {}
-if not matched then
+do
   for axis_index, axis in ipairs(axis_pairs) do
     local first, second = chart.angles[axis[1]], chart.angles[axis[2]]
     local index = axis_library[axis_index][first.sign .. "|" .. second.sign]
-    if index then
-      selected_axes[#selected_axes+1] = ("\\NatalLeituraEixo{%d}{%s}{%s}{%s}{%s}{%s}"):format(
-        index, axis[3], signs[first.sign], angle(first.degree*60+first.minute),
+    selected_axes[#selected_axes+1] = ("\\NatalLeituraEixo{%d}{%s}{%s}{%s}{%s}{%s}"):format(
+        index or 0, axis[3], signs[first.sign], angle(first.degree*60+first.minute),
         signs[second.sign], angle(second.degree*60+second.minute))
-    end
+    if not index then selected_axes[#selected_axes] = selected_axes[#selected_axes] ..
+      composed.axis(axis[1], first, axis[2], second, axis_index) .. "\\par " end
   end
 end
 token.set_macro("NatalTotalEixos", tostring(#selected_axes), "global")
 token.set_macro("NatalLeiturasEixos", table.concat(selected_axes), "global")
 if #selected_axes > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de eixos 1.1: %d de 2 leituras"):format(#selected_axes))
+  texio.write_nl("log", ("[Mapa Natal] Eixos apresentados: %d de 2 leituras"):format(#selected_axes))
 end
 -- Dependencies of the reviewed prose, in house order.
 local house_rules = {
@@ -303,7 +303,7 @@ local house_library = {
   {36, 12, "Libra", "Venus|Scorpio|12|false;Mars|Scorpio|12|false", "Venus", "Venus|Scorpio|12|false"},
 }
 local selected_houses = {}
-if not matched then
+do
   local current_positions, current_occupants, current_aspects = editorial_facts(chart)
   local reviewed_positions, reviewed_occupants = editorial_facts(reviewed)
   local by_house = {}
@@ -331,13 +331,16 @@ if not matched then
     end
   end
   for house = 1, 12 do
-    if by_house[house] then selected_houses[#selected_houses+1] = by_house[house] end
+    local cusp = chart.cusps[house]
+    selected_houses[#selected_houses+1] = by_house[house] or
+      ("\\NatalCasaComposta{%d}{%s}{%s}%s\\par "):format(house, signs[cusp.sign],
+        angle(cusp.degree*60+cusp.minute), composed.house(chart, house, names))
   end
 end
 token.set_macro("NatalTotalCasas", tostring(#selected_houses), "global")
 token.set_macro("NatalLeiturasCasas", table.concat(selected_houses), "global")
 if #selected_houses > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de casas 1.1: %d de 12 leituras"):format(#selected_houses))
+  texio.write_nl("log", ("[Mapa Natal] Casas apresentadas: %d de 12 leituras"):format(#selected_houses))
 end
 local function aspect_key(aspect)
   local first, second = aspect.first, aspect.second
@@ -346,25 +349,28 @@ local function aspect_key(aspect)
 end
 
 local selected_aspects = {}
-if not matched then
+do
   local current_positions = editorial_facts(chart)
   local reviewed_positions = editorial_facts(reviewed)
-  local library = {}
+  local library, locations = {}, {}
+  for name, cusp in pairs(chart.angles) do locations[name] = cusp end
+  for _, p in ipairs(chart.positions) do locations[p.name] = p end
   for index, aspect in ipairs(reviewed.aspects) do library[aspect_key(aspect)] = index end
   for _, aspect in ipairs(chart.aspects) do
     local index = library[aspect_key(aspect)]
-    if index and current_positions[aspect.first] == reviewed_positions[aspect.first] and
-      current_positions[aspect.second] == reviewed_positions[aspect.second] then
-      selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}"):format(
-        index, names[aspect.first], types[aspect.kind][1], names[aspect.second],
+    if current_positions[aspect.first] ~= reviewed_positions[aspect.first] or
+      current_positions[aspect.second] ~= reviewed_positions[aspect.second] then index = nil end
+    selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}"):format(
+        index or 0, names[aspect.first], types[aspect.kind][1], names[aspect.second],
         angle(aspect.orb), phases[aspect.phase])
-    end
+    if not index then selected_aspects[#selected_aspects] = selected_aspects[#selected_aspects] ..
+      composed.aspect(aspect, locations) .. "\\par " end
   end
 end
 token.set_macro("NatalTotalAspectos", tostring(#selected_aspects), "global")
 token.set_macro("NatalAspectosEntrada", tostring(#chart.aspects), "global")
 token.set_macro("NatalLeiturasAspectos", table.concat(selected_aspects), "global")
 if #selected_aspects > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de aspectos 1.0: %d de %d leituras"):format(
+  texio.write_nl("log", ("[Mapa Natal] Aspectos apresentados: %d de %d leituras"):format(
     #selected_aspects, #chart.aspects))
 end
