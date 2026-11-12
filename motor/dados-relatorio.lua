@@ -162,12 +162,49 @@ token.set_macro("NatalTemLeitura", matched and "1" or "0", "global")
 if matched then texio.write_nl("log", "[Mapa Natal] Biblioteca editorial demonstrativa 1.0") end
 
 -- Texts describe sign, house and motion together. Degrees are taken from the input.
+local function position_key(position)
+  return table.concat({position.name, position.sign, position.house, tostring(position.retrograde)}, "|")
+end
+local position_library = {
+  ["Sun|Aquarius|9|false"] = 16,
+  ["Moon|Scorpio|6|false"] = 17,
+  ["Mercury|Capricorn|8|false"] = 18,
+  ["Venus|Sagittarius|7|false"] = 19,
+  ["Mars|Sagittarius|7|false"] = 20,
+  ["Jupiter|Leo|3|true"] = 21,
+  ["Saturn|Gemini|1|true"] = 22,
+  ["Uranus|Aquarius|9|false"] = 23,
+  ["Neptune|Aquarius|9|false"] = 24,
+  ["Pluto|Sagittarius|7|false"] = 25,
+  ["North Node|Gemini|1|true"] = 26,
+  ["Lilith|Aries|11|false"] = 27,
+  ["Chiron|Capricorn|8|false"] = 28,
+  ["Fortune|Pisces|10|false"] = 29,
+  ["Vertex|Aquarius|9|false"] = 30,
+  ["Sun|Sagittarius|1|false"] = 31,
+  ["Moon|Pisces|4|false"] = 32,
+  ["Mercury|Capricorn|2|false"] = 33,
+  ["Venus|Scorpio|12|false"] = 34,
+  ["Mars|Scorpio|12|false"] = 35,
+  ["Jupiter|Leo|10|true"] = 36,
+  ["Saturn|Gemini|8|true"] = 37,
+  ["Uranus|Aquarius|4|false"] = 38,
+  ["Neptune|Aquarius|3|false"] = 39,
+  ["Pluto|Sagittarius|1|false"] = 40,
+  ["North Node|Gemini|7|true"] = 41,
+  ["Lilith|Aries|6|false"] = 42,
+  ["Chiron|Capricorn|2|false"] = 43,
+  ["Fortune|Virgo|10|false"] = 44,
+  ["Vertex|Aries|5|false"] = 45,
+}
+for index, position in ipairs(reviewed.positions) do
+  position_library[position_key(position)] = index
+end
 local selected = {}
 if not matched then
-  for index, position in ipairs(chart.positions) do
-    local model = reviewed.positions[index]
-    if position.name == model.name and position.sign == model.sign and
-      position.house == model.house and position.retrograde == model.retrograde then
+  for _, position in ipairs(chart.positions) do
+    local index = position_library[position_key(position)]
+    if index then
       selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
         index, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
         position.house, position.retrograde and " · Retrógrado" or "")
@@ -177,7 +214,7 @@ end
 token.set_macro("NatalTotalLeituras", tostring(#selected), "global")
 token.set_macro("NatalLeiturasSelecionadas", table.concat(selected), "global")
 if #selected > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de posições 1.0: %d de %d leituras"):format(
+  texio.write_nl("log", ("[Mapa Natal] Biblioteca de posições 1.1: %d de %d leituras"):format(
     #selected, #chart.positions))
 end
 local axis_pairs = {
