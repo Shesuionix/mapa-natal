@@ -67,15 +67,16 @@ for _, symbol in ipairs(symbols) do
   grid_header[#grid_header+1] = glyph(symbol)
 end
 row(grid, table.unpack(grid_header))
-grid[#grid+1] = "\\midrule"
+grid[#grid+1] = "\\hline"
 
 for i, first in ipairs(chart.positions) do
   local cells = {glyph(symbols[i]) .. " " .. names[first.name]}
   for j, second in ipairs(chart.positions) do
     local symbol = j < i and pairs_by_body[first.name][second.name]
-    cells[#cells+1] = symbol and glyph(symbol) or (j == i and "—" or "")
+    cells[#cells+1] = symbol and glyph(symbol) or (j == i and "\\cellcolor{black!9}" or "")
   end
   row(grid, table.unpack(cells))
+  grid[#grid+1] = "\\hline"
 end
 
 for _, speed in ipairs(chart.speeds) do
