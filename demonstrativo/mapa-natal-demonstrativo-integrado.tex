@@ -1,0 +1,742 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\title{Seu mapa natal\\\large Relatório demonstrativo}
+\author{}
+\date{}
+\newcommand{\leitura}[3]{\subsection{#1}\textit{#2}\par #3}
+\newcommand{\subtituloleitura}[1]{\textbf{#1}\par\nopagebreak[4]}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\contentsname}{Sumário}
+\setcounter{tocdepth}{1}
+\newcommand{\aspectoref}[2]{\hyperref[#1]{#2}}
+
+
+
+
+\usepackage{tikz,booktabs,longtable}
+\definecolor{natalink}{HTML}{263748}
+\definecolor{natalaccent}{HTML}{176B68}
+\newcommand{\PosicoesNatal}[1]{%
+ #1{Sol}{Capricórnio}{10}{17}{3}{}{1}%
+ #1{Lua}{Libra}{12}{16}{12}{}{2}%
+ #1{Mercúrio}{Capricórnio}{29}{05}{4}{}{3}%
+ #1{Vênus}{Capricórnio}{04}{36}{3}{}{4}%
+ #1{Marte}{Peixes}{12}{19}{5}{}{5}%
+ #1{Júpiter}{Escorpião}{02}{20}{1}{}{6}%
+ #1{Saturno}{Touro}{02}{03}{7}{R}{7}%
+ #1{Urano}{Libra}{08}{43}{12}{}{8}%
+ #1{Netuno}{Escorpião}{29}{53}{2}{}{9}%
+ #1{Plutão}{Virgem}{27}{23}{12}{R}{10}%
+ #1{Nodo Norte}{Peixes}{15}{16}{6}{R}{11}%
+ #1{Lilith}{Leão}{02}{46}{10}{}{12}%
+ #1{Quíron}{Áries}{02}{31}{6}{}{13}%
+ #1{Fortuna}{Capricórnio}{18}{13}{4}{}{14}%
+ #1{Vertex}{Áries}{06}{20}{6}{}{15}%
+}
+\newcommand{\CuspsNatal}[1]{%
+ #1{1}{Libra}{20}{13}{ASC}%
+ #1{2}{Escorpião}{22}{09}{}%
+ #1{3}{Sagitário}{19}{37}{}%
+ #1{4}{Capricórnio}{15}{31}{IC}%
+ #1{5}{Aquário}{13}{01}{}%
+ #1{6}{Peixes}{14}{41}{}%
+ #1{7}{Áries}{20}{13}{DSC}%
+ #1{8}{Touro}{22}{09}{}%
+ #1{9}{Gêmeos}{19}{37}{}%
+ #1{10}{Câncer}{15}{31}{MC}%
+ #1{11}{Leão}{13}{01}{}%
+ #1{12}{Virgem}{14}{41}{}%
+}
+\newcommand{\NatalSignos}{Áries,Touro,Gêmeos,Câncer,Leão,Virgem,Libra,Escorpião,Sagitário,Capricórnio,Aquário,Peixes}
+\newcommand{\NatalAngulo}[4]{%
+ \foreach \signo [count=\indice from 0] in \NatalSignos {%
+  \edef\signoAtual{\signo}\edef\signoAlvo{#1}%
+  \ifx\signoAtual\signoAlvo
+   \pgfmathparse{180+200+13/60-(30*\indice+\number\numexpr#2\relax+\number\numexpr#3\relax/60)}%
+   \global\let#4\pgfmathresult
+  \fi
+ }%
+}
+\newcommand{\NatalPonto}[7]{%
+ \NatalAngulo{#2}{#3}{#4}{\natalang}%
+ \coordinate (corpo#7) at (\natalang:3.7);
+ \fill[natalaccent] (corpo#7) circle (1.5pt);
+ \pgfmathsetmacro{\natalraio}{3.28-0.34*mod(#7,3)}%
+ \draw[natalaccent!75] (corpo#7)--(\natalang:\natalraio);
+ \node[fill=white,inner sep=1.3pt,text=natalink,font=\scriptsize\bfseries]
+  at (\natalang:\natalraio) {#7};
+}
+\newcommand{\NatalCusp}[5]{%
+ \NatalAngulo{#2}{#3}{#4}{\natalang}%
+ \draw[natalink!45] (\natalang:1.48)--(\natalang:4.2);
+ \node[anchor=west,font=\scriptsize,inner sep=1pt,fill=white]
+  at ({\natalang-4}:1.7) {#1};
+ \if\relax\detokenize{#5}\relax\else
+  \node[font=\scriptsize\bfseries,text=natalaccent,fill=white,inner sep=1pt]
+   at (\natalang:4.31) {#5};
+ \fi
+}
+\newcommand{\NatalLegenda}[7]{\textbf{#7}~#1\quad\allowbreak}
+\newcommand{\RodaNatal}{%
+ \begin{center}
+ \begin{tikzpicture}[scale=1.22]
+  \fill[natalaccent!5,even odd rule] (0,0) circle (4.95) (0,0) circle (4.2);
+  \draw[natalink,thick] (0,0) circle (4.95) (0,0) circle (4.2);
+  \draw[natalink!40] (0,0) circle (1.48);
+  \foreach \signo [count=\indice from 0] in \NatalSignos {
+   \pgfmathsetmacro{\borda}{380+13/60-30*\indice}
+   \draw[natalink!35] (\borda:4.2)--(\borda:4.95);
+   \node[text=natalink,font=\footnotesize] at ({\borda-15}:4.64) {\signo};
+  }
+  \CuspsNatal{\NatalCusp}
+  \PosicoesNatal{\NatalPonto}
+  \node[text=natalink,align=center,font=\small] at (0,0) {Seu\\mapa natal};
+ \end{tikzpicture}
+
+ \small\raggedright\PosicoesNatal{\NatalLegenda}\par
+ \end{center}
+}
+\newcommand{\LinhaPosicaoNatal}[7]{#1 & #2 & #3°#4\ensuremath{^{\prime}} & #5 & #6\\}
+\newcommand{\LinhaCuspNatal}[5]{#1 & #2 & #3°#4\ensuremath{^{\prime}} & #5\\}
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+\section{Resumo executivo}
+\subtituloleitura{Você ajuda a conversa a avançar quando também coloca sua posição na mesa}
+
+Em uma conversa difícil, você costuma perceber quem ainda precisa ser ouvido e qual parte do assunto está impedindo uma decisão. Você sabe juntar informações dispersas e devolver o problema em termos que as pessoas conseguem discutir. É assim que sua voz ganha peso: depois de falar com você, fica mais claro o que está em jogo e o que pode ser feito.
+
+Sua reação pessoal às vezes chega um pouco depois. Enquanto a conversa acontece, boa parte da sua atenção está em entender a situação e manter a troca possível. Quando fica a sós, você percebe quanto aquele compromisso vai exigir ou encontra as palavras para dizer por que uma condição incomodou. Essa diferença de tempo ajuda a explicar por que um acordo pode parecer razoável na hora e pesado no dia seguinte.
+
+Nas parcerias, você funciona melhor quando pode propor um começo concreto e negociar o que cada pessoa vai sustentar. No trabalho, a mesma capacidade aparece quando você transforma uma necessidade do grupo em algo que todos conseguem fazer: uma rotina mais clara, uma decisão bem explicada ou uma forma de acolher quem está chegando. Sua contribuição fica mais visível quando você diz qual parte assumiu e dá aos outros espaço para fazer a deles.
+
+\textbf{Em decisões que comprometem seu tempo, dinheiro ou trabalho, diga o que já consegue aceitar e combine quando dará a resposta sobre o restante.} Você preserva a qualidade da conversa e dá à sua própria posição o tempo de que ela precisa.
+
+\paragraph*{O que sustenta esta leitura} O \hyperref[pos-sol]{Sol em Capricórnio na casa 3} põe a comunicação em foco. A \hyperref[aspecto:sol-lua]{quadratura com a Lua em Libra na casa 12, a 1°59\ensuremath{^{\prime}}}, liga essa expressão ao que você elabora em particular. O \hyperref[eixo-asc]{Ascendente em Libra} acrescenta a atenção ao tom da conversa.
+\clearpage
+\clearpage
+\section{A roda do seu mapa}
+\RodaNatal
+Os números no interior da roda identificam as casas. Os números ligados aos pontos verdes correspondem aos planetas e pontos da legenda. ASC indica o Ascendente e MC, o Meio do Céu. As posições exatas estão nas \hyperref[tabelas-mapa]{tabelas do apêndice}.
+\clearpage
+\section{Seu jeito de pensar, sentir e se expressar}
+\subtituloleitura{Seu raciocínio ganha clareza quando você consegue explicar uma ideia em voz alta}
+
+Você aprende bem quando uma ideia pode ser aplicada, explicada ou posta à prova. Se alguém lhe passa instruções confusas, você tende a separar o que precisa acontecer primeiro, o que depende de outra pessoa e onde ainda falta informação. Quando devolve isso em palavras simples, seu próprio entendimento se firma. A explicação faz parte do aprendizado e costuma melhorar a maneira como você executa a tarefa.
+
+O cuidado com a clareza também pode levar você a guardar uma contribuição até conseguir defendê-la. Em assuntos importantes, essa preparação dá peso ao que diz. Numa conversa de confiança, pode adiar justamente a troca que ajudaria a completar o raciocínio. Apresente a ideia no estágio em que ela está: “Minha impressão até aqui é esta. Quero conferir um ponto antes de fechar.” A outra pessoa consegue contribuir enquanto ainda há espaço para ajustar o caminho.
+
+\subsection*{Por que algumas conversas continuam depois que terminam}
+
+Durante uma troca tensa, você costuma captar rapidamente a perspectiva de quem está na sua frente. Essa atenção ajuda a conversa a continuar. O efeito da situação sobre você pode ficar mais claro no caminho de volta, quando já passou a necessidade de responder ao tom da outra pessoa. Talvez o que incomodou tenha sido aceitar um prazo apertado, ficar com uma tarefa que deveria ser compartilhada ou encerrar o assunto antes de dizer o que preferia.
+
+Quando isso acontecer, retome a condição que precisa ser revista. Se o problema foi a divisão do trabalho, volte à divisão: “Pensei melhor sobre o que combinamos. Consigo fazer esta parte até sexta. Para assumir a outra, preciso de mais tempo ou de ajuda.” A pessoa recebe uma proposta sobre a qual pode decidir, e você resolve o ponto que continuaria pesando na sua rotina.
+
+\subsection*{Como fazer sua posição aparecer mais cedo}
+
+Sua facilidade de ouvir dá abertura à conversa. Para que ela também produza um acordo bom para você, coloque uma preferência na mesa antes de ajustar a proposta aos outros. Numa decisão simples, pode bastar dizer “Para mim, quinta funciona melhor.” Quando houver mais em jogo, diga também o motivo: “Quinta funciona melhor porque consigo revisar o trabalho com calma antes de entregar.” Uma preferência específica dá à outra pessoa algo concreto para considerar.
+
+\subtituloleitura{O que levar para a prática}
+\begin{itemize}
+\item \textbf{Ao estudar}, explique a ideia com suas palavras e dê um exemplo de uso. O trecho difícil de explicar indica o que merece mais atenção.
+\item \textbf{Ao assumir um compromisso}, diga sua preferência cedo. Se precisar avaliar parte da proposta, combine quando vai responder.
+\item \textbf{Ao retomar um acordo}, nomeie a condição que ficou pesada e volte com uma proposta para aquele ponto.
+\end{itemize}
+
+\paragraph*{O que sustenta esta leitura} O \hyperref[pos-sol]{Sol na casa 3} dá o contexto do aprendizado pela troca. A \hyperref[aspecto:sol-lua]{quadratura entre Sol e Lua} ajuda a entender por que organizar o assunto e reconhecer a própria reação podem acontecer em momentos diferentes.
+\clearpage
+\section{Como você se relaciona e constrói confiança}
+\subtituloleitura{Você confia mais quando a outra pessoa toma iniciativa e sustenta o que combinou}
+
+Para você, a confiança se forma nos intervalos entre os grandes momentos. Ela cresce quando alguém retoma um assunto que era importante para você, avisa que um plano mudou ou divide uma tarefa sem esperar que você peça de novo. Você também costuma demonstrar afeto dessa maneira. Presta atenção ao que ouviu e transforma isso em presença na semana seguinte. Quem está perto entende melhor esse cuidado quando você também diz o que aprecia na relação.
+
+\subsection*{O que mantém uma parceria viva}
+
+Você se envolve quando existe espaço para propor algo a dois. Pode ser um projeto, um programa de fim de semana ou um jeito diferente de dividir a rotina. A iniciativa anima a relação, mas o que permite repetir a experiência é saber com o que cada um pode contar. Se uma ideia depende de tempo ou dinheiro dos dois, transforme o entusiasmo em um primeiro passo que caiba na agenda. Vocês descobrem mais sobre a parceria ao fazer algo pequeno juntos do que ao tentar decidir de uma vez como tudo vai funcionar.
+
+\subsection*{Quando um acordo começa a pesar}
+
+Sua constância faz você cumprir a parte que assumiu, mesmo quando a situação que deu origem ao acordo já mudou. Isso é fácil de ver em casa. Uma tarefa começa como ajuda durante uma semana difícil e, meses depois, ainda é você quem lembra, organiza e executa. A conversa que resolve esse tipo de desgaste é específica: “Eu consigo continuar fazendo isso às terças. Nos outros dias, precisamos dividir de outro jeito.” Quanto mais cedo você fala, mais opções vocês têm para ajustar a rotina.
+
+Se a questão envolve dinheiro, conversem sobre quem paga, quando e como vocês vão rever a divisão se a renda ou as despesas mudarem. Se envolve atenção, diga que tipo de presença faria diferença. Pode ser um horário para conversar com calma ou a iniciativa de retomar um assunto sem que você precise sempre chamar. \textbf{Você constrói confiança quando torna claro o que consegue oferecer e o que precisa poder esperar da outra pessoa.}
+
+\paragraph*{O que sustenta esta leitura} A \hyperref[aspecto:jupiter-saturno]{oposição entre Júpiter na casa 1 e Saturno na casa 7}, a 0°16\ensuremath{^{\prime}}, coloca a iniciativa pessoal em relação direta com o compromisso a dois. O \hyperref[aspecto:venus-saturno]{trígono de Vênus com Saturno} acrescenta a continuidade das pequenas trocas como base da confiança.
+\clearpage
+\section{Como você trabalha, cria e assume seu espaço}
+\subtituloleitura{Seu trabalho ganha força quando uma boa percepção vira algo que outras pessoas conseguem usar}
+
+Você costuma contribuir ao perceber o que está atrapalhando o trabalho de um grupo e dar forma a uma solução. Às vezes é uma instrução que precisa ser reescrita. Outras vezes, é uma pessoa recém-chegada que precisa de um ponto de partida. Você consegue acolher essa necessidade e organizar uma resposta prática. Uma orientação simples, escrita de modo que alguém possa consultá-la depois, mostra bem como esse talento funciona.
+
+\subsection*{O que ajuda sua criatividade a continuar}
+
+Você entra com mais energia numa tarefa quando ela permite experimentar. O primeiro rascunho costuma esclarecer o que horas de planejamento deixariam em aberto. Para dar continuidade, escolha um horário breve para retomar o trabalho e decida o que precisa estar pronto até ali. Um exemplo basta: em vez de reservar a tarde inteira para pensar numa apresentação, prepare uma abertura e teste-a em voz alta. A reação ao teste orienta o próximo passo.
+
+Sua rotina funciona melhor quando tem espaço para esse movimento. Se uma tarefa emperra toda semana, observe onde ela para e experimente mudar só esse trecho. Uma revisão curta ao fim de alguns dias mostra se o ajuste economizou trabalho. Esse modo de agir permite aproveitar o que você percebe sem transformar cada dificuldade num projeto novo.
+
+\subsection*{Como tornar sua contribuição visível}
+
+Boa parte do que você faz pode passar despercebida justamente porque facilita o trabalho dos outros. Quando tudo funciona, fica fácil para a equipe esquecer quem percebeu o problema, organizou a resposta ou ensinou alguém a continuar. Ao apresentar um resultado, conte qual decisão você tomou, o que mudou com ela e quem ajudou a executá-la. “Eu reorganizei a entrada dos pedidos com a equipe. Agora quem chega sabe qual informação precisa entregar primeiro.” Uma frase desse tipo dá visibilidade à sua autoria e situa o trabalho coletivo.
+
+\textbf{Procure tarefas em que você possa entender uma necessidade, experimentar uma solução e deixar algo que continue funcionando depois.} É nessa sequência que sua capacidade de organizar, criar e cuidar aparece com mais nitidez.
+
+\paragraph*{O que sustenta esta leitura} O \hyperref[aspecto:mc-nodo]{trígono entre o Meio do Céu e o Nodo Norte na casa 6}, a 0°14\ensuremath{^{\prime}}, conecta atuação pública e rotina. Lilith na \hyperref[casa-10]{casa 10}, em \hyperref[aspecto:lilith-quiron]{trígono com Quíron}, acrescenta o tema de dar visibilidade ao que você aprendeu ao tomar iniciativa.
+\clearpage
+\section{Como levar esta leitura para a prática}
+
+\subsection*{1. Dê uma resposta em duas etapas quando o compromisso for importante}
+Na conversa, diga o que já está claro para você. Se houver impacto em dinheiro, tempo ou responsabilidade, combine um momento para confirmar o restante. “Consigo assumir a primeira etapa. Amanhã confirmo o prazo da segunda.” Use esse intervalo para conferir a agenda e reconhecer se alguma condição precisa mudar.
+
+\subsection*{2. Renegocie a parte do acordo que ficou pesada}
+Escolha uma situação que se repete, como uma tarefa que sempre sobra para você. Descreva o que está acontecendo e proponha uma divisão que possa ser experimentada na próxima semana. Voltem ao assunto depois de testar. Vocês terão uma experiência concreta para decidir o que vale manter.
+
+\subsection*{3. Mostre sua contribuição junto com o resultado}
+Num trabalho que você ajudou a destravar, registre o problema, a decisão que tomou e o efeito que observou. Use essas três informações quando apresentar o resultado. Isso ajuda outras pessoas a entenderem o valor do que você fez e dá a você uma referência para escolher trabalhos em que queira se envolver de novo.
+
+\clearpage
+
+\section{Dez aspectos que ajudam a entender a leitura}
+Um aspecto é uma relação angular entre dois elementos do mapa. Aqui estão os que ajudam a explicar os capítulos anteriores. A seleção considera a proximidade do ângulo e a contribuição de cada relação para a leitura. Os links levam às entradas completas.
+
+\begin{description}
+\item[{\hyperref[aspecto:sol-lua]{Sol e Lua em quadratura}}] Você consegue encaminhar uma conversa antes de saber o quanto o acordo vai pesar para você.
+\item[{\hyperref[aspecto:sol-urano]{Sol e Urano em quadratura}}] Quando um método perde o sentido, um teste concreto ajuda você a explicar a mudança que já percebeu.
+\item[{\hyperref[aspecto:sol-marte]{Sol e Marte em sextil}}] Explicar uma ideia a alguém pode dar o impulso de que você precisa para experimentá-la.
+\item[{\hyperref[aspecto:lua-venus]{Lua e Vênus em quadratura}}] A cordialidade ajuda a manter a conversa aberta. Retomar um detalhe depois dá lugar ao que você sentiu.
+\item[{\hyperref[aspecto:mercurio-netuno]{Mercúrio e Netuno em sextil}}] Você consegue nomear uma impressão que estava no ar e confirmar com os outros se ela faz sentido.
+\item[{\hyperref[aspecto:jupiter-saturno]{Júpiter e Saturno em oposição}}] Um primeiro passo com prazo e responsabilidades claras dá espaço à iniciativa dentro de uma parceria.
+\item[{\hyperref[aspecto:venus-saturno]{Vênus e Saturno em trígono}}] A confiança cresce com o cuidado que vocês conseguem repetir nos dias comuns.
+\item[{\hyperref[aspecto:mc-nodo]{Meio do Céu e Nodo Norte em trígono}}] Os ajustes que melhoram seu trabalho cotidiano dão pistas sobre a contribuição que você pode assumir em público.
+\item[{\hyperref[aspecto:lilith-saturno]{Lilith e Saturno em quadratura}}] Falar de autoria junto com a divisão do trabalho ajuda a esclarecer como cada contribuição será reconhecida.
+\item[{\hyperref[aspecto:lilith-quiron]{Lilith e Quíron em trígono}}] Mostrar como começou e o que precisou testar dá substância ao trabalho que você apresenta.
+\end{description}
+
+\clearpage
+\appendix
+\section{Como consultar o apêndice}
+Use estas páginas quando quiser localizar a posição ou a relação que sustenta um trecho da leitura.
+
+\begin{description}
+\item[Casa] Uma das doze áreas do mapa, associada a temas como rotina, parcerias ou vida privada. A cúspide é o ponto onde a casa começa.
+\item[Regente] O planeta associado ao signo que abre uma casa. A leitura acompanha a posição desse planeta para entender com que outra área do mapa a casa se relaciona.
+\item[Aspecto] A relação entre duas posições do mapa. Conjunção, sextil, quadratura, trígono e oposição correspondem a ângulos de 0, 60, 90, 120 e 180 graus.
+\item[Orbe] A diferença entre o ângulo observado e o ângulo exato do aspecto. Um orbe de 0°16\ensuremath{^{\prime}} indica uma diferença de 16 minutos de arco.
+\item[Fase] Um aspecto aplicativo está se aproximando do ângulo exato. Um separativo já passou desse ponto e está se afastando.
+\end{description}
+
+\clearpage
+\section{Tabelas do mapa}\label{tabelas-mapa}
+\subsection*{Planetas e pontos}
+A marca R indica retrogradação conforme os dados de entrada.
+\begin{longtable}{@{}llrcc@{}}
+\toprule Corpo ou ponto & Signo & Posição & Casa & R\\ \midrule
+\endhead
+\PosicoesNatal{\LinhaPosicaoNatal}
+\bottomrule
+\end{longtable}
+
+\subsection*{Cúspides e ângulos}
+\begin{longtable}{@{}clrl@{}}
+\toprule Casa & Signo & Posição & Ângulo\\ \midrule
+\endhead
+\CuspsNatal{\LinhaCuspNatal}
+\bottomrule
+\end{longtable}
+\clearpage
+\section{Posições}
+
+\leitura{Sol}{Capricórnio, 10°17\ensuremath{^{\prime}} · Casa 3}{
+\label{pos-sol}\subtituloleitura{Você pensa melhor quando pode pôr uma ideia para trabalhar} Numa conversa, costuma ser quem recolhe as informações dispersas, encontra o ponto que importa e devolve o assunto de um jeito que permite avançar. É também assim que você ganha voz: a experiência acumulada vira uma explicação clara, um argumento que se sustenta ou um jeito mais inteligente de fazer algo que todo mundo já faz. O rigor que dá peso à sua palavra às vezes faz você guardar uma contribuição até ter certeza de que consegue defendê-la. Com gente de confiança, vale dividir o raciocínio enquanto ele ainda está tomando forma. Uma boa pergunta no meio do caminho pode abrir uma linha de pensamento que você levaria mais tempo para encontrar por conta própria.
+
+Nos estudos, você ganha autonomia quando consegue voltar a um assunto e explicá-lo sem depender das palavras de quem o ensinou. Com o tempo, as anotações que fez para se orientar podem virar referências para outras pessoas. Esse é um modo de construir autoridade pela palavra: alguém volta a perguntar porque se lembra de como você tornou o assunto compreensível.
+}
+
+\leitura{Lua}{Libra, 12°16\ensuremath{^{\prime}} · Casa 12}{
+\label{pos-lua}\subtituloleitura{Quando uma conversa perde a leveza, você percebe cedo} Na hora, costuma encontrar uma maneira de manter a troca possível. Só depois, quando está a sós, fica mais claro quanto daquela tensão era sua e o que você gostaria de ter dito. Isso dá delicadeza à maneira como você lida com os outros, mas também pode deixar suas preferências em suspenso por tempo demais. Se sair de um encontro ainda ensaiando a conversa na cabeça, preste atenção à frase que mais volta. Ela costuma indicar o assunto que merece ser retomado, desta vez com o seu ponto de vista mais presente.
+
+Esse intervalo também faz diferença quando alguém pede uma resposta imediata. Você sabe enxergar o lado de quem está na sua frente, e essa facilidade pode apressar um sim que só depois revela seu custo. Pedir tempo para responder é uma forma de cuidar da relação desde o começo. A resposta que você dá depois tende a ser mais clara e mais fácil de sustentar.
+}
+
+\leitura{Mercúrio}{Capricórnio, 29°05\ensuremath{^{\prime}} · Casa 4}{
+\subtituloleitura{Em assuntos de família, você costuma organizar a conversa em torno do que precisa ser resolvido} Lembra como um combinado começou, vê onde deixou de funcionar e consegue propor uma divisão mais clara das responsabilidades. Essa objetividade ajuda muito quando uma mudança ou decisão doméstica mobiliza várias pessoas ao mesmo tempo. A conversa fica mais rica quando você também pergunta como cada pessoa viveu o que aconteceu. Às vezes, a informação que falta para resolver um impasse aparece quando alguém finalmente consegue contar a própria versão sem ter de chegar logo a uma conclusão.
+
+Em casa, essa mesma memória prática ajuda você a decidir o que vale transmitir. Uma regra pode guardar uma experiência importante e ainda precisar mudar para caber na vida de hoje. Quando você consegue explicar o motivo do combinado em palavras simples, fica mais fácil propor outra forma de cumprir sua função.
+}
+
+\leitura{Vênus}{Capricórnio, 4°36\ensuremath{^{\prime}} · Casa 3}{
+\subtituloleitura{Seu jeito de se aproximar de alguém aparece na continuidade das conversas} Você lembra do assunto que ficou pela metade, pergunta como terminou e transforma o que escutou em cuidado concreto. Uma troca breve, repetida com atenção ao longo do tempo, pode ter mais peso para você do que uma grande declaração. Quem convive de perto aprende a perceber esse afeto nos detalhes. Dizer de vez em quando o que aquela pessoa representa para você dá clareza a algo que seus gestos já vêm construindo há tempo.
+
+O interesse também aparece nas perguntas que você faz. Você quer saber como a pessoa chegou a determinada escolha e o que aconteceu desde a última conversa. Um vínculo cresce quando existe essa memória compartilhada. Para quem acaba de conhecer você, um convite simples para continuar a troca pode tornar seu interesse mais visível.
+}
+
+\leitura{Marte}{Peixes, 12°19\ensuremath{^{\prime}} · Casa 5}{
+\subtituloleitura{Você entra de verdade num projeto criativo quando a ideia começa a sugerir coisas que ainda não estavam no plano} Uma cena, uma música ou uma brincadeira pode puxar a próxima tentativa e fazer você trabalhar mais tempo do que imaginava. O desafio costuma aparecer no intervalo entre esses momentos, quando a vontade muda e o projeto perde presença na rotina. Um compromisso pequeno com o trabalho, como voltar a ele por meia hora no dia seguinte, ajuda a preservar o impulso sem tirar da criação a liberdade que fez você querer começá-la.
+
+Você também cria melhor quando o material devolve alguma coisa: uma imagem que ganha outra cor, uma cena que muda quando é lida em voz alta, alguém que entra na brincadeira e traz uma ideia inesperada. Colocar uma versão inicial em circulação dá ao seu impulso um ponto de apoio. A partir dali, você já tem algo concreto a que responder.
+}
+
+\leitura{Júpiter}{Escorpião, 2°20\ensuremath{^{\prime}} · Casa 1}{
+\subtituloleitura{Quando chega a um ambiente novo, você se envolve mais depressa se percebe que há algo importante por trás da conversa de superfície} Uma resposta vaga desperta sua curiosidade, e uma pergunta bem feita pode levar a uma troca que ninguém esperava ter naquele momento. Essa capacidade de ir fundo marca sua presença e costuma abrir espaço para vínculos mais francos. O cuidado está em perceber o ritmo de quem está com você. Quando a outra pessoa tem tempo para escolher o que quer contar, sua intensidade ajuda a construir confiança.
+
+Em um grupo novo, essa disposição faz você aprender muito depressa sobre o que as pessoas valorizam e o que preferem deixar implícito. Sua presença ganha força quando usa o que percebe para fazer uma pergunta que ajude a conversa a avançar. Às vezes, uma observação breve abre mais espaço do que uma investigação longa.
+}
+
+\leitura{Saturno}{Touro, 2°03\ensuremath{^{\prime}} · Casa 7 · Retrógrado}{
+\subtituloleitura{Você leva um compromisso a sério quando consegue enxergar como ele vai funcionar num dia comum} Numa parceria, presença, dinheiro e divisão de tarefas dizem muito sobre a disposição de construir juntos. Você tende a sustentar a parte que assumiu e pode demorar a admitir que o acordo ficou pesado, especialmente se ele já deu certo por bastante tempo. A retrogradação dá relevo à revisão dos seus próprios critérios de compromisso. Uma relação ganha firmeza quando vocês conseguem conversar sobre a distribuição das responsabilidades enquanto ainda há margem para fazer um ajuste.
+
+O mesmo vale para compromissos profissionais. Antes de assumir uma parceria, conversar sobre disponibilidade e sobre o que fazer se alguém precisar sair ajuda a dar forma ao acordo. Você consegue se dedicar com mais liberdade quando sabe como a relação se reorganiza diante de um imprevisto.
+}
+
+\leitura{Urano}{Libra, 8°43\ensuremath{^{\prime}} · Casa 12}{
+\subtituloleitura{Você pode passar bastante tempo convivendo com uma regra que só começa a estranhar quando tem distância suficiente para olhá-la de fora} Depois de uma conversa, por exemplo, percebe que sempre cede a mesma decisão para manter a convivência tranquila. A ideia de fazer diferente costuma amadurecer em particular, até que você encontra uma forma de apresentá-la. Dizer qual situação mudou e propor um ajuste que os dois possam experimentar dá um lugar concreto a essa vontade de renovar o acordo.
+
+Esse processo pode começar com algo pequeno, como perceber que sempre é você quem reorganiza a agenda quando surge um conflito de horários. Se quiser propor outra dinâmica, um teste de algumas semanas dá aos dois a chance de observar o efeito da mudança na rotina. A experiência compartilhada oferece matéria para a conversa seguinte.
+}
+
+\leitura{Netuno}{Escorpião, 29°53\ensuremath{^{\prime}} · Casa 2}{
+\subtituloleitura{Para você, atribuir valor a um trabalho pode envolver muito mais do que calcular horas e custos} A confiança na outra pessoa, o desejo de reconhecimento e o significado daquela troca entram na decisão, às vezes antes de você perceber. Isso ajuda a entender o que está em jogo numa negociação, sobretudo quando alguém tem dificuldade de dizer o que espera. Ao combinar um preço, colocar no papel o que será entregue e quanto custa dá sustentação à conversa. Com esses termos claros, fica mais fácil perceber quando você quer de fato oferecer uma condição especial.
+
+Vale observar também onde você investe recursos sem passar pelo caixa. Tempo, atenção e disponibilidade têm custo, sobretudo quando se tornam habituais. Dizer de quanto tempo dispõe para ajudar permite que um gesto de generosidade continue sendo uma escolha que você pode fazer de novo.
+}
+
+\leitura{Plutão}{Virgem, 27°23\ensuremath{^{\prime}} · Casa 12 · Retrógrado}{
+\subtituloleitura{Você costuma descobrir onde uma rotina emperra examinando detalhes que os outros já passaram a aceitar} Algumas das mudanças mais importantes começam assim, num período em que você revê em particular a forma como organiza, confere ou corrige o próprio trabalho. A retrogradação reforça esse retorno aos critérios que você aplica a si. Se perceber que voltou à mesma tarefa várias vezes, experimente definir o que precisa estar resolvido para encerrá-la. Essa medida ajuda a usar sua capacidade de revisão onde ela faz diferença.
+
+O melhor uso desse olhar muitas vezes está em mudar a rotina uma única vez para resolver um atrito que se repetia. Deixar um material preparado na véspera, por exemplo, pode poupar o esforço de refazer a mesma escolha toda manhã. O efeito aparece quando você percebe que já consegue dedicar sua atenção a outra coisa.
+}
+
+\leitura{Nodo Norte}{Peixes, 15°16\ensuremath{^{\prime}} · Casa 6 · Retrógrado}{
+\subtituloleitura{Seu aprendizado passa por criar uma rotina capaz de se ajustar ao dia real} Você pode ter um método sólido e ainda assim precisar mudar a ordem das tarefas quando o corpo pede uma pausa ou surge uma demanda que ninguém previu. O Nodo Norte em Peixes na casa 6 dá peso a esses ajustes: eles mostram onde uma regra ajuda o trabalho e onde só consome a atenção que a tarefa exige. Experimente deixar algum espaço livre no planejamento e observe o que consegue sustentar melhor ao longo da semana.
+
+Uma rotina que aceita mudanças também precisa de alguns pontos firmes. Escolher o que merece continuidade mesmo numa semana difícil dá critério para fazer os ajustes. A flexibilidade ganha sentido quando permite manter o trabalho e o cuidado consigo ao longo de vários dias.
+}
+
+\leitura{Lilith}{Leão, 2°46\ensuremath{^{\prime}} · Casa 10}{
+\subtituloleitura{Quando seu trabalho ganha visibilidade, você precisa decidir quanto de si quer pôr em evidência} Pode gostar de ver uma ideia reconhecida e, ao mesmo tempo, sentir o peso de ocupar o centro da atenção quando chega a hora de apresentá-la. Essa tensão aparece especialmente em situações públicas ou profissionais em que a autoria fica implícita. Um gesto simples é dizer com clareza qual parte você criou e nomear também a contribuição da equipe. Isso permite ocupar o espaço que seu trabalho conquistou de um jeito que faz sentido para você.
+
+Se a ocasião pede que você apresente uma ideia, experimente começar pela decisão que tomou e pelo efeito dela no resultado. Isso dá à sua fala um centro e deixa a autoria perceptível. O reconhecimento fica ligado a uma contribuição que você consegue explicar e da qual pode falar com naturalidade.
+}
+
+\leitura{Quíron}{Áries, 2°31\ensuremath{^{\prime}} · Casa 6}{
+\subtituloleitura{No trabalho cotidiano, o momento mais sensível pode ser aquele em que alguém precisa tomar a iniciativa antes de saber se o grupo vai apoiar} Você tem algo a propor, mas também antecipa o custo de se expor se a ideia sair pela metade. Escolher uma tarefa pequena para testar a proposta torna esse primeiro passo mais concreto. Você ganha experiência ao ver o que acontece depois que age, inclusive quando o resultado pede ajustes. Com o tempo, isso ajuda a confiar mais na sua capacidade de começar.
+
+Preste atenção também ao que acontece depois de uma tentativa que recebe uma resposta morna. Talvez o grupo precise entender melhor a proposta ou vê-la funcionando uma vez. Perguntar o que ajudaria a avaliá-la permite retomar a conversa com uma ação concreta e dá à iniciativa espaço para amadurecer.
+}
+
+\leitura{Fortuna}{Capricórnio, 18°13\ensuremath{^{\prime}} · Casa 4}{
+\subtituloleitura{Você percebe o valor de uma estrutura doméstica quando ela continua sustentando o dia mesmo que você esteja cansado ou com pouca disponibilidade} Pode ser uma rotina de descanso que finalmente se firmou, um espaço de casa que funciona bem ou uma divisão de responsabilidades que dispensa renegociar tudo a cada semana. É nesse tipo de resultado acumulado que a Parte da Fortuna ganha sentido neste mapa. Aos poucos, o que você organiza na vida privada vira uma base a partir da qual consegue escolher com mais liberdade onde pôr sua energia.
+
+A mesma lógica vale para acordos com quem divide a casa. Quando uma responsabilidade tem pessoa e horário definidos, sobra menos trabalho de lembrar, cobrar ou improvisar. A estabilidade que você aprecia aparece também nesse tempo recuperado para descansar ou dedicar atenção ao que escolheu fazer.
+}
+
+\leitura{Vertex}{Áries, 6°20\ensuremath{^{\prime}} · Casa 6}{
+\subtituloleitura{Na leitura do Vertex, alguns encontros da rotina ganham importância pelo tipo de resposta que despertam em você} Uma pessoa no trabalho pode pedir sua opinião e, ao ouvi-la, abrir espaço para que você assuma uma tarefa que até então observava de fora. O que torna a situação interessante é o momento em que sua participação vira iniciativa. Repare quais convites despertam vontade de começar e em quais você só reage à pressa do ambiente. Essa diferença ajuda a decidir onde vale assumir a dianteira.
+
+Às vezes, a oportunidade aparece num pedido bem comum, como explicar um procedimento a alguém que acabou de chegar. Se o assunto desperta interesse, você pode usar o encontro para sugerir um jeito melhor de fazer a tarefa. A iniciativa tem mais chance de durar quando encontra lugar na sua rotina depois que a urgência do momento passa.
+}
+
+\section{Eixos do mapa}
+
+\leitura{Ascendente e Descendente}{ASC em Libra, 20°13\ensuremath{^{\prime}} · DSC em Áries, 20°13\ensuremath{^{\prime}}}{
+\label{eixo-asc}\subtituloleitura{Você costuma chegar a uma situação nova percebendo primeiro como as pessoas estão se tratando} Quando uma escolha envolve alguém próximo, esse cuidado abre espaço para ouvir, mas a relação também pede que sua preferência apareça cedo o bastante para entrar no acordo. É aí que esse eixo se faz sentir. Pense numa decisão simples a dois: perguntar o que a outra pessoa quer é uma maneira natural de começar. Dizer em seguida o que você escolheria dá substância à conversa e permite construir um acordo que leve os dois em conta.
+
+Em conversas delicadas, isso pode significar formular sua posição antes de tentar prever todas as reações. Uma frase simples sobre o que você quer já ajuda a outra pessoa a responder com mais precisão. A partir daí, sua facilidade de ouvir serve a um acordo em que a sua escolha também está presente.
+}
+
+\leitura{Meio do Céu e Fundo do Céu}{MC em Câncer, 15°31\ensuremath{^{\prime}} · IC em Capricórnio, 15°31\ensuremath{^{\prime}}}{
+\subtituloleitura{Sua presença num grupo ganha força quando você percebe o que falta para as pessoas poderem trabalhar bem juntas} Você pode ser quem orienta alguém que acabou de chegar, retoma uma dúvida esquecida ou cria condições para que uma tarefa exigente fique mais manejável. Essa disponibilidade tem uma base privada. Descanso protegido e responsabilidades bem distribuídas em casa ajudam você a oferecer cuidado com continuidade. Quando a equipe começa a depender demais da sua atenção, combinar horários e dividir tarefas permite preservar justamente a qualidade de presença que fez as pessoas procurarem você.
+
+Você pode levar esse princípio para o próprio trabalho. Quando organiza uma transição ou ensina alguém a assumir uma tarefa, o cuidado continua circulando mesmo na sua ausência. Parte da sua contribuição está em criar condições para que outras pessoas também possam sustentar o ambiente que você ajudou a construir.
+}
+
+\clearpage
+
+\section{Casas do mapa}
+
+\leitura{Casa 1 · Presença e iniciativa}{Libra, 20°13\ensuremath{^{\prime}} · Regente: Vênus na casa 3 · Ocupante: Júpiter}{
+\subtituloleitura{Você encontra seu lugar pela qualidade da conversa}
+Ao entrar num ambiente, você percebe rapidamente o que aproxima as pessoas e quais assuntos pedem mais tato. Sua presença ganha força quando encontra uma pergunta que muda o nível da troca. Júpiter em Escorpião nessa casa dá profundidade a essa curiosidade: você pode começar com uma observação discreta e, em poucos minutos, chegar ao que realmente mobiliza alguém.
+
+Sua maneira de participar também se constrói com o tempo. Vênus em Capricórnio na casa 3 favorece vínculos cultivados em conversas que continuam depois da primeira impressão. \aspectoref{aspecto:lua-venus}{A tensão de Vênus com a Lua} ajuda a entender por que uma interação que correu bem por fora ainda pode pedir tempo para você reconhecer o que sentiu. Ao retomar a conversa, dê lugar também à sua impressão.
+}
+
+\leitura{Casa 2 · Recursos e valores}{Escorpião, 22°09\ensuremath{^{\prime}} · Regente tradicional: Marte na casa 5 · Ocupante: Netuno}{
+\subtituloleitura{Você reconhece valor quando consegue dar forma ao que imagina}
+Sua relação com recursos passa pelo que está envolvido na troca: confiança, investimento pessoal e a liberdade de fazer algo que tenha sentido para você. Com Netuno em Escorpião nesta casa, o valor emocional de um trabalho às vezes pesa tanto quanto o preço. Isso aparece quando você aceita uma proposta porque vê potencial nela e só depois calcula a energia que vai exigir.
+
+Marte em Peixes na casa 5 liga seus recursos à capacidade de criar e experimentar. \aspectoref{aspecto:sol-marte}{O sextil de Marte com o Sol} na casa 3 sugere um caminho concreto: transformar uma ideia criativa em algo que você consiga explicar, apresentar e negociar. Num projeto novo, definir logo o que será entregue e quanto tempo você pode dedicar ajuda a proteger o próprio entusiasmo.
+}
+
+\leitura{Casa 3 · Aprendizado e comunicação}{Sagitário, 19°37\ensuremath{^{\prime}} · Regente: Júpiter na casa 1 · Ocupantes: Sol e Vênus}{
+\subtituloleitura{Sua curiosidade ganha força quando vira uma maneira própria de explicar}
+Você tende a aprender por perguntas que abrem o assunto, até encontrar uma ideia que valha organizar e transmitir. Com Sol e Vênus em Capricórnio nesta casa, conversar bem envolve construir continuidade. Uma explicação clara, uma pergunta que retoma o fio da semana anterior ou uma anotação que outras pessoas conseguem usar são formas de tornar seu pensamento presente.
+
+Júpiter em Escorpião na casa 1 liga essa curiosidade à impressão que você deixa. \aspectoref{aspecto:mercurio-jupiter}{A quadratura de Júpiter com Mercúrio} dá contexto ao contraste entre querer ir direto ao ponto e precisar conferir detalhes. Numa discussão, expor primeiro a pergunta e depois mostrar o raciocínio dá a quem ouve uma maneira de acompanhar a profundidade a que você quer chegar.
+}
+
+\leitura{Casa 4 · Vida privada e base familiar}{Capricórnio, 15°31\ensuremath{^{\prime}} · Regente: Saturno na casa 7 · Ocupantes: Mercúrio e Fortuna}{
+\subtituloleitura{Sua base se fortalece quando os compromissos de casa ficam claros}
+Você tende a se sentir mais à vontade em casa quando as responsabilidades têm forma. Mercúrio em Capricórnio e a Parte da Fortuna nesta casa dão relevo à capacidade de organizar a vida privada de um jeito que se sustente. O alívio aparece em coisas concretas: uma decisão familiar bem encaminhada ou uma tarefa que ganhou um lugar estável na rotina.
+
+Saturno retrógrado em Touro na casa 7 liga essa estrutura aos compromissos com quem divide a vida com você. \aspectoref{aspecto:jupiter-saturno}{A oposição a Júpiter} na casa 1 põe lado a lado a vontade de decidir por conta própria e o tempo necessário para construir um acordo. Dizer com clareza o que você consegue assumir torna o combinado mais confiável para todos.
+}
+
+\leitura{Casa 5 · Criação, prazer e expressão}{Aquário, 13°01\ensuremath{^{\prime}} · Regente tradicional: Saturno na casa 7 · Ocupante: Marte}{
+\subtituloleitura{Você cria melhor quando pode experimentar dentro de um compromisso claro}
+Seu prazer em criar aparece quando existe liberdade para testar uma ideia incomum e ver aonde ela leva. Marte em Peixes nesta casa acrescenta um impulso que responde ao clima do momento: uma música, uma imagem ou a sugestão de alguém pode fazer um projeto avançar de repente. Em colaboração, você ganha espaço para improvisar quando os termos do trabalho já estão claros.
+
+Saturno em Touro na casa 7 dá peso aos compromissos que tornam essa liberdade sustentável. \aspectoref{aspecto:venus-saturno}{O trígono de Saturno com Vênus} na casa 3 favorece, na leitura, uma prática simples: conversar cedo sobre o que cada pessoa vai fazer. Um horário combinado ou uma divisão clara de tarefas deixa a energia criativa disponível para o projeto.
+}
+
+\leitura{Casa 6 · Rotina e trabalho cotidiano}{Peixes, 14°41\ensuremath{^{\prime}} · Regente tradicional: Júpiter na casa 1 · Ocupantes: Nodo Norte, Quíron e Vertex}{
+\label{casa-6}\subtituloleitura{Sua rotina funciona melhor quando comporta iniciativa e ajuste}
+Você trabalha com mais consistência quando consegue ajustar o plano às necessidades do dia. O Nodo Norte em Peixes põe essa flexibilidade em evidência. Quíron e Vertex em Áries dão outro tom à mesma rotina: há momentos em que a situação só anda quando você faz a primeira proposta, mesmo com parte do caminho em aberto.
+
+Júpiter em Escorpião na casa 1 liga o funcionamento da rotina à sua disposição de investigar o que causa um problema. \aspectoref{aspecto:jupiter-saturno}{A oposição a Saturno} na casa 7 acrescenta a importância dos acordos com quem trabalha ao seu lado. Se uma tarefa emperra toda semana, vale descobrir onde ela para e combinar um teste pequeno com as pessoas envolvidas. A solução ganha força quando cabe no dia real.
+}
+
+\leitura{Casa 7 · Relações e parcerias}{Áries, 20°13\ensuremath{^{\prime}} · Regente: Marte na casa 5 · Ocupante: Saturno}{
+\label{casa-7}\subtituloleitura{Você precisa de franqueza e constância para confiar numa parceria}
+Uma relação próxima ganha vida quando as preferências aparecem claramente e há espaço para fazer coisas juntos. Marte em Peixes na casa 5 leva essa iniciativa para o terreno da imaginação, da intimidade e do prazer de inventar algo a dois. \aspectoref{aspecto:sol-marte}{O sextil com o Sol} na casa 3 liga esse movimento à conversa: muitas vezes, a aproximação começa quando alguém põe em palavras uma vontade que já estava no ar.
+
+Saturno retrógrado em Touro nesta casa dá peso ao que pode ser sustentado depois do entusiasmo inicial. Você tende a levar a sério aquilo que promete e a reparar se a outra pessoa consegue fazer o mesmo. Quando um acordo precisa mudar, ser direto desde cedo ajuda a preservar a confiança que os dois construíram.
+}
+
+\leitura{Casa 8 · Intimidade e recursos compartilhados}{Touro, 22°09\ensuremath{^{\prime}} · Regente: Vênus na casa 3}{
+\subtituloleitura{Você aprofunda a confiança quando consegue falar sobre o que é compartilhado}
+Na intimidade e nas decisões que envolvem recursos de mais de uma pessoa, você se orienta pelo que tem continuidade. Um compromisso se torna mais confiável quando existe clareza sobre o que cada um oferece, espera e pode sustentar. Vênus em Capricórnio na casa 3 leva esse tema para a conversa cotidiana: a confiança cresce conforme assuntos difíceis encontram palavras e os combinados são retomados quando necessário.
+
+\aspectoref{aspecto:venus-saturno}{O trígono de Vênus com Saturno} na casa 7 aproxima essa disposição da responsabilidade nas parcerias. Quando a decisão envolve uma despesa em comum ou uma responsabilidade delicada, definir como vocês vão revisar o acordo dá estabilidade à troca. Assim, mudanças de circunstância encontram um lugar para ser discutidas.
+}
+
+\leitura{Casa 9 · Visão de mundo e estudos}{Gêmeos, 19°37\ensuremath{^{\prime}} · Regente: Mercúrio na casa 4}{
+\subtituloleitura{Você amplia sua visão ao pôr suas referências em conversa}
+Você tende a se interessar por uma ideia nova quando consegue compará-la com algo que já conhece. Um estudo, uma viagem ou o contato com outro modo de viver pode tornar visível um pressuposto que veio da família e que, até então, parecia evidente. Com Mercúrio em Capricórnio na casa 4, essas descobertas ganham peso quando você consegue relacioná-las a uma experiência concreta.
+
+\aspectoref{aspecto:mercurio-jupiter}{A quadratura de Mercúrio com Júpiter} na casa 1 dá contexto à vontade de tirar uma conclusão ampla a partir de uma descoberta importante. Você pode aproveitar esse impulso e ainda dar tempo para que outros relatos entrem na conversa. Uma boa pergunta, nesse caso, é o que muda na sua leitura quando alguém começa de uma história diferente da sua.
+}
+
+\leitura{Casa 10 · Trabalho público e direção}{Câncer, 15°31\ensuremath{^{\prime}} · Regente: Lua na casa 12 · Ocupante: Lilith}{
+\label{casa-10}\subtituloleitura{Sua contribuição pública ganha forma quando você dá nome ao cuidado que oferece}
+Você tende a perceber cedo o que uma equipe precisa para funcionar: alguém que receba quem está chegando, uma conversa que ficou pendente ou uma tarefa cujo peso ninguém calculou. A Lua em Libra na casa 12 liga essa percepção ao que você elabora longe da cena. \aspectoref{aspecto:mc-lua}{A quadratura entre Lua e MC} dá contexto ao esforço de conciliar a exposição pública com o tempo de que você precisa para recuperar seu equilíbrio.
+
+Lilith em Leão nesta casa traz a autoria para o centro da questão. Quando o trabalho ganha visibilidade, vale conseguir dizer que decisão foi sua e qual efeito ela teve. A contribuição que você faz nos bastidores também merece aparecer na forma como responsabilidades e reconhecimento são distribuídos.
+}
+
+\leitura{Casa 11 · Amizades e projetos coletivos}{Leão, 13°01\ensuremath{^{\prime}} · Regente: Sol na casa 3}{
+\subtituloleitura{Você ganha espaço num grupo quando ajuda uma ideia a avançar}
+Em amizades e projetos coletivos, você tende a se envolver quando existe algo a construir e as pessoas têm abertura para contribuir com suas próprias ideias. O Sol em Capricórnio na casa 3 liga essa participação à maneira como você organiza uma conversa. Resumir uma decisão ou colocar uma proposta em termos que todos consigam usar é uma forma de liderança que nasce do trabalho compartilhado.
+
+\aspectoref{aspecto:sol-venus}{A conjunção do Sol com Vênus} favorece a leitura desse talento pelo lado dos vínculos que ele cria. Você consegue reunir pessoas em torno de um assunto e cultivar a continuidade da troca. Se já fez a parte de estruturar a ideia, convidar outra pessoa a assumir o próximo passo ajuda o projeto a ganhar vida para além da sua iniciativa.
+}
+
+\leitura{Casa 12 · Recolhimento e elaboração}{Virgem, 14°41\ensuremath{^{\prime}} · Regente: Mercúrio na casa 4 · Ocupantes: Lua, Urano e Plutão}{
+\subtituloleitura{É no recolhimento que você percebe quais detalhes ainda pedem atenção}
+Depois de um dia cheio, você pode precisar de silêncio para entender por que uma conversa ou decisão continuou ocupando sua cabeça. A Lua e Urano em Libra trazem para esse espaço a revisão do que aconteceu nas relações. Plutão retrógrado em Virgem aprofunda o exame dos hábitos envolvidos, como a tendência a ajustar sempre a mesma parte de uma tarefa ou de uma convivência.
+
+Mercúrio em Capricórnio na casa 4 liga essa elaboração à segurança de ter uma base privada onde você possa organizar o que percebeu. \aspectoref{aspecto:mercurio-plutao}{O trígono de Mercúrio com Plutão} favorece a leitura de que dar nome a um padrão já ajuda a encontrar o detalhe que vale mudar. Depois de entender o que se repete, escolha uma mudança pequena que possa observar na prática.
+}
+
+\clearpage
+
+\section{Catálogo completo de aspectos}
+
+\leitura{Sol em quadratura com Lua}{Orbe 1°59\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:sol-lua}\subtituloleitura{Sua palavra ganha força quando inclui o que você sentiu}
+Você consegue dar direção a uma conversa antes de saber como ela mexeu com você. A decisão parece clara na hora, e só depois aparece a vontade de voltar a um ponto que ficou de fora. Quando o assunto importa, deixe espaço para uma segunda conversa. Ela pode trazer à superfície uma necessidade que muda a maneira de levar adiante o que foi decidido.
+}
+
+\leitura{Sol em conjunção com Vênus}{Orbe 5°40\ensuremath{^{\prime}} · Aplicativo}{
+\label{aspecto:sol-venus}\subtituloleitura{Você se aproxima das pessoas pelo que constrói com elas}
+Uma boa conversa é, para você, uma forma de cuidado. Você dá continuidade ao assunto e devolve à outra pessoa algo que ela consegue usar. Essa habilidade faz com que afeto e autoria apareçam juntos. Quando quiser saber se um vínculo tem espaço para crescer, observe se a troca continua também nos dias em que ninguém precisa resolver nada.
+}
+
+\leitura{Sol em sextil com Marte}{Orbe 2°02\ensuremath{^{\prime}} · Aplicativo}{
+\label{aspecto:sol-marte}\subtituloleitura{Explicar uma ideia dá impulso para experimentá-la}
+Quando conta a alguém o que imaginou, você começa a perceber como pôr aquilo em prática. Uma pergunta bem feita pode virar a primeira cena, o esboço ou o teste que faltava. Aproveite o movimento da conversa e faça uma tentativa enquanto o assunto está vivo. O que surgir no teste dará material à próxima explicação.
+}
+
+\leitura{Sol em trígono com Saturno}{Orbe 8°13\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Sua palavra pesa quando pode ser sustentada no tempo}
+Você tende a propor o que já consegue imaginar na prática. Isso dá credibilidade às suas decisões e ajuda a construir parcerias em torno de responsabilidades claras. Em trabalhos longos, esse talento aparece ao traduzir uma intenção em um combinado que as pessoas conseguem cumprir semana após semana.
+}
+
+\leitura{Sol em quadratura com Urano}{Orbe 1°33\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:sol-urano}\subtituloleitura{Uma ideia incômoda pode mudar a maneira como você trabalha}
+Você pode defender um método com convicção e depois perceber, em particular, que alguma regra perdeu o sentido. A mudança tende a chegar antes de existir uma boa explicação para ela. Testar uma parte da ideia dá evidência ao que você percebeu e torna mais fácil conversar com quem ainda confia no método anterior.
+}
+
+\leitura{Lua em quadratura com Vênus}{Orbe 7°39\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:lua-venus}\subtituloleitura{A conversa pode ser cordial e ainda deixar algo por dizer}
+Você tem facilidade para manter uma troca gentil, mesmo quando alguma coisa mexeu com você. O cuidado vira tensão se toda a delicadeza for usada para encerrar o assunto antes de reconhecer o que ficou pendente. Retomar um detalhe concreto permite que seu modo de cuidar inclua também o que você precisa.
+}
+
+\leitura{Lua em conjunção com Urano}{Orbe 3°32\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Seu entendimento de uma relação pode mudar de repente}
+Uma frase que parecia banal pode ganhar outro sentido horas depois, quando você finalmente tem espaço para pensar. Essa rapidez em rever o que sentiu traz lucidez, mas pode fazer você querer mudar um acordo antes de explicá-lo. Conte primeiro o que percebeu e dê à outra pessoa a chance de reconhecer a situação.
+}
+
+\leitura{Mercúrio em quadratura com Júpiter}{Orbe 3°15\ensuremath{^{\prime}} · Aplicativo}{
+\label{aspecto:mercurio-jupiter}\subtituloleitura{Você quer entender o todo e conferir como ele se sustenta}
+Uma conversa pode levar você rapidamente a uma conclusão ampla, enquanto outra parte do seu pensamento ainda confere o que aconteceu de fato. Essa tensão produz boas perguntas quando cada movimento tem sua vez. Diga qual hipótese está surgindo e mostre o detalhe que ainda precisa examinar.
+}
+
+\leitura{Mercúrio em quadratura com Saturno}{Orbe 2°58\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Você mede o peso das palavras antes de assumir um acordo}
+Em conversas sérias, você costuma antecipar o que uma frase pode virar depois. Isso ajuda a formular compromissos precisos, embora possa adiar uma pergunta simples por receio de abrir um assunto maior. Começar pelo ponto que precisa de resposta reduz a pressão de ter de resolver tudo na primeira conversa.
+}
+
+\leitura{Mercúrio em sextil com Netuno}{Orbe 0°47\ensuremath{^{\prime}} · Aplicativo}{
+\label{aspecto:mercurio-netuno}\subtituloleitura{Você consegue dar palavras ao que estava implícito}
+Uma conversa sobre dinheiro, família ou responsabilidades pode mudar quando alguém finalmente nomeia o que todos percebiam. Você tem recursos para fazer isso com cuidado. Antes de dar sua impressão por certa, ofereça-a como pergunta e escute a resposta. A percepção ganha precisão quando encontra a experiência de quem estava ali.
+}
+
+\leitura{Mercúrio em trígono com Plutão}{Orbe 1°41\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:mercurio-plutao}\subtituloleitura{Um detalhe bem escolhido revela o padrão inteiro}
+Você pode ouvir várias versões de uma história até encontrar o ponto em que ela costuma tomar o mesmo rumo. Esse olhar ajuda a entender hábitos familiares e rotinas que se repetem. Ao conversar sobre o que descobriu, comece por um exemplo que todos reconheçam. Ele dá base comum para examinar o padrão.
+}
+
+\leitura{Vênus em sextil com Júpiter}{Orbe 2°16\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma troca atenta pode virar uma relação mais ampla}
+Você percebe quando uma conversa tem espaço para continuar e costuma investir nesse fio. Uma pergunta feita com interesse pode abrir caminho para uma amizade ou uma colaboração que ninguém tinha previsto. O gesto mais eficaz pode ser tão simples quanto voltar ao assunto alguns dias depois e lembrar o que a pessoa contou.
+}
+
+\leitura{Vênus em trígono com Saturno}{Orbe 2°32\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:venus-saturno}\subtituloleitura{A confiança cresce no que vocês conseguem repetir}
+Você dá valor a um cuidado que aparece nos dias comuns. Em parceria, isso se traduz em cumprir o que combinou, avisar quando algo muda e conversar antes de deixar uma responsabilidade cair no silêncio. Esses gestos tornam a relação mais firme e dão liberdade para que o afeto também encontre formas espontâneas.
+}
+
+\leitura{Vênus em quadratura com Urano}{Orbe 4°06\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Você precisa de continuidade com espaço para mudar de ideia}
+Um vínculo pode ser importante para você e ainda pedir um ajuste inesperado na maneira de se relacionar. Se o desconforto demora a ganhar palavras, a mudança parece súbita para quem está ao seu lado. Falar cedo sobre o que ficou apertado ajuda a experimentar outro acordo sem desconsiderar a confiança já criada.
+}
+
+\leitura{Júpiter em oposição com Saturno}{Orbe 0°16\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:jupiter-saturno}\subtituloleitura{O compromisso fica mais forte quando há espaço para sua iniciativa}
+Você enxerga possibilidades com rapidez, sobretudo quando pode decidir como começar. Numa parceria, o ritmo muda porque cada pessoa precisa avaliar o que consegue sustentar. Antes de desistir de uma ideia ou prometer mais do que cabe, formule uma primeira etapa com prazo e responsabilidades claros. O acordo fica mais fácil de testar.
+}
+
+\leitura{Netuno em sextil com Plutão}{Orbe 2°29\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma percepção sutil ganha força quando você encontra onde ela se repete}
+Você pode intuir que uma troca ficou desequilibrada antes de identificar a causa. Observar como tempo, atenção ou dinheiro circulam em situações parecidas ajuda a localizar o padrão. Uma vez encontrado o ponto recorrente, uma mudança pequena no combinado pode ser mais eficaz do que tentar resolver toda a relação de uma vez.
+}
+
+\leitura{Ascendente em quadratura com Sol}{Orbe 9°56\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{A vontade de manter a conversa aberta pode atrasar seu ponto principal}
+Você costuma chegar dando espaço para entender o ambiente. Em certos momentos, já tem algo firme a dizer e continua fazendo perguntas para preservar o tom da troca. Vale declarar o ponto mais cedo, com o mesmo cuidado que usa para ouvir. Isso permite que a conversa inclua de fato sua posição.
+}
+
+\leitura{Ascendente em conjunção com Lua}{Orbe 7°56\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você lê o clima antes de decidir como participar}
+Numa primeira conversa, você costuma perceber o que deixou alguém confortável ou o que mudou quando um assunto entrou na roda. Essa atenção ajuda a acolher quem chegou depois ou ainda não encontrou espaço. Ao fim do encontro, reserve um momento para reconhecer como você próprio saiu dele.
+}
+
+\leitura{Descendente em quadratura com Sol}{Orbe 9°56\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma parceria pede espaço para decisões em ritmos diferentes}
+Você gosta de chegar a uma posição que consegue explicar, e uma pessoa próxima pode querer resolver o assunto enquanto ele está quente. Se ambos insistem no próprio ritmo, uma decisão simples pode ganhar peso demais. Separe o que precisa de resposta agora da parte que merece outra conversa.
+}
+
+\leitura{Descendente em oposição com Lua}{Orbe 7°56\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{A franqueza do outro pode revelar o que você ainda está elaborando}
+Em relações próximas, uma pergunta direta às vezes chega antes que você tenha palavras para responder. Pedir um intervalo protege a qualidade da troca quando o assunto mexeu com você. O gesto se completa ao voltar no momento combinado, com uma resposta que dê ao outro algo concreto para escutar.
+}
+
+\leitura{Meio do Céu em oposição com Sol}{Orbe 5°14\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Seu trabalho público ganha rumo quando sua própria pergunta tem espaço}
+Você sabe responder a uma necessidade visível de um grupo e pode acabar organizando seu trabalho inteiro em torno dela. Aí vale lembrar o assunto que você vinha estudando ou queria explicar por conta própria. Um projeto que acomoda essa pergunta deixa sua contribuição mais reconhecível e mais fácil de sustentar.
+}
+
+\leitura{Meio do Céu em quadratura com Lua}{Orbe 3°14\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:mc-lua}\subtituloleitura{Sua disponibilidade pública precisa de tempo para assentar}
+Você pode sair de um dia de exposição ainda processando conversas que os outros já consideraram encerradas. Proteger um intervalo entre compromissos ajuda a chegar inteiro ao próximo. A qualidade da atenção que você oferece depende também de ter tempo para perceber o que cada encontro deixou em você.
+}
+
+\leitura{Meio do Céu em trígono com Marte}{Orbe 3°11\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você movimenta um grupo quando encontra uma maneira criativa de ajudar}
+Uma equipe emperrada pode ganhar fôlego quando você propõe um jeito mais convidativo de começar. Seu impulso criativo funciona bem em tarefas que pedem atenção ao clima do grupo e liberdade para testar uma solução. Mostre uma primeira versão. As pessoas conseguem contribuir melhor quando já existe algo para experimentar.
+}
+
+\leitura{Meio do Céu em quadratura com Urano}{Orbe 6°47\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Seu papel público precisa acompanhar mudanças que você elabora em particular}
+Você pode cumprir bem uma função e perceber, longe da cena, que a forma de exercê-la ficou apertada. Para quem vê só o resultado, a mudança pode parecer repentina. Leve a conversa um passo antes da decisão final e indique qual responsabilidade precisa ser reorganizada.
+}
+
+\leitura{Meio do Céu em trígono com Nodo Norte}{Orbe 0°14\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:mc-nodo}\subtituloleitura{Sua direção pública amadurece nos ajustes da rotina}
+Você pode reconhecer um caminho de trabalho pela qualidade das pequenas tarefas que consegue sustentar. Quando ajusta o modo de atender, organizar ou colaborar, também descobre qual contribuição quer tornar mais visível. Preste atenção às mudanças simples que melhoram ao mesmo tempo o dia de trabalho e a experiência de quem depende dele.
+}
+
+\leitura{Fundo do Céu em conjunção com Sol}{Orbe 5°14\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Sua voz se firma quando tem uma base em que pode pensar com calma}
+Você ganha consistência quando existe um lugar ou horário em que pode organizar o que aprendeu. Parte do que aparece como segurança numa conversa foi construída nesses momentos de recolhimento. Uma rotina privada que protege sua atenção ajuda suas ideias a chegarem aos outros com mais forma.
+}
+
+\leitura{Fundo do Céu em quadratura com Lua}{Orbe 3°14\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma casa bem organizada também precisa acolher o que mudou no dia}
+Você encontra amparo na estrutura, mas pode chegar em casa precisando de algo diferente do que a rotina previa. Um combinado familiar pode funcionar bem na maior parte da semana e pedir ajuste depois de um dia intenso. Deixar margem para avisar como você está evita transformar toda mudança num problema de convivência.
+}
+
+\leitura{Fundo do Céu em sextil com Marte}{Orbe 3°11\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma base estável dá espaço ao seu impulso criativo}
+Quando o ambiente privado tem algum ritmo, fica mais fácil voltar a um projeto que depende de imaginação. Um canto preparado ou uma janela curta de tempo pode bastar para que você retome o fio. Ao organizar a casa, pense também no que essa estrutura deve permitir que você faça.
+}
+
+\leitura{Fundo do Céu em quadratura com Urano}{Orbe 6°47\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Sua base fica mais habitável quando pode ser revista}
+Você pode valorizar uma rotina doméstica por muito tempo e depois descobrir que ela só funcionava porque alguém sempre absorvia os imprevistos. Quando isso aparece, vale apontar o ponto exato do atrito. Uma mudança localizada costuma dar mais liberdade sem dissolver o que já sustenta a casa.
+}
+
+\leitura{Fundo do Céu em sextil com Nodo Norte}{Orbe 0°14\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{O que você organiza em casa pode simplificar o trabalho cotidiano}
+Você consegue dar continuidade aos ajustes da rotina quando tem uma base privada que os sustenta. Preparar um material na véspera ou combinar um horário mais realista em casa muda o começo do dia. Observe quais estruturas liberam sua atenção para fazer o trabalho com mais flexibilidade.
+}
+
+\leitura{Nodo Norte em sextil com Sol}{Orbe 4°59\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Você aprende mais quando transforma uma ideia em prática diária}
+Uma explicação que você formulou bem pode ganhar outro sentido depois de uma semana de uso. Seu jeito de organizar o pensamento ajuda a dar direção ao experimento. Escolha um ajuste que consiga observar e conte depois o que aconteceu. Assim, a experiência entra no método que você transmite.
+}
+
+\leitura{Nodo Norte em conjunção com Marte}{Orbe 2°57\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{A rotina muda quando você dá lugar ao impulso de experimentar}
+Você costuma descobrir o próximo passo quando começa algo e vê como aquilo responde. Essa iniciativa pode tornar o dia de trabalho mais vivo, desde que o teste encontre espaço para continuar depois do entusiasmo inicial. Escolha uma mudança pequena o bastante para repetir e avalie o que ela trouxe.
+}
+
+\leitura{Lilith em oposição com Mercúrio}{Orbe 3°41\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{O que você aprendeu a explicar em privado pode pedir voz pública}
+Você sabe organizar uma ideia até que ela fique clara, mas apresentar essa ideia com o próprio nome muda o peso da situação. Pode surgir a tentação de explicar tudo antes de dizer o que realmente defende. Nomeie primeiro sua contribuição e desenvolva depois as razões que a sustentam.
+}
+
+\leitura{Lilith em quadratura com Júpiter}{Orbe 0°26\ensuremath{^{\prime}} · Aplicativo}{
+\label{aspecto:lilith-jupiter}\subtituloleitura{Seu desejo de ocupar espaço ganha força quando tem um foco claro}
+Você pode perceber depressa que um assunto merece mais atenção e acabar tomando para si toda a tarefa de defendê-lo. Em público, isso funciona melhor quando fica claro qual parte do tema você quer tornar visível. Uma posição bem delimitada deixa as pessoas responderem à sua ideia e permite que outras contribuam.
+}
+
+\leitura{Lilith em quadratura com Saturno}{Orbe 0°43\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:lilith-saturno}\subtituloleitura{Assumir autoria pode exigir uma conversa sobre responsabilidades}
+Você pode ter concordado com uma divisão de trabalho e só depois perceber que ela deixou sua contribuição pouco visível. Trazer o assunto cedo ajuda a separar reconhecimento de disputa pessoal. Explique qual parte você assumiu e como quer que ela seja apresentada quando o trabalho circular.
+}
+
+\leitura{Lilith em trígono com Netuno}{Orbe 2°53\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você torna visível algo que os outros ainda sentem de forma difusa}
+Em uma apresentação ou projeto, sua expressão pode dar forma a um clima que o grupo percebia sem conseguir nomear. Esse alcance fica mais claro quando você o liga a uma decisão concreta. Mostre o que escolheu fazer, por que isso importa e como o público pode reconhecer o efeito.
+}
+
+\leitura{Lilith em trígono com Quíron}{Orbe 0°15\ensuremath{^{\prime}} · Separativo}{
+\label{aspecto:lilith-quiron}\subtituloleitura{Mostrar uma tentativa pode tornar mais fácil para alguém começar}
+Ao falar de algo que criou, você pode incluir a decisão difícil, a dúvida inicial ou a parte que precisou testar. Essa exposição dá crédito ao trabalho e oferece a quem ouve uma maneira concreta de imaginar o próprio primeiro passo. Escolha um detalhe da experiência que ajude a entender como a iniciativa se tornou possível.
+}
+
+\leitura{Quíron em quadratura com Sol}{Orbe 7°45\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você pode começar antes de ter uma explicação pronta}
+Você costuma se sentir mais seguro quando consegue defender o que está fazendo. Na rotina, porém, algumas propostas só ficam claras depois do primeiro teste. Reserve um espaço pequeno para agir com a informação que já tem. O resultado dá material para a explicação que você queria poder oferecer desde o início.
+}
+
+\leitura{Quíron em oposição com Lua}{Orbe 9°44\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{O tempo de se recompor faz diferença para a próxima tentativa}
+Tomar iniciativa em público pode mobilizar você mesmo quando a resposta do grupo parece tranquila. É comum entender melhor sua reação depois, longe da troca. Em vez de avaliar todo o seu desempenho no mesmo dia, identifique qual gesto gostaria de repetir e qual prefere ajustar numa próxima ocasião.
+}
+
+\leitura{Quíron em sextil com Mercúrio}{Orbe 3°25\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Dar nome à dificuldade torna mais fácil agir sobre ela}
+Quando uma tarefa desperta hesitação, você consegue avançar ao explicar qual decisão está causando a dúvida. Uma pergunta bem delimitada costuma produzir uma resposta que já permite começar. Use sua capacidade de organizar a conversa para pedir o tipo de ajuda de que realmente precisa.
+}
+
+\leitura{Quíron em quadratura com Vênus}{Orbe 2°05\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você pode sustentar o vínculo e ainda fazer uma proposta incômoda}
+Em trocas que já ganharam confiança, você pode hesitar em sugerir uma mudança por receio de perturbar o acordo. Uma forma de começar é reconhecer o que funciona e mostrar o ponto que quer testar. Assim, a outra pessoa consegue avaliar a proposta dentro da relação que vocês já construíram.
+}
+
+\leitura{Quíron em oposição com Urano}{Orbe 6°11\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Uma mudança ganha forma quando encontra um teste pequeno}
+Você pode imaginar em particular uma maneira muito diferente de organizar o trabalho e hesitar quando chega a hora de propor o primeiro passo. Escolha a parte da ideia que pode ser experimentada com pouco atrito. A reação ao teste ajuda a distinguir o que vale ampliar do que ainda precisa de elaboração.
+}
+
+\leitura{Quíron em trígono com Netuno}{Orbe 2°37\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Sua sensibilidade ajuda a encontrar uma entrada para agir}
+Você pode perceber que alguém precisa de espaço para tentar antes mesmo de ouvir um pedido. Oferecer um começo simples, com liberdade para ajustar, torna a situação mais habitável para os dois. A mesma medida funciona consigo: transforme a expectativa difusa numa tarefa pequena o bastante para experimentar.
+}
+
+\leitura{Quíron em oposição com Plutão}{Orbe 5°07\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma revisão profunda tem mais efeito quando volta ao trabalho concreto}
+Depois de identificar onde uma tarefa costuma emperrar, você pode passar tempo demais examinando o padrão antes de propor uma alteração. Escolha um detalhe que seja possível mudar já na próxima tentativa. O efeito observado vai mostrar se a interpretação que você fez do problema se sustenta.
+}
+
+\leitura{Fortuna em conjunção com Sol}{Orbe 7°56\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{O que você organiza em casa pode se tornar algo que outras pessoas usam}
+Uma solução construída para facilitar a vida privada pode virar um método que você explica com clareza a alguém. O valor desse conhecimento vem da experiência de repetir e ajustar. Ao compartilhar, mostre a circunstância que levou você a criá-lo e em que condições ele funciona.
+}
+
+\leitura{Fortuna em quadratura com Lua}{Orbe 5°57\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma estrutura útil precisa acomodar o seu estado ao fim do dia}
+Você pode ter construído uma rotina eficiente e perceber que, depois de certos encontros, precisa de um tempo que ela não previa. Um intervalo protegido ajuda a usar a casa como apoio. A organização cumpre melhor sua função quando inclui os dias em que sua disponibilidade muda.
+}
+
+\leitura{Fortuna em sextil com Nodo Norte}{Orbe 2°57\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Pequenos ajustes de casa podem liberar energia para o trabalho}
+Quando algo doméstico deixa de exigir improviso, sobra atenção para adaptar o restante do dia. Uma tarefa com horário claro ou um material guardado no lugar certo parece pouco, mas pode mudar o ritmo da semana. Observe quais preparos ajudam você a manter a rotina quando surgem imprevistos.
+}
+
+\leitura{Fortuna em quadratura com Ascendente}{Orbe 1°59\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Sua facilidade de se adaptar também precisa respeitar a estrutura que você construiu}
+Você pode aceitar um ajuste de horário na hora da conversa e descobrir depois que ele consumiu uma parte importante da sua rotina. Antes de concordar, confira onde o novo combinado vai entrar no dia. Isso permite manter a abertura aos outros sem depender de reorganizar tudo por conta própria.
+}
+
+\leitura{Fortuna em oposição com Meio do Céu}{Orbe 2°42\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Sua contribuição pública depende da base privada que você consegue sustentar}
+Uma oportunidade de trabalho pode parecer atraente pelo que oferece ao grupo e cobrar mais tempo de casa do que parecia no início. Avalie o compromisso olhando também para os horários, o descanso e as tarefas que continuarão existindo. Uma boa escolha precisa caber nos dois lados da agenda.
+}
+
+\leitura{Fortuna em conjunção com Fundo do Céu}{Orbe 2°42\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você sente o ganho de uma casa que dá apoio sem exigir atenção constante}
+Um espaço preparado, uma responsabilidade bem distribuída ou uma rotina de descanso pode trazer um alívio maior do que parece olhando de fora. O ganho aparece no tempo que você recupera. Vale reconhecer quais estruturas domésticas já dão esse apoio e cuidar delas com a mesma atenção que dedica a novos projetos.
+}
+
+\leitura{Fortuna em quadratura com Descendente}{Orbe 1°59\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Uma decisão a dois funciona melhor quando cabe na rotina dos dois}
+Uma proposta feita com entusiasmo pode esbarrar numa estrutura doméstica que demorou a ganhar firmeza. Em vez de discutir só a intenção, coloque o combinado no calendário e veja o que precisa ser redistribuído. A parceria encontra espaço para agir quando o impacto de cada decisão aparece com clareza.
+}
+
+\leitura{Vertex em quadratura com Sol}{Orbe 3°56\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Uma demanda inesperada pode colocar sua maneira de pensar à prova}
+Alguém pode pedir uma resposta sobre algo que você ainda preferia estudar. A situação ajuda a descobrir qual parte do seu raciocínio já consegue entrar em ação. Explique o que está claro e diga o que você pretende verificar depois. Isso transforma a interrupção num ponto de partida que você pode aproveitar.
+}
+
+\leitura{Vertex em oposição com Lua}{Orbe 5°55\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Um encontro pode pedir uma resposta antes de você entender sua reação}
+Na rotina, alguém pode esperar que você tome a iniciativa justamente quando precisa de tempo para ler o clima. Você pode responder ao que é urgente e combinar um retorno para o restante. Esse intervalo permite distinguir o pedido concreto da impressão que a troca deixou em você.
+}
+
+\leitura{Vertex em quadratura com Vênus}{Orbe 1°43\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Um convite inesperado pode mudar o ritmo de um vínculo}
+Você costuma valorizar relações que crescem pela continuidade. Um encontro da rotina pode acelerar a troca e trazer um pedido antes de existir confiança suficiente para aceitá-lo. Proponha uma primeira etapa que permita conhecer a situação. A decisão seguinte pode se apoiar no que vocês fizeram juntos.
+}
+
+\leitura{Vertex em oposição com Urano}{Orbe 2°22\ensuremath{^{\prime}} · Aplicativo}{
+\subtituloleitura{Uma interrupção pode dar uso a uma mudança que você vinha imaginando}
+Alguém pode trazer uma dificuldade prática e acabar abrindo espaço para uma ideia que você tinha guardado. Antes de redesenhar todo o processo, aproveite a ocasião para testar a parte da mudança que responde ao problema imediato. O encontro dá à ideia um lugar onde mostrar seu efeito.
+}
+
+\leitura{Vertex em trígono com Netuno}{Orbe 6°27\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Você percebe convites que ainda não chegaram na forma de um pedido}
+Numa conversa de rotina, alguém pode mencionar uma dificuldade sem formular o que espera de você. Sua sensibilidade ajuda a ouvir esse espaço aberto. Confirme o que seria bem-vindo e diga o que pode oferecer. Assim, a disposição de ajudar encontra um gesto que cabe na situação.
+}
+
+\leitura{Vertex em trígono com Lilith}{Orbe 3°33\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Um encontro pode abrir espaço para você mostrar o que já sabe fazer}
+Uma pergunta aparentemente pequena pode trazer à vista uma capacidade que você usa todos os dias e raramente apresenta em público. Se a oportunidade fizer sentido, explique como você resolveu um problema parecido e indique o que toparia fazer agora. A autoria aparece de forma natural, ligada a um trabalho concreto.
+}
+
+\leitura{Vertex em conjunção com Quíron}{Orbe 3°49\ensuremath{^{\prime}} · Separativo}{
+\subtituloleitura{Certos encontros da rotina colocam o primeiro passo em evidência}
+Alguém pode convidar você a assumir uma pequena tarefa justo quando ainda está decidindo se tem condições de começar. Em vez de tratar o convite como uma prova, procure o tamanho de tentativa que consegue sustentar. O que você aprende ao agir nessa escala pode dar forma ao próximo passo.
+}
+
+\end{document}

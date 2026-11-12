@@ -1,0 +1,10 @@
+/work/
+/entradas-clientes/
+/relatorios-clientes/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk

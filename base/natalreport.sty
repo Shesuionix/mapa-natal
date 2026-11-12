@@ -1,0 +1,2716 @@
+% natalreport v0.4.1 — edição em um único arquivo.
+% CHANGELOG 2026-11-10: v0.4.0 adiciona LoadNatalReference; mantém entrada estrita.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{natalreport}[2026/11/10 v0.4.1 Motor de relatorios natais]
+
+% v0.3.0: motor Lua e macros do gráfico, da borda e do relatório neste pacote.
+\RequirePackage{iftex}
+\ifLuaTeX\else
+  \PackageError{natalreport}{LuaLaTeX obrigatorio}{Compile com lualatex.}
+  \expandafter\endinput
+\fi
+\RequirePackage{luacode}
+
+\begin{luacode*}
+package.preload["astrocalc"] = function()
+-- =========================================================
+-- astrocalc.lua — Módulo Lua do pacote astropack.sty
+-- v1.10.0
+-- CHANGELOG 2026-11-09: validação de entradas/configuração; opções sem lacunas;
+-- parsers PT/EN; casas circulares; repulsão limitada; aspectos agrupados;
+-- escape de texto, unidades explícitas e rótulos legíveis.
+-- 2026-11-10: rótulos cardinais afastados radialmente do anel.
+-- =========================================================
+-- v1.9.7: chaves de visibilidade (show zodiac, show houses,
+-- show planet ticks, etc.). Cada emissor consulta st.params
+-- e pula a emissão quando a chave correspondente for false.
+--
+-- v1.9.6: ...
+-- =========================================================
+
+local M = { VERSION = "1.10.0" }
+
+-- =========================================================
+-- PARÂMETROS GLOBAIS (legado — repulsão ainda usa estes)
+-- =========================================================
+M.DEBUG             = false
+M.N_PLANETS         = 15
+M.SEP_MIN           = 3.9
+M.FATOR_INTENSIDADE = 0.12
+M.TOLERANCIA        = 1e-4
+M.MAX_ITERACOES     = 10000
+
+local function log(msg)
+	if M.DEBUG then texio.write_nl("log", "[astrocalc] "..tostring(msg)) end
+end
+M.log = log
+
+local function warn(msg)
+	if tex then tex.sprint("\\PackageWarning{astropack}{Consulte o log: aviso astrocalc}") end
+	texio.write_nl("term and log", "[astrocalc] AVISO: "..tostring(msg))
+end
+M.warn = warn
+
+-- =========================================================
+-- CONFIG — defaults e parser
+-- =========================================================
+
+local function fail(msg)
+  texio.write_nl("term and log", "[astrocalc] ERRO: "..tostring(msg))
+  error("astropack: "..tostring(msg), 0)
+end
+
+local function finite(n)
+  return type(n) == "number" and n == n and math.abs(n) < math.huge
+end
+
+local function escapeText(s)
+  local t = { ["\\"]="\\textbackslash{}", ["{"]="\\{", ["}"]="\\}",
+    ["#"]="\\#", ["$"]="\\$", ["%"]="\\%", ["&"]="\\&", ["_"]="\\_",
+    ["^"]="\\textasciicircum{}", ["~"]="\\textasciitilde{}", ["|"]="\\textbar{}" }
+  return (s:gsub("[\\{}#$%%&_~^|]", t))
+end
+
+function M.setParameter(key, value)
+  local n=tonumber(value)
+  local allowed={SEP_MIN=true,FATOR_INTENSIDADE=true,TOLERANCIA=true,MAX_ITERACOES=true}
+  if not allowed[key] or not finite(n) or n<=0 then fail("Parametro numerico invalido: "..tostring(key)) end
+  M[key]=n
+end
+
+local DEFAULTS = {
+	line_color          = "black",
+	line_width          = "thick",
+	thin_line_width     = "thin",
+	axis_line_width     = "thick",
+	zodiac_fill         = "none",
+	zodiac_text_color   = "black",
+	zodiac_symbol_color = "black",
+	house_line_color    = "black",
+	house_label_color   = "black",
+	planet_symbol_color = "black",
+	planet_tick_color   = "black",
+	axis_label_color    = "black",
+	aspect_line_width   = "",
+	aspect_dash         = "none",
+	adjusted_dash       = "on 1pt off 2pt",
+	aspect_opacity      = "1",
+	xshift              = "0",
+	yshift              = "0",
+	rotate              = "0",
+	scale               = "1",
+	show_zodiac         = "true",
+	show_zodiac_names   = "true",
+	show_zodiac_symbols = "true",
+	show_houses         = "true",
+	show_house_numbers  = "true",
+	show_axes_labels    = "true",
+	show_planet_ticks   = "true",
+	show_adjusted_links = "true",
+	show_aspects        = "true",
+}
+
+local function parseConfig(s)
+	local p = {}
+	for k, v in pairs(DEFAULTS) do p[k] = v end
+	if s and s ~= "" then
+		for pair in s:gmatch("([^|]+)") do
+			local k, v = pair:match("^(.-)=(.*)$")
+			if not k or DEFAULTS[k] == nil then fail("Chave de config desconhecida: "..tostring(k or pair)) end
+      v = v:gsub("%%(%x%x)", function(h) return string.char(tonumber(h,16)) end)
+      if v:find("[\\{}%[%],;%%#|=]") then fail("Caractere reservado na config "..k) end
+      p[k] = v
+		end
+	end
+
+  for k,v in pairs(p) do
+    if k:match("^show_") then
+      v = v:lower():match("^%s*(.-)%s*$")
+      if v ~= "true" and v ~= "false" and v ~= "1" and v ~= "0" and v ~= "yes" and v ~= "no" then fail("Booleano invalido: "..k) end
+      p[k] = v
+    end
+  end
+  for _,k in ipairs({"rotate","scale","xshift","yshift","aspect_opacity"}) do
+    local n = tonumber(p[k])
+    if not finite(n) or math.abs(n) > 100000 then fail("Numero invalido: "..k) end
+    if k == "scale" and n <= 0 then fail("scale deve ser positivo") end
+    if k == "aspect_opacity" and (n < 0 or n > 1) then fail("opacity fora de 0..1") end
+  end
+  return p
+end
+
+function M.encodeConfig(p)
+  local out={}
+  for k,v in pairs(p) do
+    out[#out+1]=k.."="..tostring(v):gsub("[%%|=]", function(c) return string.format("%%%02X",string.byte(c)) end)
+  end
+  table.sort(out)
+  return table.concat(out,"|")
+end
+
+-- Helpers para construir strings TikZ de opções
+local function opts(...)
+	local t = {}
+	for i = 1, select("#", ...) do
+    local x = select(i, ...)
+		if x and x ~= "" then t[#t + 1] = x end
+	end
+	return "[" .. table.concat(t, ", ") .. "]"
+end
+
+-- [v1.9.1] Distingue entre valor numérico de largura e estilo
+-- TikZ pré-definido. `thick` é estilo; `0.3pt` é dimensão.
+local function width_opt(v)
+	if not v or v == "" then return nil end
+	if v:match("^%d") or v:match("^%.") then
+		return "line width=" .. v
+	end
+	return v
+end
+
+local function is_true(v)
+	return v == "true" or v == "1" or v == "yes"
+end
+-- =========================================================
+-- HELPERS
+-- =========================================================
+local function stripBOM(s)
+	if not s then return s end
+	return (s:gsub("^\239\187\191", ""))
+end
+
+local function parseToTable(s)
+	if not s then return nil end
+	s = stripBOM(s)
+	local out = {}
+  if s:match("^%s*,") or s:match(",%s*,") or s:match(",%s*$") then fail("CSV contem campo vazio") end
+	for token in s:gmatch("([^,]+)") do
+		local t = token:match("^%s*(.-)%s*$")
+		if t ~= "" then
+			local n = tonumber(t)
+			if not finite(n) then
+				fail("parseToTable: token inválido '"..t.."'")
+				return nil
+			end
+			out[#out + 1] = n
+		end
+	end
+	return out
+end
+
+local cache_signNames = {}
+local cache_symbols   = {}
+
+local function parseSignNames(s)
+	if cache_signNames[s] then return cache_signNames[s] end
+	local out = {}
+	for name in (s .. ","):gmatch("([^,]+),") do
+		out[#out + 1] = name:gsub("^%s+", ""):gsub("%s+$", "")
+	end
+	cache_signNames[s] = out
+	return out
+end
+
+local function parseSymbols(s)
+	if cache_symbols[s] then return cache_symbols[s] end
+	local out = {}
+	for sym in s:gmatch("{(.-)}") do
+		out[#out + 1] = sym
+	end
+	cache_symbols[s] = out
+	return out
+end
+
+local function distancia_direcional(a, b)
+	return (a - b + 180) % 360 - 180
+end
+
+-- =========================================================
+-- REPULSÃO ITERATIVA
+-- =========================================================
+local function redistribuir(ang, n, sep_min)
+	if n <= 1 then return end
+  if not finite(sep_min) or sep_min <= 0 or not finite(M.FATOR_INTENSIDADE) or M.FATOR_INTENSIDADE <= 0 or not finite(M.TOLERANCIA) or M.TOLERANCIA <= 0 or not finite(M.MAX_ITERACOES) or M.MAX_ITERACOES < 1 then fail("Parametros de repulsao invalidos") end
+  local started = os.clock()
+  local limit = math.min(math.floor(M.MAX_ITERACOES), 10000)
+	if n * sep_min > 360 then
+		warn("redistribuir: separacao minima impossivel; distribuicao uniforme")
+		for i = 1, n do ang[i] = (i-1) * 360.0 / n end
+		return
+	end
+	for i = 1, n do
+		ang[i] = ang[i] % 360
+		if ang[i] < 0 then ang[i] = ang[i] + 360 end
+	end
+
+	local convergido, iter = false, 0
+	while (not convergido) and (iter < limit) and (os.clock() - started < 0.5) do
+		local desloc = {}
+		for i = 1, n do desloc[i] = 0.0 end
+		for i = 1, n do
+			for j = i + 1, n do
+				local dd   = distancia_direcional(ang[i], ang[j])
+				local dist = math.abs(dd)
+				if dist < sep_min then
+					local sobreposicao = sep_min - dist
+					local forca = sobreposicao * M.FATOR_INTENSIDADE * 0.5
+					if dd > 0 then
+						desloc[i] = desloc[i] + forca
+						desloc[j] = desloc[j] - forca
+					else
+						desloc[i] = desloc[i] - forca
+						desloc[j] = desloc[j] + forca
+					end
+				end
+			end
+		end
+		local damping = 1.0 / (1.0 + iter * 0.001)
+		local maior = 0.0
+		for i = 1, n do
+			local d = desloc[i] * damping
+			ang[i] = (ang[i] + d) % 360
+			if ang[i] < 0 then ang[i] = ang[i] + 360 end
+			if math.abs(d) > maior then maior = math.abs(d) end
+		end
+		if maior < M.TOLERANCIA then
+      -- Não confundir estagnação com separação efetiva.
+      local gap = 360
+      for i=1,n-1 do for j=i+1,n do gap=math.min(gap, math.abs(distancia_direcional(ang[i],ang[j]))) end end
+      if gap < sep_min * 0.999 then warn("redistribuir: estagnou antes da separacao minima") end
+			convergido = true
+		else
+			local separado = true
+			for i = 1, n - 1 do
+				if not separado then break end
+				for j = i + 1, n do
+					if math.abs(distancia_direcional(ang[i], ang[j])) < sep_min * 0.999 then
+						separado = false
+						break
+					end
+				end
+			end
+			if separado then convergido = true end
+		end
+		iter = iter + 1
+	end
+	if not convergido then
+		warn(string.format(
+			"redistribuir: NÃO convergiu após %d iterações (n=%d, sep_min=%.2f)",
+			iter, n, sep_min))
+	end
+end
+
+-- =========================================================
+-- CONSTANTES
+-- =========================================================
+local mapaSignos = {
+	["Áries"]=0,         ["Aries"]=0,
+	["Touro"]=30,        ["Taurus"]=30,
+	["Gêmeos"]=60,       ["Gemini"]=60,
+	["Câncer"]=90,       ["Cancer"]=90,
+	["Leão"]=120,        ["Leo"]=120,
+	["Virgem"]=150,      ["Virgo"]=150,
+	["Libra"]=180,
+	["Escorpião"]=210,   ["Scorpio"]=210,
+	["Sagitário"]=240,   ["Sagittarius"]=240,
+	["Capricórnio"]=270, ["Capricorn"]=270,
+	["Aquário"]=300,     ["Aquarius"]=300,
+	["Peixes"]=330,      ["Pisces"]=330,
+}
+
+local LETRA = "[A-Za-z" .. string.char(128) .. "-" .. string.char(255) .. "]"
+local LETRA_MAIS = LETRA .. "+"
+
+local R = {
+	edge         = 1.0,
+	cardinal     = 0.971542,
+	zodiacOuter  = 0.9486056,
+	zodiacInner  = 0.858488,
+	planetsOuter = 0.8323192,
+	planetsInner = 0.8252048,
+	housesOuter  = 0.7088844,
+	housesInner  = 0.6614542,
+	aspects      = 0.6574542,
+	symbols      = 0.7852048,
+	connect      = 0.8052048,
+}
+
+local ORDEM_PLANETAS = {
+	"Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn",
+	"Uranus","Neptune","Pluto","Node","Lilith","Chiron",
+	"Fortune","Vertex"
+}
+
+local BODY_MAP = {
+	Sun=1, Moon=2, Mercury=3, Venus=4, Mars=5,
+	Jupiter=6, Saturn=7, Uranus=8, Neptune=9, Pluto=10,
+	Node=11, Lilith=12, Chiron=13, Fortune=14, Vertex=15,
+	Ascendant=-1, IC=-2, DSC=-3, MC=-4,
+}
+local HOUSE_IDX = {[-1]=1, [-2]=4, [-3]=7, [-4]=10}
+
+local ROMAN = {"I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"}
+
+M.ASPECT_NAMES = {
+	"Sesquiquadrate", "Sesquisquare",
+	"Semi-Sextile", "Semisextile",
+	"Semi-Square",  "Semisquare",
+	"Semi-Quintile", "Semiquintile",
+	"Biquintile",
+	"Conjunction", "Opposition",
+	"Quintile",    "Quincunx",
+	"Sextile",
+	"Square",
+	"Trine",
+}
+
+-- [v1.9.6] Substitui a lista de aspectos por uma fornecida em
+-- string separada por vírgulas. Faz trim e ignora entradas vazias.
+function M.setAspectNames(s)
+	local t = {}
+	for name in s:gmatch("([^,]+)") do
+		local n = name:gsub("^%s+", ""):gsub("%s+$", "")
+		if n ~= "" then t[#t + 1] = n end
+	end
+	M.ASPECT_NAMES = t
+end
+
+-- =========================================================
+-- NORMALIZAÇÃO DE NOMES
+-- =========================================================
+local function normalizeName(s)
+	if not s then return nil end
+	s = s:gsub("Á","a"):gsub("á","a"):gsub("É","e"):gsub("é","e"):gsub("Í","i"):gsub("í","i"):gsub("Ó","o"):gsub("ó","o"):gsub("ã","a"):gsub("â","a"):gsub("ê","e"):gsub("ú","u"):gsub("ç","c")
+  s = s:lower()
+	s = s:gsub("^%s+", ""):gsub("%s+$", "")
+	s = s:gsub("[%s_%-]", "")
+	local aliases = {
+		sun="Sun", moon="Moon", mercury="Mercury", venus="Venus",
+		mars="Mars", jupiter="Jupiter", saturn="Saturn", uranus="Uranus",
+		neptune="Neptune", pluto="Pluto",
+		node="Node", northnode="Node", ascendingnode="Node",
+		southnode="SouthNode", descendingnode="SouthNode",
+		chiron="Chiron", lilith="Lilith", blackmoon="Lilith",
+		fortune="Fortune", vertex="Vertex",
+		asc="Ascendant", ascendant="Ascendant",
+		dsc="DSC", descendant="DSC",
+		mc="MC", mediumcoeli="MC", midheaven="MC",
+		ic="IC", imumcoeli="IC",
+		sol="Sun", lua="Moon", mercurio="Mercury",
+		marte="Mars", saturno="Saturn", urano="Uranus",
+		netuno="Neptune", plutao="Pluto",
+		nodo="Node", nodonorte="Node", nodosul="SouthNode",
+		quiron="Chiron", luabranca="Lilith", venus="Venus",
+		fortuna="Fortune", vertice="Vertex",
+		ascendente="Ascendant", descendente="DSC",
+		meiodoceu="MC", fundodoceu="IC",
+	}
+	return aliases[s] or s
+end
+M.normalizeName = normalizeName
+
+-- =========================================================
+-- PARSERS DE ENTRADA
+-- =========================================================
+local function parsePlanetText(text)
+	text = stripBOM(text):gsub(" em ", " in ")
+	local posicoes = {}
+  local pattern="("..LETRA_MAIS..")%s+in%s+(" .. LETRA_MAIS .. ")%s+(%d+)°(%d*)"
+  local residue=text:gsub(pattern,""):gsub("′",""):gsub("[,%s;']","")
+  if residue~="" then fail("Texto planetario fora da gramatica: "..residue) end
+	for planeta, signo, gr, mn in text:gmatch(pattern) do
+		local key = normalizeName(planeta)
+		if key and key ~= "Ascendant" and key ~= "MC"
+		and key ~= "IC" and key ~= "DSC" then
+			local base = mapaSignos[signo]
+      if not BODY_MAP[key] or BODY_MAP[key] < 1 then fail("Corpo desconhecido: "..planeta) end
+      if posicoes[key] then fail("Corpo duplicado: "..planeta) end
+			if not base then
+				fail("Signo desconhecido em parsePlanetText: " .. tostring(signo))
+			else
+				gr = tonumber(gr) or 0
+				mn = tonumber(mn) or 0
+				if gr > 29 or mn > 59 then fail("Grau/minuto fora do signo: "..planeta) end
+        posicoes[key] = base + gr + mn / 60.0
+			end
+		end
+	end
+	local partes, faltando = {}, {}
+	for i, nome in ipairs(ORDEM_PLANETAS) do
+		if posicoes[nome] then
+			partes[i] = posicoes[nome]
+		else
+			partes[i] = 0
+			faltando[#faltando + 1] = nome
+		end
+	end
+	if #faltando > 0 then
+		fail("Planetas ausentes: " .. table.concat(faltando, ", "))
+	end
+	return partes
+end
+
+local function parseHouseText(text)
+	text = stripBOM(text):gsub("Casa em ", "House in ")
+	local previous = -1
+	local partes, k = {}, 0
+  local pattern="House%s+in%s+(" .. LETRA_MAIS .. ")%s+(%d+)°(%d*)"
+  local residue=text:gsub(pattern,""):gsub("′",""):gsub("[,%s;']","")
+  if residue~="" then fail("Texto de casas fora da gramatica: "..residue) end
+	for signo, gr, mn in text:gmatch(pattern) do
+		gr = tonumber(gr) or 0
+		mn = tonumber(mn) or 0
+		local base = mapaSignos[signo]
+		if not base then
+			fail("Signo desconhecido em parseHouseText: " .. tostring(signo))
+		else
+			if gr > 29 or mn > 59 then fail("Grau/minuto invalido na casa") end
+      local raw = base + gr + mn / 60.0
+			while raw <= previous do raw = raw + 360 end
+			k = k + 1
+			partes[k] = raw
+			previous = raw
+		end
+	end
+	if k == 0 then
+		fail("parseHouseText: nenhuma casa reconhecida")
+	end
+	return partes
+end
+
+-- [v1.9.5] corrigido: o estado está entre parênteses no formato
+-- canônico ("Corpo Aspecto Corpo (Applying)"). A versão anterior
+-- exigia `[,%s]` antes do estado, o que falhava para `(Applying)`
+-- e `(Separating)`. Agora aceitamos parêntese, vírgula ou
+-- whitespace.
+local function parseAspectChunk(chunk)
+	chunk = chunk:gsub("^%s+", ""):gsub("%s+$", "")
+	if chunk == "" then return nil end
+
+	local state = chunk:match("[,(%s]+(%a+)%s*%)%s*$")
+	if not state then warn("Aspecto invalido: use Corpo Aspecto Corpo (Orb: 1°00\', Applying|Separating)"); return nil end
+	state = state:lower()
+	state = state:sub(1,1):upper() .. state:sub(2)
+  if state ~= "Applying" and state ~= "Separating" then warn("Estado de aspecto desconhecido: "..state); return nil end
+
+	for _, asp in ipairs(M.ASPECT_NAMES) do
+		local pattern = "%f[%a]" .. asp:gsub("([^%w])", "%%%1") .. "%f[%A]"
+		local s, e = chunk:find(pattern)
+		if s then
+			local body1 = chunk:sub(1, s - 1):gsub("^%s+", ""):gsub("%s+$", "")
+			local rest  = chunk:sub(e + 1)
+			local body2 = rest:match("^(.-)%s*%(") or rest
+			body2 = body2:gsub("^%s+", ""):gsub("%s+$", "")
+			return body1, asp, body2, state
+		end
+	end
+	warn("Aspecto nao reconhecido: "..chunk)
+  return nil
+end
+
+local function parseAspectTextInternal(text)
+	text = stripBOM(text)
+	local applying, separating = {}, {}
+  local residue = text:gsub("[^()]+%b()", ""):gsub("[,%s]", "")
+  if residue ~= "" or (text:match("%S") and not text:find("(",1,true)) then warn("Aspectos fora do formato canonico foram ignorados") end
+	for chunk in text:gmatch("[^()]+%b()") do
+		chunk = chunk:gsub("^[,%s]+", "")
+    local b1, asp, b2, state = parseAspectChunk(chunk)
+		if b1 and b2 and state then
+			local n1 = normalizeName(b1)
+			local n2 = normalizeName(b2)
+			if BODY_MAP[n1] or n1 == "SouthNode" then
+        if not (BODY_MAP[n2] or n2 == "SouthNode") then warn("Corpo desconhecido: "..tostring(n2)) else
+				local pair = "{" .. n1 .. "," .. n2 .. "}"
+				if state == "Applying" then
+					applying[#applying + 1] = pair
+				elseif state == "Separating" then
+					separating[#separating + 1] = pair
+				end
+        end
+      else warn("Corpo desconhecido: "..tostring(n1))
+			end
+		end
+	end
+	log(string.format("parseAspectText: %d applying, %d separating",
+		#applying, #separating))
+	return table.concat(applying, ","), table.concat(separating, ",")
+end
+
+local function makeResolver(a, h)
+	return function(nome)
+		if not nome then return 0 end
+		if nome == "SouthNode" then
+			local node = a[BODY_MAP["Node"]]
+			if node then return (node + 180) % 360 end
+			return 0
+		end
+		local v = BODY_MAP[nome]
+		if v == nil then
+			warn("corpo desconhecido em aspecto: '"..tostring(nome).."'")
+			return 0
+		end
+		if v > 0 and v <= 15 then return a[v] or 0 end
+		if v < 0 then
+			local hi = HOUSE_IDX[v]
+			return (hi and h[hi]) or 0
+		end
+		return 0
+	end
+end
+
+local function pairsToCoordinates(pairs, a, h)
+	local resolver = makeResolver(a, h)
+	local r = {}
+  if pairs:match("%S") and not pairs:find("{",1,true) then warn("Aspecto ignorado: use pares {Sun,Moon} ou formato canonico com parenteses") end
+	for pair in string.gmatch(pairs, "{(.-)}") do
+		local p1, p2 = pair:match("^(.-)%s*,%s*(.-)$")
+		if p1 and p2 then
+			local n1 = normalizeName(p1)
+			local n2 = normalizeName(p2)
+			if (BODY_MAP[n1] or n1=="SouthNode") and (BODY_MAP[n2] or n2=="SouthNode") then
+        r[#r + 1] = { resolver(n1), resolver(n2) }
+      else warn("Par de aspecto ignorado: corpo desconhecido") end
+		end
+	end
+	return r
+end
+
+-- =========================================================
+-- CONSTRUÇÃO DO ESTADO
+-- =========================================================
+local function buildState(planets, houses, radius, signNamesStr,
+                         zodiacSymbolsStr, astralSymbolsStr,
+                         applyColor, sepColor, aspectsUseAdjusted,
+                         cfgStr)
+	local st = {}
+	local r = radius
+
+	st.params = parseConfig(cfgStr)
+
+	st.linhai     = R.edge         * r
+	st.linhaii    = R.cardinal     * r
+	st.linhaiii   = R.zodiacOuter  * r
+	st.linhaiv    = R.zodiacInner  * r
+	st.linhav     = R.planetsOuter * r
+	st.linhavi    = R.planetsInner * r
+	st.linhavii   = R.housesOuter  * r
+	st.linhaviii  = R.housesInner  * r
+	st.linhaix    = R.aspects      * r
+	st.linhax     = R.symbols      * r
+	st.linhaxi    = R.connect      * r
+
+	st.zodiacLabelRadius  = (st.linhaiii + st.linhaiv) / 2
+	st.zodiacSymbolRadius = (st.linhaiii + st.linhaiv) / 3
+	st.houseLabelRadius   = (st.linhavii + st.linhaviii) / 2
+
+	st.houses         = houses
+	-- [v1.9.2] rotationOffset inclui o offset base (180° para ASC
+	-- à esquerda) E a rotação do usuário.
+	local rotBase = 180 - houses[1]
+	local rotUser = tonumber(st.params.rotate) or 0
+	st.rotationOffset = rotBase + rotUser
+
+	st.astral = {}
+	for i = 1, 15 do st.astral[i] = planets[i] end
+
+	st.astralAdjusted = {}
+	for i = 1, 15 do st.astralAdjusted[i] = planets[i] end
+	redistribuir(st.astralAdjusted, 15, M.SEP_MIN)
+
+	st.signNames        = parseSignNames(signNamesStr)
+	st.zodiacSymbols    = parseSymbols(zodiacSymbolsStr)
+	st.astralSymbols    = parseSymbols(astralSymbolsStr)
+	st.applyColor       = applyColor
+	st.sepColor         = sepColor
+
+	local s = tostring(aspectsUseAdjusted):lower()
+	st.aspectsUseAdjusted = (s == "1" or s == "true" or s == "yes")
+
+	if #st.astralSymbols ~= #st.astral then
+		warn(string.format(
+			"astralSymbols tem %d itens (esperado %d) — símbolos extras serão ignorados",
+			#st.astralSymbols, #st.astral))
+	end
+
+	return st
+end
+
+-- =========================================================
+-- EMISSORES
+-- =========================================================
+
+-- [v1.9.4] Fill do zodíaco contido entre as divisórias.
+-- Cada signo ocupa 28° (de `angle+1` a `angle+29`); os 2°
+-- restantes são consumidos pelas duas linhas da divisória.
+-- Preenche cada setor individualmente (não o anel contínuo),
+-- assim a cor não invade as divisórias nem os gaps.
+local function emitZodiacFill(buf, st)
+	local p = st.params
+	if not is_true(p.show_zodiac) then return end
+	if p.zodiac_fill == "none" then return end
+	local rot = st.rotationOffset
+	for i = 0, 11 do
+		local a0 = i * 30 + rot + 1
+		local a1 = i * 30 + rot + 29
+		buf[#buf + 1] = string.format(
+			"\\fill[%s] "
+			.. "(%.2f:%.3f cm) "
+			.. "arc[start angle=%.2f, end angle=%.2f, radius=%.3f cm] "
+			.. "-- (%.2f:%.3f cm) "
+			.. "arc[start angle=%.2f, end angle=%.2f, radius=%.3f cm] "
+			.. "-- cycle;",
+			p.zodiac_fill,
+			a0, st.linhaiii,
+			a0, a1, st.linhaiii,
+			a1, st.linhaiv,
+			a1, a0, st.linhaiv)
+	end
+end
+
+local function emitConcentricCircles(buf, st)
+	local p = st.params
+	local radii = { st.linhaii, st.linhav, st.linhavii, st.linhaviii }
+	local parts = {}
+	for _, r in ipairs(radii) do
+		parts[#parts + 1] = string.format("(0,0) circle (%.3f cm)", r)
+	end
+	buf[#buf + 1] = string.format("\\draw%s %s;",
+		opts(width_opt(p.line_width), "draw=" .. p.line_color),
+		table.concat(parts, " "))
+end
+
+-- [v1.9.2] ASC/DSC em coordenadas polares (baseadas em houses[1]).
+local function upright(a)
+  return (a + 90) % 180 - 90
+end
+
+local function emitCardinalAxes(buf, st)
+	local p = st.params
+	local mcAngle  = (st.houses[10] + st.rotationOffset) % 360
+	local icAngle  = (st.houses[4] + st.rotationOffset) % 360
+	local ascAngle = (st.houses[1]  + st.rotationOffset) % 360
+	local dscAngle = (st.houses[7] + st.rotationOffset) % 360
+	local o = opts(width_opt(p.axis_line_width), "draw=" .. p.line_color)
+	local showLabels = is_true(p.show_axes_labels)
+
+	local nMC, nIC, nDSC, nASC = "", "", "", ""
+	if showLabels then
+    local function label(angle, text)
+      return string.format(" (%.2f:%.3f cm) node[inner sep=1pt, text=%s, rotate=%.2f] {\\scriptsize\\bfseries %s}",
+        angle, st.linhai + 0.24, p.axis_label_color, upright(angle-90), text)
+    end
+    nMC, nIC = label(mcAngle,"MC"), label(icAngle,"IC")
+    nDSC, nASC = label(dscAngle,"DSC"), label(ascAngle,"ASC")
+	end
+
+	buf[#buf + 1] = string.format(
+		"\\draw%s (%.2f:%.3f cm)--(%.2f:%.3f cm)%s;",
+		o, mcAngle, st.linhaii, mcAngle, st.linhai, nMC)
+
+	buf[#buf + 1] = string.format(
+		"\\draw%s (%.2f:%.3f cm)--(%.2f:%.3f cm)%s;",
+		o, icAngle, st.linhaii, icAngle, st.linhai, nIC)
+
+	buf[#buf + 1] = string.format(
+		"\\draw%s (%.2f:%.3f cm)--(%.2f:%.3f cm)%s;",
+		o, dscAngle, st.linhaii, dscAngle, st.linhai, nDSC)
+
+	buf[#buf + 1] = string.format(
+		"\\draw%s (%.2f:%.3f cm)--(%.2f:%.3f cm)%s;",
+		o, ascAngle, st.linhaii, ascAngle, st.linhai, nASC)
+end
+
+local function emitZodiac(buf, st)
+	local p = st.params
+	if not is_true(p.show_zodiac) then return end
+
+	local showNames   = is_true(p.show_zodiac_names)
+	local showSymbols = is_true(p.show_zodiac_symbols)
+	local rot = st.rotationOffset
+
+	local o = opts(width_opt(p.line_width), "draw=" .. p.line_color)
+
+	-- Divisórias entre signos
+	local dividers = {}
+	for i = 0, 11 do
+		local angle = i * 30 + rot
+		dividers[#dividers + 1] = string.format(
+			"(%.2f:%.3f cm) -- (%.2f:%.3f cm)",
+			angle - 1, st.linhaiii, angle - 1, st.linhaiv)
+		dividers[#dividers + 1] = string.format(
+			"(%.2f:%.3f cm) -- (%.2f:%.3f cm)",
+			angle + 1, st.linhaiii, angle + 1, st.linhaiv)
+	end
+	buf[#buf + 1] = string.format("\\draw%s %s;", o, table.concat(dividers, " "))
+
+	-- Arcos externo/interno
+	local arcs = {}
+	for i = 0, 11 do
+		local angle = i * 30 + rot
+		arcs[#arcs + 1] = string.format(
+			"(0,0) ++(%.2f:%.3f cm) arc (%.2f:%.2f:%.3f cm)",
+			angle + 1, st.linhaiii, angle + 1, angle + 29, st.linhaiii)
+		arcs[#arcs + 1] = string.format(
+			"(0,0) ++(%.2f:%.3f cm) arc (%.2f:%.2f:%.3f cm)",
+			angle + 1, st.linhaiv, angle + 1, angle + 29, st.linhaiv)
+	end
+	buf[#buf + 1] = string.format("\\draw%s %s;", o, table.concat(arcs, " "))
+
+	-- Nomes dos signos
+	if showNames then
+		for k = 1, 12 do
+			local name = escapeText(st.signNames[k] or "")
+			local center = (k - 1) * 30 + rot + 15
+			local arcStart = center - 14
+			local arcEnd   = center + 14
+			buf[#buf + 1] = string.format(
+				"\\draw[decoration={text along path,"
+				.. "text={|\\color{%s}\\fontsize{5}{5}\\selectfont| %s},"
+				.. "text align={align=center}}, decorate]"
+				.. "(%.2f:%.3f cm) arc[start angle=%.2f, end angle=%.2f, radius=%.3f cm];",
+				p.zodiac_text_color, name, arcEnd, st.zodiacLabelRadius, arcEnd, arcStart,
+				st.zodiacLabelRadius)
+		end
+	end
+
+	-- Símbolos dos signos
+	if showSymbols then
+		for k = 1, 12 do
+			local sym = escapeText(st.zodiacSymbols[k] or "")
+			local center = (k - 1) * 30 + rot + 15
+			local arcStart = center - 14
+			local arcEnd   = center + 14
+			buf[#buf + 1] = string.format(
+				"\\draw[decoration={text along path,"
+				.. "text={|\\color{%s}\\astrofont\\fontsize{5}{5}\\selectfont| %s},"
+				.. "text align={align=center}}, decorate]"
+				.. "(%.2f:%.3f cm) arc[start angle=%.2f, end angle=%.2f, radius=%.3f cm];",
+				p.zodiac_symbol_color, sym, arcEnd, st.zodiacSymbolRadius, arcEnd, arcStart,
+				st.zodiacSymbolRadius)
+		end
+	end
+end
+
+local function emitHouses(buf, st)
+	local p = st.params
+	local showHouses  = is_true(p.show_houses)
+	local showNumbers = is_true(p.show_house_numbers)
+
+	if showHouses then
+		local dividers = {}
+		for _, h in ipairs(st.houses) do
+			local angle = h + st.rotationOffset
+			dividers[#dividers + 1] = string.format(
+				"(%.2f:%.3f cm) -- (%.2f:%.3f cm)",
+				angle, st.linhavii, angle, st.linhaviii)
+		end
+		buf[#buf + 1] = string.format("\\draw%s %s;",
+			opts(width_opt(p.line_width), "draw=" .. p.house_line_color),
+			table.concat(dividers, " "))
+	end
+
+	if showNumbers then
+		for k = 1, 12 do
+			local cur = st.houses[k]
+      local nxt = st.houses[k % 12 + 1]
+      local mid = (cur + ((nxt - cur) % 360) / 2 + st.rotationOffset) % 360
+			buf[#buf + 1] = string.format(
+				"\\node[font=\\bfseries, text=%s, scale=.5, rotate=%.2f] at (%.2f:%.3f cm) {%s};",
+				p.house_label_color, mid - 90, mid, st.houseLabelRadius, ROMAN[k])
+		end
+	end
+end
+
+local function emitPlanets(buf, st)
+	local p = st.params
+	local n = #st.astral
+	local showTicks = is_true(p.show_planet_ticks)
+	local showLinks = is_true(p.show_adjusted_links)
+
+	-- Ticks de 1° e ticks dos corpos
+	if showTicks then
+		local ticks = {}
+		for i = 0, 359 do
+			local a = (i + st.rotationOffset) % 360
+			ticks[#ticks + 1] = string.format("(%.2f:%.3f cm) -- (%.2f:%.3f cm)",
+				a, st.linhav, a, st.linhavi)
+		end
+		buf[#buf + 1] = string.format("\\draw%s %s;",
+			opts(width_opt(p.thin_line_width), "draw=" .. p.planet_tick_color),
+			table.concat(ticks, " "))
+
+		local bodyTicks = {}
+		for k = 1, n do
+			local raw = (st.astral[k] + st.rotationOffset) % 360
+			bodyTicks[#bodyTicks + 1] = string.format(
+				"(%.2f:%.3f cm)--(%.2f:%.3f cm)",
+				raw, st.linhaviii, raw, st.linhaix)
+		end
+		buf[#buf + 1] = string.format("\\draw%s %s;",
+			opts(width_opt(p.thin_line_width), "draw=" .. p.planet_tick_color),
+			table.concat(bodyTicks, " "))
+	end
+
+	-- Linhas tracejadas (original → ajustada)
+	if showLinks then
+		local dashed = {}
+		for k = 1, n do
+			local raw = (st.astral[k] + st.rotationOffset) % 360
+			local adj = (st.astralAdjusted[k] + st.rotationOffset) % 360
+			dashed[#dashed + 1] = string.format(
+				"(%.2f:%.3f cm)--(%.2f:%.3f cm)",
+				adj, st.linhaxi, raw, st.linhavi)
+		end
+		if #dashed > 0 then
+			buf[#buf + 1] = string.format("\\draw%s %s;",
+				opts(width_opt(p.thin_line_width), "draw=" .. p.planet_tick_color,
+					p.adjusted_dash ~= "none" and ("dash pattern=" .. p.adjusted_dash) or nil),
+				table.concat(dashed, " "))
+		end
+	end
+
+	-- Símbolos dos planetas (sempre)
+	for k = 1, n do
+		local raw = (st.astral[k] + st.rotationOffset) % 360
+		local adj = (st.astralAdjusted[k] + st.rotationOffset) % 360
+		local sym = escapeText(st.astralSymbols[k] or "?")
+		buf[#buf + 1] = string.format(
+			"\\node[font=\\astrofont, text=%s, scale=.7, rotate=%.2f] at (%.2f:%.3f cm) {%s};",
+			p.planet_symbol_color, raw - 90, adj, st.linhax, sym)
+	end
+end
+
+local function emitPairsAsDraws(buf, pairsStr, a, h, radius, rot, color, p)
+	if not pairsStr or pairsStr == "" then return end
+	local r = pairsToCoordinates(pairsStr, a, h)
+	local extra = {}
+	if color and color ~= "" then
+    if color:find("[\\{}%[%],;%%#|=]") then fail("Cor de aspecto contem caractere reservado") end
+    extra[#extra + 1] = "draw=" .. color
+  end
+	if p.aspect_line_width and p.aspect_line_width ~= "" then
+		extra[#extra + 1] = width_opt(p.aspect_line_width)
+	end
+	if p.aspect_dash and p.aspect_dash ~= "none" then
+		extra[#extra + 1] = "dash pattern=" .. p.aspect_dash
+	end
+	if p.aspect_opacity and p.aspect_opacity ~= "1" then
+		extra[#extra + 1] = "opacity=" .. p.aspect_opacity
+	end
+	local o = opts(table.unpack(extra))
+  local paths = {}
+	for _, line in ipairs(r) do
+		local a1 = (line[1] + rot) % 360
+		local a2 = (line[2] + rot) % 360
+		paths[#paths + 1] = string.format(
+			"(%.2f:%.3f cm) -- (%.2f:%.3f cm)",
+			a1, radius, a2, radius)
+	end
+  if #paths > 0 then buf[#buf+1] = "\\draw"..o.." "..table.concat(paths," ")..";" end
+end
+
+local function emitAspects(buf, st, aspectsText)
+	local p = st.params
+	if not is_true(p.show_aspects) then return end
+	local a = st.aspectsUseAdjusted and st.astralAdjusted or st.astral
+	local h = st.houses
+	if aspectsText:find("(", 1, true) then
+		local app, sep = parseAspectTextInternal(aspectsText)
+		emitPairsAsDraws(buf, app, a, h, st.linhaix, st.rotationOffset, st.applyColor, p)
+		emitPairsAsDraws(buf, sep, a, h, st.linhaix, st.rotationOffset, st.sepColor, p)
+	else
+		emitPairsAsDraws(buf, aspectsText, a, h, st.linhaix, st.rotationOffset, st.applyColor, p)
+	end
+end
+
+-- =========================================================
+-- NÚCLEOS DE RENDERIZAÇÃO
+-- =========================================================
+
+-- [v1.9.6] xshift/yshift agora também aplicados no full-page,
+-- compondo com `shift={(current page.center)}`. Antes, o valor
+-- era parseado mas ignorado no full-page (só inline funcionava).
+local function makeScopeOpts(st, fullpage)
+	local p = st.params
+	local o = {}
+	if fullpage then
+		o[#o + 1] = "shift={(current page.center)}"
+		if p.xshift and p.xshift ~= "0" then
+			o[#o + 1] = "xshift=" .. p.xshift .. "cm"
+		end
+		if p.yshift and p.yshift ~= "0" then
+			o[#o + 1] = "yshift=" .. p.yshift .. "cm"
+		end
+	end
+	if p.scale ~= "1" then o[#o + 1] = "scale=" .. p.scale end
+	return o
+end
+
+local function openScope(buf, st, fullpage)
+	local o = makeScopeOpts(st, fullpage)
+	if #o > 0 then
+		buf[#buf + 1] = "\\begin{scope}[" .. table.concat(o, ",") .. "]"
+	else
+		buf[#buf + 1] = "\\begin{scope}"
+	end
+end
+
+local function closeScope(buf)
+	buf[#buf + 1] = "\\end{scope}"
+end
+
+-- [v1.9.3] Full-page: abre o scope, emite fill e conteúdo.
+-- Os aspectos são emitidos em renderChart, entre open e close.
+local function commonRender(buf, st)
+	openScope(buf, st, true)
+	emitZodiacFill(buf, st)
+	emitConcentricCircles(buf, st)
+	emitCardinalAxes(buf, st)
+	emitZodiac(buf, st)
+	emitHouses(buf, st)
+	emitPlanets(buf, st)
+end
+
+-- [v1.9.3] Inline: abre o scope, emite fill e conteúdo.
+-- `commonEnd` fecha o scope; os aspectos são emitidos entre.
+-- Sem isso, o `scale` do scope não afetava os aspectos.
+local function commonRenderInline(buf, st)
+	openScope(buf, st, false)
+	emitZodiacFill(buf, st)
+	emitConcentricCircles(buf, st)
+	emitCardinalAxes(buf, st)
+	emitZodiac(buf, st)
+	emitHouses(buf, st)
+	emitPlanets(buf, st)
+end
+
+local function commonEnd(buf)
+	closeScope(buf)
+end
+
+local function commonParse(planetText, houseText, radius,
+                          signNamesStr, zodiacSymbolsStr, astralSymbolsStr,
+                          applyColor, sepColor, aspectsUseAdjusted, cfgStr)
+	local planets
+	if (planetText:find(" in ", 1, true) or planetText:find(" em ", 1, true)) then
+		planets = parsePlanetText(planetText)
+	else
+		planets = parseToTable(planetText)
+		if not planets then return nil end
+	end
+	if #planets ~= 15 then
+		fail("Esperado 15 planetas, recebido " .. #planets)
+		return nil
+	end
+
+	local houses
+	if (houseText:find("House", 1, true) or houseText:find("Casa", 1, true)) or houseText:find(" in ", 1, true) then
+		houses = parseHouseText(houseText)
+	else
+		houses = parseToTable(houseText)
+		if not houses then return nil end
+	end
+	if #houses < 12 then
+		fail("Esperado pelo menos 12 casas, recebido " .. #houses)
+		return nil
+	end
+
+	local r = tonumber(radius)
+	if not finite(r) or r <= 0 or r > 100 then fail("Raio deve estar entre 0 e 100 cm") end
+  for i,v in ipairs(planets) do if not finite(v) then fail("Planeta nao finito") end; planets[i]=v%360 end
+  if #houses > 12 then warn("Cuspides extras ignoradas; usadas as primeiras 12") end
+  local h = {}
+  for i=1,12 do
+    local v=houses[i]; if not finite(v) then fail("Casa nao finita") end
+    h[i]=v%360
+  end
+  local span=0
+  for i=1,12 do local gap=(h[i%12+1]-h[i])%360; if gap==0 then fail("Cuspides coincidentes") end; span=span+gap end
+  if math.abs(span-360)>0.001 then fail("Casas fora de ordem circular") end
+  houses=h
+
+	return buildState(planets, houses, r,
+		signNamesStr, zodiacSymbolsStr, astralSymbolsStr,
+		applyColor, sepColor, aspectsUseAdjusted, cfgStr)
+end
+
+-- =========================================================
+-- API PÚBLICA — FULL-PAGE
+-- =========================================================
+
+function M.renderChart(planetText, houseText, aspectsText, radius,
+                       signNamesStr, zodiacSymbolsStr, astralSymbolsStr,
+                       applyColor, sepColor, aspectsUseAdjusted, cfgStr)
+	local st = commonParse(planetText, houseText, radius,
+		signNamesStr, zodiacSymbolsStr, astralSymbolsStr,
+		applyColor, sepColor, aspectsUseAdjusted, cfgStr)
+	if not st then return end
+
+	local buf = {}
+	commonRender(buf, st)
+	emitAspects(buf, st, aspectsText)
+	commonEnd(buf)
+	tex.sprint(table.concat(buf))
+end
+
+-- =========================================================
+-- API PÚBLICA — INLINE
+-- =========================================================
+
+function M.renderChartInline(planetText, houseText, aspectsText, radius,
+                             signNamesStr, zodiacSymbolsStr, astralSymbolsStr,
+                             applyColor, sepColor, aspectsUseAdjusted, cfgStr)
+	local st = commonParse(planetText, houseText, radius,
+		signNamesStr, zodiacSymbolsStr, astralSymbolsStr,
+		applyColor, sepColor, aspectsUseAdjusted, cfgStr)
+	if not st then return end
+
+	local buf = {}
+	commonRenderInline(buf, st)
+	emitAspects(buf, st, aspectsText)
+	commonEnd(buf)
+	tex.sprint(table.concat(buf))
+end
+
+-- =========================================================
+-- DRY RUN — diagnóstico
+-- =========================================================
+function M.dryRun(planetText, houseText, aspectsText)
+	local function report(label, value)
+		texio.write_nl("log", "[astrocalc.dryRun] "..label..": "..tostring(value))
+	end
+
+	report("DEBUG", M.DEBUG)
+	report("SEP_MIN", M.SEP_MIN)
+	report("FATOR_INTENSIDADE", M.FATOR_INTENSIDADE)
+	report("TOLERANCIA", M.TOLERANCIA)
+	report("MAX_ITERACOES", M.MAX_ITERACOES)
+
+	local planets
+	if (planetText:find(" in ", 1, true) or planetText:find(" em ", 1, true)) then
+		planets = parsePlanetText(planetText)
+	else
+		planets = parseToTable(planetText) or {}
+	end
+	report("planetas", #planets)
+	if #planets ~= 15 then
+		fail("dryRun: esperado 15 planetas, recebido "..#planets)
+	end
+
+	local houses
+	if (houseText:find("House", 1, true) or houseText:find("Casa", 1, true)) or houseText:find(" in ", 1, true) then
+		houses = parseHouseText(houseText)
+	else
+		houses = parseToTable(houseText) or {}
+	end
+	report("casas", #houses)
+	if #houses < 12 then
+		fail("dryRun: esperado >= 12 casas, recebido "..#houses)
+	end
+
+	if aspectsText:find("Orb:", 1, true) then
+		local app, sep = parseAspectTextInternal(aspectsText)
+		local n_app = 0
+		for _ in app:gmatch("{") do n_app = n_app + 1 end
+		local n_sep = 0
+		for _ in sep:gmatch("{") do n_sep = n_sep + 1 end
+		report("applying", n_app)
+		report("separating", n_sep)
+		report("total", n_app + n_sep)
+	else
+		local n = 0
+		for _ in aspectsText:gmatch("{") do n = n + 1 end
+		report("pares", n)
+	end
+
+	report("status", "OK (nenhum PDF gerado — apenas diagnóstico)")
+end
+
+function M.texCall(name, ...)
+  local ok, err = pcall(M[name], ...)
+  if not ok then
+    texio.write_nl("term and log", tostring(err))
+    tex.sprint("\\PackageError{astropack}{Entrada invalida; consulte o log}{Corrija os dados indicados no log.}")
+  end
+end
+
+return M
+end
+
+package.preload["natalreport.schema"] = function()
+-- natalreport v0.2.0 — contrato estrito e importação explícita, Lua 5.3+
+local M={}
+M.bodies={"Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto","Node","Lilith","Chiron","Fortune","Vertex"}
+M.signs={"Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"}
+M.ptSigns={"Áries","Touro","Gêmeos","Câncer","Leão","Virgem","Libra","Escorpião","Sagitário","Capricórnio","Aquário","Peixes"}
+M.ptBodies={"Sol","Lua","Mercúrio","Vênus","Marte","Júpiter","Saturno","Urano","Netuno","Plutão","Nodo Norte","Lilith","Quíron","Fortuna","Vertex"}
+M.symbols={"☉","☽","☿","♀","♂","♃","♄","♅","♆","♇","☊","⚸","⚷","⊗","VX"}
+M.aspectAngles={Conjunction=0,Sextile=60,Square=90,Trine=120,Opposition=180,Quincunx=150,
+ ["Semi-Sextile"]=30,Semisextile=30,["Semi-Square"]=45,Semisquare=45,Quintile=72,Biquintile=144,
+ Sesquiquadrate=135,Sesquisquare=135,["Semi-Quintile"]=36,Semiquintile=36}
+M.ptAspects={Conjunction="Conjunção",Sextile="Sextil",Square="Quadratura",Trine="Trígono",Opposition="Oposição",Quincunx="Quincunce"}
+function M.trim(s) return tostring(s):match("^%s*(.-)%s*$") end
+function M.finite(n) return type(n)=="number" and n==n and math.abs(n)<math.huge end
+function M.fail(field,help) error("Campo "..field.." inválido. "..help,0) end
+function M.fold(s)
+ return tostring(s):gsub("Á","a"):gsub("á","a"):gsub("ã","a"):gsub("â","a"):gsub("é","e"):gsub("ê","e"):gsub("í","i"):gsub("ó","o"):gsub("ô","o"):gsub("õ","o"):gsub("ú","u"):gsub("ç","c"):lower():gsub("[%s_%-]","")
+end
+local aliases={}
+for i,key in ipairs(M.bodies) do aliases[M.fold(key)]=key;aliases[M.fold(M.ptBodies[i])]=key end
+for k,v in pairs({nodo="Node",northnode="Node",southnode="SouthNode",nodosul="SouthNode",asc="Ascendant",ascendente="Ascendant",ascendant="Ascendant",mc="MC",dsc="DSC",ic="IC"}) do aliases[k]=v end
+function M.body(s) return aliases[M.fold(s)] end
+function M.sign(s)
+ for i,key in ipairs(M.signs) do if M.fold(s)==M.fold(key) or M.fold(s)==M.fold(M.ptSigns[i]) then return i end end
+end
+function M.signIndex(n) return math.floor(n%360/30)+1 end
+function M.house(n,h)
+ for i=1,12 do if (n-h[i])%360 < (h[i%12+1]-h[i])%360 then return i end end
+ error("Não foi possível resolver casa",0)
+end
+local function csv(s,field)
+ local t={}
+ if s:match("^%s*,") or s:match(",%s*,") or s:match(",%s*$") then M.fail(field,"CSV sem campos vazios.") end
+ for v in s:gmatch("[^,]+") do
+  local n=tonumber(M.trim(v))
+  if not M.finite(n) or n<0 or n>360 then M.fail(field,"Use graus entre 0 e 360, com ponto decimal.") end
+  t[#t+1]=n%360
+ end
+ return t
+end
+function M.positions(value,kind)
+ local out={}
+ if type(value)=="table" then
+  for k in pairs(value) do if type(k)~="number" or k%1~=0 or k<1 or k>#value then M.fail(kind,"Use array denso de números, sem campos adicionais.") end end
+  for i,v in ipairs(value) do if not M.finite(v) or v<0 or v>360 then M.fail(kind,"Tabela numérica em 0..360.") end;out[i]=v%360 end
+ elseif type(value)=="string" then
+  if not value:find("°",1,true) then out=csv(value,kind)
+  else
+   local seen={}
+   local text=value:gsub(" em "," in ")
+   for chunk in text:gmatch("[^,;\n]+") do
+    local body,sign,g,m,mark=chunk:match("^%s*(.-)%s+in%s+(.-)%s+(%d+)°(%d*)%s*['′]?%s*([RrDd]?)%s*$")
+    if not body then M.fail(kind,"Use Corpo em Signo 12°30, ou CSV.") end
+    local si=M.sign(sign);g=tonumber(g);m=tonumber(m) or 0
+    if not si or g>=30 or m>=60 then M.fail(kind,"Signo conhecido, grau 0..29 e minuto 0..59.") end
+    local n=(si-1)*30+g+m/60
+    if kind=="planetas" then
+     local key=M.body(body)
+     local idx
+     for i,k in ipairs(M.bodies) do if k==key then idx=i end end
+     if not idx or seen[idx] then M.fail(kind,"Corpo desconhecido ou duplicado: "..body) end
+     out[idx]=n;seen[idx]=true
+     out.movements=out.movements or {};out.movements[idx]=mark:upper()=="R" and "R" or "D"
+    else
+     if not (body:match("^House%s*%d*$") or body:match("^Casa%s*%d*$")) then M.fail(kind,"Use Casa em Signo 12°30.") end
+     out[#out+1]=n
+    end
+   end
+   if kind=="planetas" then for i=1,15 do if not seen[i] then M.fail(kind,"Falta "..M.ptBodies[i].."; são exigidos 15 corpos.") end end end
+  end
+ else M.fail(kind,"Use texto ou tabela numérica.") end
+ if kind=="planetas" and #out~=15 then M.fail(kind,"São exigidos exatamente 15 corpos.") end
+ if kind=="cuspides" then
+  if #out~=12 then M.fail(kind,"São exigidas exatamente 12 cúspides.") end
+  local span=0
+  for i=1,12 do local gap=(out[i%12+1]-out[i])%360;if gap==0 then M.fail(kind,"Cúspides distintas.") end;span=span+gap end
+  if math.abs(span-360)>0.001 then M.fail(kind,"Cúspides em ordem circular.") end
+ end
+ return out
+end
+local aspectAliases={}
+local canonicalAspect={Semisextile="Semi-Sextile",Semisquare="Semi-Square",Sesquisquare="Sesquiquadrate",Semiquintile="Semi-Quintile"}
+for k in pairs(M.aspectAngles) do aspectAliases[M.fold(k)]=canonicalAspect[k] or k end
+for k,v in pairs(M.ptAspects) do aspectAliases[M.fold(v)]=k end
+local function resolveAspectBody(name)
+ local body=M.body(name)
+ if not body then M.fail("aspectos","Corpo desconhecido: "..name) end
+ return body
+end
+function M.aspects(text)
+ if type(text)~="string" then M.fail("aspectos","Use lista textual com Orb e estado.") end
+ local list={}
+ if M.trim(text)=="" then return list end
+ local consumed=""
+ local cursor=1
+ while cursor<=#text do
+  local s,e,head,info=text:find("%s*([^()]+)%(([^()]*)%)",cursor)
+  if not s or s~=cursor then M.fail("aspectos","Use Corpo Aspecto Corpo (Orb: 2°10', Applying).") end
+  head=head:gsub("^[,%s;]+","")
+  local g,m,state=info:match("^%s*Orb:%s*(%d+)°(%d*)%s*['′]?%s*,%s*([A-Za-z]+)%s*$")
+  g=tonumber(g);m=tonumber(m) or 0
+  if not g or g>180 or m>59 or (g==180 and m>0) then M.fail("aspectos","Orb entre 0°00 e 180°00.") end
+  state=state and state:lower()
+  if state~="applying" and state~="separating" then M.fail("aspectos","Estado Applying ou Separating.") end
+  local b1,asp,b2
+  -- Try all word boundaries; body aliases may contain spaces.
+  for start,word,after in head:gmatch("()([^%s]+)()") do
+   local kind=aspectAliases[M.fold(word)]
+   if kind then
+    b1=M.trim(head:sub(1,start-1));b2=M.trim(head:sub(after));asp=kind;break
+   end
+  end
+  if not asp then
+   for name in pairs(M.aspectAngles) do
+    local a,b=head:find(" "..name.." ",1,true)
+    if a then b1=head:sub(1,a-1);b2=head:sub(b+1);asp=name;break end
+   end
+  end
+  if not asp then M.fail("aspectos","Aspecto não reconhecido em "..head) end
+  local first,second=resolveAspectBody(b1),resolveAspectBody(b2)
+  if first==second then M.fail("aspectos","Um aspecto exige dois corpos distintos.") end
+  list[#list+1]={body1=first,body2=second,type=asp,orb=g+m/60,
+   state=state=="applying" and "Applying" or "Separating"}
+  cursor=e+1
+  if text:sub(cursor):match("^[,%s;]*$") then break end
+ end
+ return list
+end
+local function coordinate(v,limit,field)
+ local n=tonumber(v)
+ if not n and type(v)=="string" then
+  local d,m,s,hem=v:match("^%s*([%+%-]?%d+)°(%d+)'([%d%.]+)\"%s*([NSEWnsew])%s*$")
+  if d then
+   d,m,s=tonumber(d),tonumber(m),tonumber(s)
+   if m>=60 or s>=60 or d<0 then M.fail(field,"DMS positivo com hemisfério; minutos/segundos <60.") end
+   hem=hem:upper()
+   if (field=="lat" and not hem:match("[NS]")) or (field=="lon" and not hem:match("[EW]")) then M.fail(field,"Hemisfério incompatível.") end
+   n=(d+m/60+s/3600)*((hem=="S" or hem=="W") and -1 or 1)
+  end
+ end
+ if not M.finite(n) or math.abs(n)>limit then M.fail(field,"Use decimal ou DMS; limite ±"..limit..".") end
+ return n
+end
+local function referenceAspects(value)
+ if type(value)=="string" then return M.aspects(value) end
+ if type(value)~="table" then M.fail("aspectos","Use texto canônico ou array de aspectos sem estado na importação.") end
+ local list={}
+ for k in pairs(value) do if type(k)~="number" or k%1~=0 or k<1 or k>#value then M.fail("aspectos","Use array denso.") end end
+ for _,a in ipairs(value) do
+  if type(a)~="table" then M.fail("aspectos","Cada aspecto deve ser uma tabela.") end
+  local one,two=M.body(a.body1),M.body(a.body2)
+  if not one or not two or one==two then M.fail("aspectos","Dois corpos conhecidos e distintos.") end
+  local kind=aspectAliases[M.fold(a.type)]
+  if not kind then M.fail("aspectos","Tipo de aspecto desconhecido.") end
+  if not M.finite(a.orb) or a.orb<0 or a.orb>180 then M.fail("aspectos","Orbe numérico em 0..180.") end
+  if a.state~="Unspecified" then M.fail("aspectos","O array de referência aceita somente state=Unspecified; estados conhecidos usam texto canônico.") end
+  list[#list+1]={body1=one,body2=two,type=kind,orb=a.orb,state="Unspecified"}
+ end
+ return list
+end
+function M.validate(raw,reference)
+ if type(raw)~="table" then M.fail("dados","O arquivo deve retornar uma tabela.") end
+ local allowed={nome=true,data=true,hora=true,fuso=true,["local"]=true,lat=true,latitude=true,lon=true,longitude=true,casas=true,sistema_casas=true,planetas=true,cuspides=true,aspectos=true,tema=true,observacoes=true}
+ if reference then allowed.movimentos=true end
+ for k in pairs(raw) do if not allowed[k] then M.fail(tostring(k),"Campo desconhecido no schema.") end end
+ local d={}
+ for k,v in pairs(raw) do d[k]=v end
+ d.lat=d.lat or d.latitude;d.lon=d.lon or d.longitude;d.casas=d.casas or d.sistema_casas
+ local required={"nome","data","hora","local","lat","lon","casas","planetas","cuspides","aspectos"}
+ if reference then required={"nome","data","hora","local","casas","planetas","cuspides","aspectos"} end
+ for _,k in ipairs(required) do if d[k]==nil or (k~="aspectos" and M.trim(d[k])=="") then M.fail(k,"Campo obrigatório ausente.") end end
+ for _,k in ipairs({"nome","data","hora","local","casas"}) do if type(d[k])~="string" then M.fail(k,"Use texto.") end end
+ if d.fuso~=nil and type(d.fuso)~="string" then M.fail("fuso","Use texto UTC, Z ou ±HH:MM.") end
+ local y,mo,day=d.data:match("^(%d%d%d%d)%-(%d%d)%-(%d%d)$")
+ if not y then day,mo,y=d.data:match("^(%d%d)/(%d%d)/(%d%d%d%d)$") end
+ y,mo,day=tonumber(y),tonumber(mo),tonumber(day)
+ local days={31,28,31,30,31,30,31,31,30,31,30,31}
+ if y and (y%400==0 or y%4==0 and y%100~=0) then days[2]=29 end
+ if not y or y<1 or not days[mo] or day<1 or day>days[mo] then M.fail("data","Use data válida ISO aaaa-mm-dd ou dd/mm/aaaa.") end
+ d.dateISO=string.format("%04d-%02d-%02d",y,mo,day)
+ local hh,mm,zone=d.hora:match("^(%d%d):(%d%d)%s*(.-)%s*$")
+ if not hh or tonumber(hh)>23 or tonumber(mm)>59 then M.fail("hora","Use HH:MM e fuso explícito (hora ou campo fuso).") end
+ zone=zone~="" and zone or d.fuso
+ if not zone or zone=="" then M.fail("fuso","Informe UTC, Z ou ±HH:MM; não é inferido do local.") end
+ if zone~="UTC" and zone~="Z" then
+  local zh,zm=zone:match("^[%+%-](%d%d):(%d%d)$")
+  if not zh or tonumber(zh)>14 or tonumber(zm)>59 or tonumber(zh)==14 and tonumber(zm)>0 then M.fail("fuso","Use UTC ou ±HH:MM até 14:00.") end
+ end
+ d.fuso=zone;d.hora=hh..":"..mm
+ local systems={placidus="Placidus",koch="Koch",casasiguais="Equal",equal="Equal",equalhouses="Equal",wholesign="Whole Sign"}
+ d.casas=systems[M.fold(d.casas)]
+ if not d.casas then M.fail("casas","Placidus, Koch, Casas Iguais ou Whole Sign.") end
+ if not reference or d.lat~=nil then d.lat=coordinate(d.lat,90,"lat") end
+ if not reference or d.lon~=nil then d.lon=coordinate(d.lon,180,"lon") end
+ d.planets=M.positions(d.planetas,"planetas");d.houses=M.positions(d.cuspides,"cuspides")
+ d.aspects=reference and referenceAspects(d.aspectos) or M.aspects(d.aspectos)
+ d.warnings={}
+ local longitudes={}
+ for i,key in ipairs(M.bodies) do longitudes[key]=d.planets[i] end
+ longitudes.Ascendant=d.houses[1];longitudes.IC=d.houses[4]
+ longitudes.DSC=d.houses[7];longitudes.MC=d.houses[10]
+ longitudes.SouthNode=(d.planets[11]+180)%360
+ local seenAspects={}
+ for _,a in ipairs(d.aspects) do
+  local first,second=a.body1,a.body2
+  if first>second then first,second=second,first end
+  local key=first..":"..a.type..":"..second
+  if seenAspects[key] then M.fail("aspectos","Aspecto duplicado: "..key) end
+  seenAspects[key]=true
+  local delta=math.abs(longitudes[a.body1]-longitudes[a.body2])%360
+  delta=math.min(delta,360-delta)
+  local expected=math.abs(delta-M.aspectAngles[a.type])
+  -- Two rounded positions and a rounded orb can differ by up to 1.5 arcminutes.
+  if math.abs(expected-a.orb)>0.0250001 then
+   d.warnings[#d.warnings+1]=string.format("Orbe inconsistente: %s %s %s; informado %.5f graus, calculado %.5f graus",a.body1,a.type,a.body2,a.orb,expected)
+  end
+ end
+ d.reference=reference==true
+ if reference and d.movimentos~=nil then
+  if type(d.movimentos)~="table" then M.fail("movimentos","Use tabela corpo=R, D ou ?.") end
+  d.planets.movements={}
+  for i=1,15 do d.planets.movements[i]="?" end
+  for key,v in pairs(d.movimentos) do
+   local body=M.body(key);local idx
+   for i,k in ipairs(M.bodies) do if k==body then idx=i end end
+   if not idx or (v~="R" and v~="D" and v~="?") then M.fail("movimentos","Corpo conhecido e R, D ou ?.") end
+   d.planets.movements[idx]=v
+  end
+ end
+ d.tema=d.tema or "";d.observacoes=d.observacoes or ""
+ if type(d.tema)~="string" or type(d.observacoes)~="string" then M.fail("tema/observacoes","Use texto.") end
+ return d
+end
+return M
+end
+
+package.preload["natalreport.nataldata"] = function()
+local schema=require("natalreport.schema")
+local M={current=nil}
+function M.set(raw) M.current=nil;M.current=schema.validate(raw) end
+function M.setReference(raw)
+ M.current=nil
+ M.current=schema.validate(raw,true)
+end
+local function loadData(filename,reference)
+ M.current=nil
+ local path=kpse and kpse.find_file(filename) or filename
+ if not path or path=="" then path=filename end
+ -- Data files are Lua chunks, evaluated without io, os, require, tex or globals.
+ local chunk,err=loadfile(path,"t",{})
+ if not chunk then error("Não foi possível ler arquivo de dados: "..tostring(err),0) end
+ local ok,result=pcall(chunk)
+ if not ok then error("Falha no arquivo de dados: "..tostring(result),0) end
+ M.current=schema.validate(result,reference)
+end
+function M.load(filename) loadData(filename,false) end
+function M.loadReference(filename) loadData(filename,true) end
+return M
+end
+
+package.preload["natalreport.natallogic"] = function()
+local S=require("natalreport.schema")
+local M={}
+M.rulers={"Mars","Venus","Mercury","Moon","Sun","Mercury","Venus","Mars","Jupiter","Saturn","Saturn","Jupiter"}
+local elements={"fire","earth","air","water"}
+local modalities={"cardinal","fixed","mutable"}
+function M.analyze(d)
+ local r={elements={fire=0,earth=0,air=0,water=0},modalities={cardinal=0,fixed=0,mutable=0},
+  hemispheres={east=0,west=0,north=0,south=0},patterns={},placements={},total=10}
+ local signs,houses={},{}
+ for i,n in ipairs(d.planets) do
+  local si=S.signIndex(n);local hi=S.house(n,d.houses)
+  r.placements[S.bodies[i]]={longitude=n,sign=si,house=hi,index=i,movement=d.planets.movements and d.planets.movements[i] or "?"}
+  if i<=10 then
+   local el=elements[(si-1)%4+1];r.elements[el]=r.elements[el]+1
+   local mo=modalities[(si-1)%3+1];r.modalities[mo]=r.modalities[mo]+1
+   local ew=(hi<=3 or hi>=10) and "east" or "west";r.hemispheres[ew]=r.hemispheres[ew]+1
+   local ns=hi<=6 and "north" or "south";r.hemispheres[ns]=r.hemispheres[ns]+1
+   signs[si]=signs[si] or {};table.insert(signs[si],S.bodies[i])
+   houses[hi]=houses[hi] or {};table.insert(houses[hi],S.bodies[i])
+  end
+ end
+ local seen={}
+ local function add(kind,members,extra)
+  table.sort(members);local sig=kind..":"..table.concat(members,",")..":"..tostring(extra or "")
+  if not seen[sig] then seen[sig]=true;r.patterns[#r.patterns+1]={tipo=kind,membros=members,chave_de_texto=kind,context=extra} end
+ end
+ for i=1,12 do
+  if signs[i] and #signs[i]>=3 then add("stellium_sign",signs[i],i) end
+  if houses[i] and #houses[i]>=3 then add("stellium_house",houses[i],i) end
+ end
+ local graph={}
+ local function pair(a,b) if a>b then a,b=b,a end;return a..":"..b end
+ for _,a in ipairs(d.aspects) do
+  local k=pair(a.body1,a.body2);graph[k]=graph[k] or {};graph[k][a.type]=true
+ end
+ local function has(a,b,t) return graph[pair(a,b)] and graph[pair(a,b)][t] end
+ -- Configurations use the ten planets and only explicitly supplied aspect edges.
+ for i=1,8 do for j=i+1,9 do for k=j+1,10 do
+  local a,b,c=S.bodies[i],S.bodies[j],S.bodies[k]
+  if has(a,b,"Trine") and has(a,c,"Trine") and has(b,c,"Trine") then add("grand_trine",{a,b,c}) end
+  local triples={{a,b,c},{a,c,b},{b,c,a}}
+  for _,t in ipairs(triples) do
+   local u,v,w=table.unpack(t)
+   if has(u,v,"Opposition") and has(u,w,"Square") and has(v,w,"Square") then add("t_square",{a,b,c}) end
+   if has(u,v,"Sextile") and has(u,w,"Quincunx") and has(v,w,"Quincunx") then add("yod",{a,b,c}) end
+  end
+ end end end
+ for i=1,7 do for j=i+1,8 do for k=j+1,9 do for l=k+1,10 do
+  local a,b,c,d2=S.bodies[i],S.bodies[j],S.bodies[k],S.bodies[l]
+  for _,p in ipairs({{a,b,c,d2},{a,c,b,d2},{a,d2,b,c}}) do
+   local u,v,w,x=table.unpack(p)
+   if has(u,v,"Opposition") and has(w,x,"Opposition") and has(u,w,"Square") and has(u,x,"Square") and has(v,w,"Square") and has(v,x,"Square") then add("grand_cross",{a,b,c,d2}) end
+  end
+ end end end end
+ r.dominants={}
+ for group,values in pairs({element=r.elements,modality=r.modalities}) do
+  local max=0;for _,v in pairs(values) do max=math.max(max,v) end
+  for key,v in pairs(values) do if v==max then r.dominants[#r.dominants+1]={tipo=group.."_"..key,membros={},chave_de_texto=group.."_"..key,count=v} end end
+ end
+ table.sort(r.dominants,function(a,b)return a.tipo<b.tipo end)
+ for _,axis in ipairs({{"east","west"},{"north","south"}}) do
+  local a,b=axis[1],axis[2]
+  if r.hemispheres[a]~=r.hemispheres[b] then local k=r.hemispheres[a]>r.hemispheres[b] and a or b;r.dominants[#r.dominants+1]={tipo="hemisphere_"..k,chave_de_texto="hemisphere_"..k,membros={}} end
+ end
+ r.angles={Ascendant=d.houses[1],MC=d.houses[10],DSC=d.houses[7],IC=d.houses[4],
+  Node=d.planets[11],SouthNode=(d.planets[11]+180)%360,Lilith=d.planets[12],Chiron=d.planets[13],Fortune=d.planets[14],Vertex=d.planets[15]}
+ return r
+end
+return M
+end
+
+package.preload["natalreport.nataltable"] = function()
+local S=require("natalreport.schema")
+local L=require("natalreport.natallogic")
+local M={}
+function M.esc(s)
+ local map={["\\"]="\\textbackslash{}",["{"]="\\{",["}"]="\\}",["#"]="\\#",["%"]="\\%",["&"]="\\&",["_"]="\\_",["$"]="\\$",["^"]="\\textasciicircum{}",["~"]="\\textasciitilde{}"}
+ return (tostring(s):gsub("[\\{}#%%&_$^~]",map))
+end
+function M.body(key,lang)
+ for i,k in ipairs(S.bodies) do if k==key then return lang=="pt" and S.ptBodies[i] or k end end
+ return ({pt={Ascendant="Ascendente",SouthNode="Nodo Sul",MC="Meio do Céu",DSC="Descendente",IC="Fundo do Céu"},
+ en={Ascendant="Ascendant",SouthNode="South Node",MC="Midheaven",DSC="Descendant",IC="IC"}})[lang][key] or key
+end
+function M.sign(i,lang) return lang=="pt" and S.ptSigns[i] or S.signs[i] end
+function M.degree(n,absolute)
+ local total=math.floor((absolute and n or n%30)*60+0.5)
+ if not absolute and total>=1800 then total=1799 end -- preserve supplied sign at a boundary
+ return string.format("%d°%02d'",math.floor(total/60),total%60)
+end
+local domicile={Sun={5},Moon={4},Mercury={3,6},Venus={2,7},Mars={1,8},Jupiter={9,12},Saturn={10,11}}
+local exalt={Sun=1,Moon=2,Mercury=6,Venus=12,Mars=10,Jupiter=4,Saturn=7}
+function M.dignity(key,si,lang)
+ if domicile[key] then
+  for _,s in ipairs(domicile[key]) do
+   if si==s then return lang=="pt" and "Domicílio" or "Domicile" end
+   if si==(s+5)%12+1 then return lang=="pt" and "Exílio" or "Detriment" end
+  end
+ end
+ if exalt[key]==si then return lang=="pt" and "Exaltação" or "Exaltation" end
+ if exalt[key] and si==(exalt[key]+5)%12+1 then return lang=="pt" and "Queda" or "Fall" end
+ return "--"
+end
+local function tableOpen(cols,heads)
+ return "\\begingroup\\small\\setlength{\\tabcolsep}{4pt}\\renewcommand{\\arraystretch}{1.18}\\begin{longtable}{"..cols.."}\\toprule\n"..table.concat(heads," & ").."\\\\\\midrule\\endhead\n"
+end
+local function finish(buf) buf[#buf+1]="\\bottomrule\\end{longtable}\\endgroup";return table.concat(buf,"\n") end
+function M.planets(d,r,lang)
+ local h=lang=="pt" and {"Corpo","Signo","Grau","Casa","Mov.","Dignidade"} or {"Body","Sign","Degree","House","Motion","Dignity"}
+ local b={tableOpen("@{}llrcrl@{}",h)}
+ for i,key in ipairs(S.bodies) do local p=r.placements[key]
+  b[#b+1]=table.concat({M.esc(M.body(key,lang)),M.esc(M.sign(p.sign,lang)),M.degree(p.longitude),p.house,p.movement,M.dignity(key,p.sign,lang)}," & ").."\\\\"
+ end
+ b[#b+1]="\\multicolumn{6}{l}{\\footnotesize "..(lang=="pt" and "D: direto; R: retrógrado; ?: movimento não informado." or "D: direct; R: retrograde; ?: motion not supplied.").."}\\\\"
+ return finish(b)
+end
+function M.houses(d,r,lang)
+ local b={tableOpen("@{}clrl@{}",lang=="pt" and {"Casa","Signo","Cúspide","Regente clássico"} or {"House","Sign","Cusp","Classical ruler"})}
+ for i=1,12 do local si=S.signIndex(d.houses[i])
+  b[#b+1]=table.concat({i,M.esc(M.sign(si,lang)),M.degree(d.houses[i]),M.esc(M.body(L.rulers[si],lang))}," & ").."\\\\"
+ end
+ return finish(b)
+end
+function M.aspects(d,r,lang,cfg)
+ if #d.aspects==0 then return lang=="pt" and "Nenhum aspecto informado.\\par" or "No aspects supplied.\\par" end
+ for _,color in ipairs({cfg.applying,cfg.separating}) do if not color:match("^[%w!%.%-]+$") then error("Cor de aspecto inválida",0) end end
+ local palette="\\colorlet{NatalAspectApplying}{"..cfg.applying.."}\\colorlet{NatalAspectSeparating}{"..cfg.separating.."}\\colorlet{NatalAspectUnspecified}{gray!70}"
+ local b={palette,tableOpen("@{}lllrl@{}",lang=="pt" and {"Corpo 1","Aspecto","Corpo 2","Orbe","Estado"} or {"Body 1","Aspect","Body 2","Orb","State"})}
+ for _,a in ipairs(d.aspects) do
+  local color=a.state=="Unspecified" and "NatalAspectUnspecified" or (a.state=="Applying" and "NatalAspectApplying" or "NatalAspectSeparating")
+  if not color:match("^[%w!%.%-]+$") then error("Cor de aspecto inválida",0) end
+  local state=a.state=="Unspecified" and (lang=="pt" and "Não informado" or "Not supplied") or (lang=="pt" and (a.state=="Applying" and "Aplicativo" or "Separativo") or a.state)
+  b[#b+1]="\\rowcolor{"..color.."!8}"..table.concat({M.esc(M.body(a.body1,lang)),M.esc(lang=="pt" and (S.ptAspects[a.type] or a.type) or a.type),M.esc(M.body(a.body2,lang)),M.degree(a.orb,true),state}," & ").."\\\\"
+ end
+ return finish(b)
+end
+return M
+end
+
+package.preload["natalreport.nataltexts"] = function()
+-- Conteúdo interpretativo v0.1.0. Banco bilíngue, expansível sem editar o .sty.
+local S=require("natalreport.schema")
+local M={versao="0.1.0",banks={},overrides={pt={},en={}}}
+local profiles={
+ pt={
+ {"identidade, vitalidade e direção consciente","Pergunte quais escolhas expressam seus valores quando não há aprovação externa."},
+ {"necessidades emocionais, memória e pertencimento","Observe os ritmos que ajudam a reconhecer uma emoção antes de reagir."},
+ {"linguagem, aprendizagem e organização das ideias","Experimente verificar o que entendeu antes de transformar uma impressão em certeza."},
+ {"vínculo, prazer e critérios de valor","Reconheça como troca afeto e quais limites tornam uma relação recíproca."},
+ {"iniciativa, desejo e manejo de conflitos","Dê uma direção concreta à energia e diferencie firmeza de reação impulsiva."},
+ {"expansão, confiança e construção de sentido","Compare suas expectativas com experiências observáveis e abra espaço para aprender."},
+ {"responsabilidade, tempo e elaboração de limites","Divida compromissos grandes em práticas sustentáveis, sem medir valor pessoal apenas por desempenho."},
+ {"autonomia, ruptura e experimentação","Teste mudanças em pequena escala e preserve vínculos que aceitem sua singularidade."},
+ {"imaginação, sensibilidade e abertura ao coletivo","Alterne inspiração com critérios claros para distinguir ideal, desejo e realidade."},
+ {"intensidade, poder e transformação","Observe onde o controle protege algo importante e onde dificulta a renovação."},
+ {"direção de desenvolvimento simbolizada pelo Nodo Norte","Considere experiências novas como possibilidades de aprendizagem, sem tratar o símbolo como destino obrigatório."},
+ {"autonomia instintiva e temas de exclusão simbolizados por Lilith","Nomeie desconfortos e negocie limites sem reduzir sua experiência a um rótulo."},
+ {"vulnerabilidade e aprendizagem simbolizadas por Quíron","Reconheça o que a experiência ensinou, sem supor que toda dificuldade deva se tornar uma missão."},
+ {"fluidez e integração simbolizadas pela Parte da Fortuna","Observe condições práticas em que iniciativa, necessidades e ambiente podem cooperar."},
+ {"encontros e abertura ao inesperado simbolizados pelo Vertex","Examine o significado atribuído aos encontros sem tomar coincidências como garantias."}
+ },
+ en={
+ {"identity, vitality and conscious direction","Ask which choices express your values when external approval is absent."},
+ {"emotional needs, memory and belonging","Notice the rhythms that help you recognize an emotion before reacting."},
+ {"language, learning and the organization of ideas","Check what you have understood before turning an impression into certainty."},
+ {"connection, pleasure and personal values","Recognize how you exchange affection and which boundaries support reciprocity."},
+ {"initiative, desire and conflict","Give energy a concrete direction and distinguish firmness from an impulsive response."},
+ {"growth, confidence and meaning","Compare expectations with observable experience and leave room for learning."},
+ {"responsibility, time and limits","Divide large commitments into sustainable practices without measuring worth only through performance."},
+ {"autonomy, disruption and experimentation","Test changes on a small scale and preserve relationships that welcome individuality."},
+ {"imagination, sensitivity and collective experience","Alternate inspiration with clear criteria for distinguishing ideals, wishes and reality."},
+ {"intensity, power and transformation","Notice where control protects something important and where it blocks renewal."},
+ {"developmental direction symbolized by the North Node","Treat new experiences as learning opportunities rather than a compulsory destiny."},
+ {"instinctive autonomy and exclusion symbolized by Lilith","Name discomfort and negotiate boundaries without reducing experience to a label."},
+ {"vulnerability and learning symbolized by Chiron","Recognize what experience has taught without assuming every difficulty must become a mission."},
+ {"ease and integration symbolized by the Part of Fortune","Notice the practical conditions in which initiative, needs and environment cooperate."},
+ {"encounters and openness to the unexpected symbolized by the Vertex","Explore the meaning of encounters without treating coincidences as guarantees."}
+ }}
+local signs={
+ pt={
+ {"franca, rápida e orientada à iniciativa","dar espaço à pausa e à escuta antes de decidir"},
+ {"constante, sensorial e voltada à continuidade","distinguir estabilidade de apego ao que perdeu utilidade"},
+ {"curiosa, móvel e interessada em alternativas","transformar variedade em escolhas que possam ser acompanhadas"},
+ {"protetora, receptiva e ligada à memória","acolher necessidades sem presumir que todos as expressem do mesmo modo"},
+ {"expressiva, criativa e voltada ao reconhecimento","compartilhar protagonismo e sustentar a criação além do aplauso"},
+ {"analítica, cuidadosa e orientada ao aprimoramento","usar discernimento sem exigir perfeição de si e dos outros"},
+ {"relacional, ponderada e atenta à reciprocidade","negociar sem abandonar preferências apenas para evitar tensão"},
+ {"intensa, reservada e interessada no que está sob a superfície","cultivar confiança sem transformar incerteza em vigilância"},
+ {"exploratória, entusiasmada e voltada ao significado","combinar visão ampla com atenção a detalhes e consequências"},
+ {"pragmática, estruturada e atenta ao longo prazo","permitir flexibilidade e reconhecer necessidades além das metas"},
+ {"independente, inventiva e voltada às redes","relacionar ideias coletivas com a experiência concreta das pessoas"},
+ {"imaginativa, empática e sensível ao ambiente","definir contornos claros para que disponibilidade não se torne sobrecarga"}
+ },
+ en={
+ {"direct, quick and ready to initiate","make room for a pause and for listening before deciding"},
+ {"steady, sensory and concerned with continuity","distinguish stability from attachment to what is no longer useful"},
+ {"curious, flexible and interested in alternatives","turn variety into choices that can be followed through"},
+ {"protective, receptive and connected with memory","acknowledge needs without assuming everyone expresses them alike"},
+ {"expressive, creative and responsive to recognition","share the spotlight and sustain creativity beyond applause"},
+ {"analytical, careful and focused on improvement","use discernment without requiring perfection"},
+ {"relational, measured and attentive to reciprocity","negotiate without abandoning preferences merely to avoid tension"},
+ {"intense, private and attentive to hidden motives","build trust without turning uncertainty into surveillance"},
+ {"exploratory, enthusiastic and meaning-oriented","combine a broad vision with attention to detail and consequences"},
+ {"practical, structured and attentive to the long term","allow flexibility and recognize needs beyond achievement"},
+ {"independent, inventive and connected with networks","connect collective ideas with people's concrete experiences"},
+ {"imaginative, empathic and sensitive to surroundings","set clear boundaries so availability does not become overload"}
+ }}
+local houses={
+ pt={
+ {"presença pessoal, corpo e modo de iniciar experiências","Observe a diferença entre a impressão que transmite e a intenção que deseja comunicar."},
+ {"recursos, sustento e critérios de segurança","Defina prioridades materiais coerentes com o que considera valioso."},
+ {"aprendizagem cotidiana, comunicação e ambiente próximo","Use conversas e registros para transformar percepção em entendimento compartilhado."},
+ {"intimidade, raízes e organização da vida privada","Reconheça o que herdou e o que deseja construir de modo diferente."},
+ {"criação, prazer e expressão autoral","Reserve espaço para experimentar sem converter toda atividade em obrigação."},
+ {"rotina, trabalho cotidiano e cuidado com hábitos","Procure ajustes pequenos e sustentáveis; o símbolo não substitui avaliação de saúde."},
+ {"parcerias, negociação e relação com o outro","Torne expectativas explícitas e observe o equilíbrio entre autonomia e cooperação."},
+ {"recursos compartilhados, confiança e mudanças profundas","Combine acordos claros com espaço para elaborar perdas e transições."},
+ {"estudo amplo, viagens e sistemas de significado","Confronte convicções com perspectivas diferentes sem perder critérios."},
+ {"responsabilidade pública, vocação e contribuição social","Relacione reconhecimento a uma contribuição que possa sustentar no tempo."},
+ {"amizades, grupos e projetos de futuro","Escolha redes em que participação e diferenças possam coexistir."},
+ {"recolhimento, vida interior e processos pouco visíveis","Dê forma ao descanso e à reflexão sem confundir isolamento com única proteção."}
+ },
+ en={
+ {"personal presence, the body and how experiences begin","Notice the difference between the impression you give and the intention you want to communicate."},
+ {"resources, livelihood and security","Set material priorities consistent with what you value."},
+ {"everyday learning, communication and the immediate environment","Use conversation and notes to turn perception into shared understanding."},
+ {"intimacy, roots and private life","Recognize what you inherited and what you want to build differently."},
+ {"creativity, enjoyment and personal expression","Make room to experiment without turning every activity into a duty."},
+ {"routine, daily work and habits","Seek small sustainable adjustments; a symbol does not replace health assessment."},
+ {"partnership, negotiation and relating to others","Make expectations explicit and balance autonomy with cooperation."},
+ {"shared resources, trust and deep change","Combine clear agreements with room to process loss and transition."},
+ {"advanced study, travel and meaning systems","Test convictions against different perspectives while retaining discernment."},
+ {"public responsibility, vocation and social contribution","Connect recognition to a contribution you can sustain over time."},
+ {"friendship, groups and future projects","Choose networks where participation and differences can coexist."},
+ {"solitude, inner life and less visible processes","Give rest and reflection a practical form without making isolation your only protection."}
+ }}
+local aspect={
+ pt={Conjunction="A conjunção aproxima as funções dos dois corpos: elas tendem a atuar juntas e podem ser difíceis de distinguir. Reconhecer a necessidade de cada uma ajuda a integrar potência e excesso.",
+ Sextile="O sextil sugere uma possibilidade de cooperação que ganha força com iniciativa. Procure situações concretas em que as duas funções possam se apoiar, em vez de esperar que a facilidade se manifeste sozinha.",
+ Square="A quadratura simboliza exigências que podem competir entre si. A tensão pode favorecer aprendizagem quando cada necessidade é reconhecida e traduzida em escolhas, sem exigir uma solução perfeita.",
+ Trine="O trígono descreve uma circulação relativamente fluida entre funções. Uma facilidade pode virar recurso consistente quando recebe prática e direção, em vez de permanecer automática.",
+ Opposition="A oposição coloca funções em polos que pedem negociação. Observar projeções e alternar perspectivas ajuda a construir complementaridade sem apagar diferenças.",
+ Quincunx="O quincunce sugere ajustes entre funções que não compartilham o mesmo ritmo. Pequenas revisões de expectativa podem ser mais úteis que tentar impor uma conciliação imediata."},
+ en={Conjunction="The conjunction brings two functions together; they may operate as one and become difficult to distinguish. Recognizing each need supports integration without overlooking excess.",
+ Sextile="The sextile suggests cooperation that develops through initiative. Look for concrete situations in which the two functions can support one another rather than waiting for ease to appear by itself.",
+ Square="The square symbolizes demands that can compete. Tension may support learning when each need is acknowledged and translated into choices without requiring a perfect solution.",
+ Trine="The trine describes relatively fluent cooperation. Ease becomes a reliable resource when it receives practice and direction rather than remaining automatic.",
+ Opposition="The opposition places functions at poles that require negotiation. Noticing projection and changing perspective can build complementarity without erasing differences.",
+ Quincunx="The quincunx suggests adjustments between functions with different rhythms. Small revisions of expectation may help more than imposing immediate reconciliation."}}
+local dominant={
+ pt={
+ element_fire="A ênfase em Fogo destaca iniciativa e mobilização. Sustente o entusiasmo com pausas e objetivos realizáveis.",
+ element_earth="A ênfase em Terra favorece continuidade e atenção ao concreto. Preserve espaço para experimentar antes de exigir resultados.",
+ element_air="A ênfase em Ar privilegia ideias e intercâmbio. Relacione a análise à experiência emocional e às decisões práticas.",
+ element_water="A ênfase em Água ressalta receptividade e vínculos. Limites claros ajudam a acolher sem absorver toda demanda.",
+ modality_cardinal="A modalidade cardinal privilegia começar e responder às circunstâncias. A continuidade pode precisar de rotinas deliberadas.",
+ modality_fixed="A modalidade fixa sustenta direção e persistência. Rever uma escolha não elimina a consistência construída.",
+ modality_mutable="A modalidade mutável amplia adaptação e leitura de alternativas. Critérios de prioridade ajudam a concluir ciclos.",
+ hemisphere_east="A concentração oriental enfatiza iniciativa própria. Autonomia ganha qualidade quando inclui escuta e negociação.",
+ hemisphere_west="A concentração ocidental evidencia a aprendizagem nas relações. Cooperação não exige abandonar a própria direção.",
+ hemisphere_north="A concentração abaixo do horizonte destaca elaboração pessoal e vida privada. Dar forma ao que é íntimo favorece sua expressão.",
+ hemisphere_south="A concentração acima do horizonte destaca participação pública. Cuide para que visibilidade não substitua necessidades privadas.",
+ stellium_sign="O stellium em signo concentra funções em um mesmo estilo de expressão. Reconheça a força desse recurso e exercite modos complementares de responder.",
+ stellium_house="O stellium em casa reúne funções em um campo de experiência. Distribuir atenção entre outras áreas evita que toda decisão dependa de um único tema.",
+ t_square="O T-quadrado articula uma oposição por duas quadraturas. O terceiro corpo concentra tensão e iniciativa; pausas e prioridades ajudam a evitar respostas automáticas.",
+ grand_trine="O grande trígono conecta três funções por vias fluidas. A facilidade se torna produtiva quando encontra um desafio escolhido e uma prática consistente.",
+ yod="O yod combina um sextil com dois quincunces. O foco recai em ajustes de ritmo e contexto, sem implicar uma missão predeterminada.",
+ grand_cross="A grande cruz reúne dois eixos de oposição e quatro quadraturas. Alternar prioridades e explicitar limites pode tornar a complexidade mais manejável.",
+ balanced_elements="Uma distribuição equilibrada de elementos permite mobilizar linguagens diferentes conforme o contexto.",
+ balanced_modalities="O equilíbrio entre modalidades favorece alternar começo, sustentação e revisão.",
+ no_configuration="Nenhuma configuração fechada foi detectada na lista fornecida. A ausência não significa falta de potencial; a detecção depende da completude dos aspectos.",
+ element_fire_low="Pouco Fogo convida a experimentar iniciativa de modo gradual, sem concluir que entusiasmo esteja ausente.",
+ element_earth_low="Pouca Terra sugere cultivar apoio concreto, ritmo e critérios de viabilidade.",
+ element_air_low="Pouco Ar convida a criar espaços de conversa, comparação e distanciamento reflexivo.",
+ element_water_low="Pouca Água sugere reservar tempo para nomear afetos e reconhecer necessidades.",
+ cardinal_low="Baixa presença cardinal convida a criar gatilhos simples para começar.",
+ fixed_low="Baixa presença fixa sugere apoiar continuidade em compromissos realistas.",
+ mutable_low="Baixa presença mutável convida a ensaiar alternativas sem abandonar toda estrutura.",
+ hemisphere_balance="Uma distribuição equilibrada pelos hemisférios favorece alternar iniciativa e relação, intimidade e participação.",
+ synthesis_support="Padrões são recursos de leitura, não ordens: sua expressão depende de escolhas e contexto.",
+ synthesis_tension="Tensões simbólicas podem ser investigadas como necessidades em negociação, sem definir a pessoa por um conflito."
+ },
+ en={
+ element_fire="An emphasis on Fire highlights initiative and activation. Support enthusiasm with pauses and achievable goals.",
+ element_earth="An emphasis on Earth supports continuity and concrete concerns. Leave room to experiment before demanding results.",
+ element_air="An emphasis on Air privileges ideas and exchange. Connect analysis with emotional experience and practical decisions.",
+ element_water="An emphasis on Water highlights receptivity and connection. Clear boundaries help you care without absorbing every demand.",
+ modality_cardinal="Cardinal emphasis supports starting and responding to circumstances. Continuity may need deliberate routines.",
+ modality_fixed="Fixed emphasis sustains direction and persistence. Revising a choice does not erase the consistency already built.",
+ modality_mutable="Mutable emphasis supports adaptation and alternatives. Priorities help bring cycles to a close.",
+ hemisphere_east="Eastern concentration emphasizes personal initiative. Autonomy improves when it includes listening and negotiation.",
+ hemisphere_west="Western concentration emphasizes learning through relationships. Cooperation does not require abandoning direction.",
+ hemisphere_north="Concentration below the horizon highlights private life and personal development. Giving form to inner experience supports expression.",
+ hemisphere_south="Concentration above the horizon highlights public participation. Visibility should not replace private needs.",
+ stellium_sign="A sign stellium concentrates functions in one style of expression. Recognize that resource and practise complementary responses.",
+ stellium_house="A house stellium gathers functions in one area of experience. Distributing attention prevents every decision from depending on a single theme.",
+ t_square="The T-square connects an opposition through two squares. The third body concentrates tension and initiative; pauses and priorities can interrupt automatic responses.",
+ grand_trine="The grand trine connects three functions through fluent exchanges. Ease becomes productive through a chosen challenge and consistent practice.",
+ yod="The yod combines a sextile with two quincunxes. It highlights adjustments of rhythm and context rather than a predetermined mission.",
+ grand_cross="The grand cross combines two oppositions and four squares. Alternating priorities and stating limits can make complexity more manageable.",
+ balanced_elements="A balanced distribution of elements supports drawing on different approaches as context changes.",
+ balanced_modalities="Modal balance supports moving between initiation, continuity and revision.",
+ no_configuration="No closed configuration was detected in the supplied list. Absence does not imply a lack of potential; detection depends on aspect completeness.",
+ element_fire_low="Low Fire invites gradual experiments in initiative without implying that enthusiasm is absent.",
+ element_earth_low="Low Earth suggests cultivating concrete support, rhythm and feasibility.",
+ element_air_low="Low Air invites conversation, comparison and reflective distance.",
+ element_water_low="Low Water suggests time for naming feelings and recognizing needs.",
+ cardinal_low="Low cardinal presence invites simple cues for getting started.",
+ fixed_low="Low fixed presence suggests supporting continuity with realistic commitments.",
+ mutable_low="Low mutable presence invites trying alternatives without abandoning all structure.",
+ hemisphere_balance="Hemisphere balance supports moving between initiative and relationship, privacy and participation.",
+ synthesis_support="Patterns are interpretive resources rather than commands; expression depends on choices and context.",
+ synthesis_tension="Symbolic tensions can be explored as needs in negotiation rather than definitions of a person."
+ }}
+for _,lang in ipairs({"pt","en"}) do
+ local b={planet_in_sign={},planet_in_house={},aspect={},aspect_generic=aspect[lang],angle={},dominant=dominant[lang],
+  synthesis={default=lang=="pt" and "A leitura integrada combina identidade, necessidades emocionais e modo de entrar nas experiências. Use os temas abaixo como perguntas para reflexão, considerando história pessoal e condições concretas." or "An integrated reading combines identity, emotional needs and how you enter experience. Use these themes as reflective questions in the context of personal history and practical circumstances."}}
+ for i,key in ipairs(S.bodies) do
+  b.planet_in_sign[key]={};b.planet_in_house[key]={}
+  for j,sign in ipairs(S.signs) do
+   if lang=="pt" then
+    b.planet_in_sign[key][sign]="Este corpo representa "..profiles.pt[i][1]..". Em "..S.ptSigns[j]..", essa função encontra uma linguagem "..signs.pt[j][1]..".\n\nUma possibilidade de desenvolvimento é "..signs.pt[j][2]..". "..profiles.pt[i][2]
+   else
+    b.planet_in_sign[key][sign]="This body represents "..profiles.en[i][1]..". In "..sign..", this function takes a "..signs.en[j][1].." form.\n\nA useful direction is to "..signs.en[j][2]..". "..profiles.en[i][2]
+   end
+  end
+  for h=1,12 do
+   b.planet_in_house[key][h]=lang=="pt" and ("Na casa "..h..", os temas de "..profiles.pt[i][1].." são explorados por meio de "..houses.pt[h][1]..". O campo da casa descreve uma área de experiência, sem garantir um acontecimento específico.\n\n"..houses.pt[h][2])
+    or ("In house "..h..", themes of "..profiles.en[i][1].." are explored through "..houses.en[h][1]..". The house describes an area of experience rather than guaranteeing a particular event.\n\n"..houses.en[h][2])
+  end
+  for _,other in ipairs(S.bodies) do for _,a in ipairs({"Conjunction","Sextile","Square","Trine","Opposition"}) do b.aspect[key.."-"..a.."-"..other]=aspect[lang][a] end end
+ end
+ for _,a in ipairs({"Ascendant","MC","DSC","IC"}) do
+  b.angle[a]={}
+  local domain=({pt={Ascendant="entrada nas experiências e presença pessoal",MC="direção pública e contribuição",DSC="encontro e negociação com o outro",IC="raízes e sustentação íntima"},
+   en={Ascendant="personal presence and entering experience",MC="public direction and contribution",DSC="encounter and negotiation with others",IC="roots and inner support"}})[lang][a]
+  for i,s in ipairs(S.signs) do b.angle[a][s]=lang=="pt" and ("Este ângulo relaciona "..domain.." a uma expressão "..signs.pt[i][1]..". A integração pede "..signs.pt[i][2]..".")
+   or ("This angle connects "..domain.." with a "..signs.en[i][1].." expression. Integration invites you to "..signs.en[i][2]..".") end
+ end
+ for _,key in ipairs({"Node","Lilith","Chiron","Fortune","Vertex","SouthNode"}) do
+  b.angle[key]={}
+  local idx=key=="SouthNode" and 11 or 1
+  for i,k in ipairs(S.bodies) do if k==key then idx=i end end
+  for i,sign in ipairs(S.signs) do
+   if key=="SouthNode" then
+    b.angle[key][sign]=lang=="pt" and ("O Nodo Sul é derivado por oposição exata ao Nodo Norte. Em "..S.ptSigns[i]..", descreve repertórios familiares com expressão "..signs.pt[i][1]..", a equilibrar com experiências novas.")
+     or ("The South Node is derived exactly opposite the North Node. In "..sign..", it describes familiar responses with a "..signs.en[i][1].." expression to balance with new experiences.")
+   else
+    b.angle[key][sign]=lang=="pt" and ("Este ponto relaciona "..profiles.pt[idx][1].." a uma expressão "..signs.pt[i][1]..". "..profiles.pt[idx][2])
+     or ("This point connects "..profiles.en[idx][1].." with a "..signs.en[i][1].." expression. "..profiles.en[idx][2])
+   end
+  end
+ end
+ b.synthesis.integration=lang=="pt" and "O Sol em {sun} descreve a direção da expressão consciente; a Lua em {moon} destaca a linguagem das necessidades emocionais; o Ascendente em {asc} mostra o modo de entrar nas experiências. A combinação pede reconhecer essas três funções sem exigir que respondam sempre do mesmo modo. Nesta distribuição, sobressaem {dominants}; as configurações detectadas são {patterns}. Explore como esses recursos podem apoiar escolhas concretas, revendo expectativas quando duas necessidades pedirem respostas diferentes."
+  or "The Sun in {sun} describes the direction of conscious expression; the Moon in {moon} highlights the language of emotional needs; the Ascendant in {asc} describes how you enter experience. Integration means recognizing all three functions without requiring them to respond in the same way. This distribution emphasizes {dominants}; the detected configurations are {patterns}. Explore how these resources can support concrete choices and revise expectations when different needs call for different responses."
+ M.banks[lang]=b
+end
+M.texts=M.banks.pt
+function M.override(lang,category,body,key,text)
+ local o=M.overrides[lang];o[category]=o[category] or {};o[category][body]=o[category][body] or {}
+ o[category][body][key]={text=text,raw=true}
+end
+function M.lookup(lang,category,body,key)
+ local o=M.overrides[lang][category]
+ if o and o[body] and o[body][tostring(key)] then return o[body][tostring(key)] end
+ local b=M.banks[lang];local t=b and b[category]
+ if body~="" then t=t and t[body] end
+ return t and t[key]
+end
+return M
+end
+
+package.preload["natalreport.natalrender"] = function()
+-- Única fronteira tex.sprint do relatório. Cada seção retorna uma string atômica.
+local S=require("natalreport.schema")
+local D=require("natalreport.nataldata")
+local L=require("natalreport.natallogic")
+local T=require("natalreport.nataltable")
+local X=require("natalreport.nataltexts")
+local M={}
+local E=T.esc
+local labels={
+ pt={report="Relatório de mapa natal",chart="Mapa natal",technical="Dados técnicos",planets="Posições planetárias",houses="Cúspides das casas",aspects="Aspectos",interpretations="Posições planetárias — interpretação",angles="Eixos e ângulos",dominants="Padrões e dominâncias",synthesis="Síntese final",glossary="Glossário",house="Casa",ruler="Regente clássico",none="Nenhum aspecto maior informado para este corpo.",fire="Fogo",earth="Terra",air="Ar",water="Água",cardinal="Cardinal",fixed="Fixa",mutable="Mutável",east="Oriental",west="Ocidental",north="Abaixo do horizonte",south="Acima do horizonte",elements="Elementos",modalities="Modalidades",hemispheres="Hemisférios",patterns="Configurações e stelliums"},
+ en={report="Natal chart report",chart="Natal chart",technical="Technical data",planets="Planetary positions",houses="House cusps",aspects="Aspects",interpretations="Planetary interpretations",angles="Axes and angles",dominants="Patterns and dominants",synthesis="Final synthesis",glossary="Glossary",house="House",ruler="Classical ruler",none="No major aspect supplied for this body.",fire="Fire",earth="Earth",air="Air",water="Water",cardinal="Cardinal",fixed="Fixed",mutable="Mutable",east="Eastern",west="Western",north="Below the horizon",south="Above the horizon",elements="Elements",modalities="Modalities",hemispheres="Hemispheres",patterns="Configurations and stelliums"}
+}
+local patternNames={pt={stellium_sign="Stellium por signo",stellium_house="Stellium por casa",t_square="T-quadrado",grand_trine="Grande trígono",yod="Yod",grand_cross="Grande cruz"},
+ en={stellium_sign="Sign stellium",stellium_house="House stellium",t_square="T-square",grand_trine="Grand trine",yod="Yod",grand_cross="Grand cross"}}
+local function para(text) return (E(text):gsub("\n\n+","\\par\\medskip\n")).."\\par\\medskip\n" end
+local function text(c,category,body,key,description,vars)
+ local v=X.lookup(c.lang,category,body,key)
+ if not v then
+  local sig=category..":"..body..":"..tostring(key)
+  if not c.missing[sig] then c.missing[sig]=true;c.warnings[#c.warnings+1]="Texto ausente: "..(description or sig) end
+  return para("["..(c.lang=="pt" and "texto ausente: " or "missing text: ")..(description or sig).."]")
+ end
+ if type(v)=="table" and v.raw then return v.text.."\\par\\medskip\n" end
+ if vars then v=v:gsub("{([a-z_]+)}",function(k)return vars[k] or ("{"..k.."}")end) end
+ return para(v)
+end
+local function heading(c,key,override) return "\\section*{"..E(override or c.ui[key]).."}\n" end
+local function subheading(s) return "\\subsection*{"..E(s).."}\n" end
+local function named(c,key) return T.body(key,c.lang) end
+local sections={}
+function sections.cover(c,title)
+ local d=c.d;local b={"\\begin{titlepage}\\centering\\vspace*{1cm}", "{\\Large "..E(title or c.ui.report).."}\\par\\vspace{1.2cm}",
+ "{\\Huge\\bfseries "..E(d.nome).."}\\par\\vspace{0.8cm}","{\\large "..E(d.data.." — "..d.hora.." "..d.fuso).."}\\par\\medskip",E(d["local"]).."\\par\\medskip"}
+ local lat=d.lat and string.format("%.4f",d.lat) or (c.lang=="pt" and "não informada" or "not supplied")
+ local lon=d.lon and string.format("%.4f",d.lon) or (c.lang=="pt" and "não informada" or "not supplied")
+ b[#b+1]=E("Latitude: "..lat.."; Longitude: "..lon).."\\par"
+ b[#b+1]=E(d.casas).."\\par\\vfill"
+ if c.cfg.cover_style=="minimal" then b[#b+1]="\\begin{tikzpicture}\\draw[blue!45,line width=1pt] (0,0) circle (1.2cm);\\draw[blue!25] (0,0) circle (1cm);\\draw[blue!45] (-1.4,0)--(1.4,0) (0,-1.4)--(0,1.4);\\end{tikzpicture}\\par\\vfill" end
+ if d.tema~="" then b[#b+1]="\\textbf{"..E(d.tema).."}\\par\\medskip" end
+ b[#b+1]="{\\small "..E(c.lang=="pt" and "Leitura simbólica para reflexão pessoal. As posições são fornecidas pelo usuário; este pacote não calcula efemérides." or "A symbolic reading for personal reflection. Positions are supplied by the user; this package does not calculate ephemerides.").."}\\end{titlepage}"
+ return table.concat(b,"\n")
+end
+function sections.chart(c,title)
+ local planets,houses,aspects={},{},{}
+ for i=1,15 do planets[i]=string.format("%.10f",c.d.planets[i]) end
+ for i=1,12 do houses[i]=string.format("%.10f",c.d.houses[i]) end
+ local unclassified=#c.d.aspects>0 and c.d.aspects[1].state=="Unspecified"
+ for _,a in ipairs(c.d.aspects) do
+  if unclassified then aspects[#aspects+1]="{"..a.body1..","..a.body2.."}"
+  else aspects[#aspects+1]=string.format("%s %s %s (Orb: %d°%02d', %s)",a.body1,a.type,a.body2,math.floor(math.floor(a.orb*60+0.5)/60),math.floor(a.orb*60+0.5)%60,a.state) end
+ end
+ -- Local TeX macros keep each invocation independent and preserve the chart pipeline.
+ local out=heading(c,"chart",title)
+ out=out.."\\def\\NatalPlanetsCSV{"..table.concat(planets,",").."}\\def\\NatalHousesCSV{"..table.concat(houses,",").."}\\def\\NatalAspectsText{"..table.concat(aspects,", ").."}\n"
+ if unclassified then out=out.."\\begingroup\\renewcommand{\\AspectApplyingColor}{gray!70}\\NatalChartInternal\\endgroup "
+ else out=out.."\\NatalChartInternal " end
+ out=out.."\\begin{center}\\small "..E(c.ui.chart.." — "..c.d.nome.." — "..c.d.data).."\\end{center}\n"
+ if unclassified then out=out..para(c.lang=="pt" and "Aspectos em cinza: os estados aplicativo e separativo não foram informados na fonte. As posições e cúspides foram preservadas, sem recálculo." or "Gray aspects: applying and separating states were not supplied in the source. Positions and cusps are preserved without recalculation.") end
+ return out
+end
+function sections.planet_table(c,title) return subheading(title or c.ui.planets)..T.planets(c.d,c.r,c.lang) end
+function sections.house_table(c,title) return subheading(title or c.ui.houses)..T.houses(c.d,c.r,c.lang) end
+function sections.aspect_table(c,title)
+ local reserve=""
+ if #c.d.aspects>0 and #c.d.aspects<=12 then
+  reserve="\\par\\begingroup\\ifdim\\dimexpr\\pagegoal-\\pagetotal\\relax<"..((#c.d.aspects+5)*15).."pt\\newpage\\fi\\endgroup "
+ end
+ return reserve..subheading(title or c.ui.aspects)..T.aspects(c.d,c.r,c.lang,c.cfg)
+end
+function sections.technical(c,title)
+ return "\\clearpage "..heading(c,"technical",title)..sections.planet_table(c)..sections.house_table(c)..sections.aspect_table(c)
+end
+function sections.interpretations(c,title)
+ local b={heading(c,"interpretations",title)}
+ local major={Conjunction=true,Sextile=true,Square=true,Trine=true,Opposition=true}
+ for i,key in ipairs(S.bodies) do
+  local p=c.r.placements[key];local sign=S.signs[p.sign]
+  b[#b+1]="\\subsection*{{\\astrofont "..S.symbols[i].."} "..E(named(c,key)).."}"
+  b[#b+1]="\\textbf{"..E(T.sign(p.sign,c.lang).." "..T.degree(p.longitude).." — "..c.ui.house.." "..p.house).."}\\par\\medskip"
+  b[#b+1]=text(c,"planet_in_sign",key,sign,named(c,key).." "..T.sign(p.sign,c.lang))
+  b[#b+1]=text(c,"planet_in_house",key,p.house,named(c,key).." "..c.ui.house.." "..p.house)
+  local found=false
+  for _,a in ipairs(c.d.aspects) do if major[a.type] and (a.body1==key or a.body2==key) then
+   found=true
+   local other=a.body1==key and a.body2 or a.body1
+   b[#b+1]="\\textit{"..E(named(c,other).." — "..(c.lang=="pt" and (S.ptAspects[a.type] or a.type) or a.type).." — "..T.degree(a.orb,true)).."}\\par"
+   local pair=key.."-"..a.type.."-"..other
+   if X.banks[c.lang].aspect[pair] then b[#b+1]=text(c,"aspect","",pair)
+   else b[#b+1]=text(c,"aspect_generic","",a.type) end
+  end end
+  if not found then b[#b+1]="{\\small "..E(c.ui.none).."}\\par\\medskip" end
+ end
+ return table.concat(b,"\n")
+end
+function sections.angles(c,title)
+ local b={heading(c,"angles",title)}
+ for _,key in ipairs({"Ascendant","MC","DSC","IC","Node","SouthNode","Lilith","Chiron","Fortune","Vertex"}) do
+  local n=c.r.angles[key];local si=S.signIndex(n)
+  b[#b+1]=subheading(named(c,key).." — "..T.sign(si,c.lang).." "..T.degree(n))
+  if key=="Ascendant" or key=="MC" or key=="DSC" or key=="IC" then
+   b[#b+1]=E(c.ui.ruler..": "..named(c,L.rulers[si])).."\\par\\medskip"
+   b[#b+1]=text(c,"angle",key,S.signs[si])
+  else b[#b+1]=text(c,"angle",key,S.signs[si]) end
+ end
+ return table.concat(b,"\n")
+end
+local function bars(c,title,values,order,denominator)
+ local b={subheading(title),"\\begin{tabular}{@{}lrl@{}}"}
+ for _,key in ipairs(order) do
+  local n=values[key];local percent=100*n/denominator
+  b[#b+1]=string.format("%s & %d (%.0f\\%%) & \\begin{tikzpicture}[baseline=-.5ex]\\fill[blue!65] (0,0) rectangle (%.3fcm,.16cm);\\end{tikzpicture}\\\\",E(c.ui[key]),n,percent,percent/100*4)
+ end
+ b[#b+1]="\\end{tabular}\\par\\medskip"
+ return table.concat(b,"\n")
+end
+function sections.dominants(c,title)
+ local r=c.r
+ local b={heading(c,"dominants",title),para(c.lang=="pt" and "Contagens dos dez corpos de Sol a Plutão, com peso igual. Pontos, nodos e Quíron não entram em dominâncias ou configurações; os 15 corpos permanecem nas tabelas e interpretações." or "Counts use the ten bodies from Sun through Pluto with equal weight. Points, nodes and Chiron are excluded from dominants and configurations; all fifteen remain in tables and interpretations."),
+ bars(c,c.ui.elements,r.elements,{"fire","earth","air","water"},10),
+ bars(c,c.ui.modalities,r.modalities,{"cardinal","fixed","mutable"},10),
+ bars(c,c.ui.hemispheres,r.hemispheres,{"east","west","north","south"},10)}
+ for _,p in ipairs(r.dominants) do b[#b+1]=text(c,"dominant","",p.chave_de_texto) end
+ b[#b+1]=subheading(c.ui.patterns)
+ for _,p in ipairs(r.patterns) do
+  local names={};for _,key in ipairs(p.membros) do names[#names+1]=named(c,key) end
+  local context=p.tipo=="stellium_sign" and T.sign(p.context,c.lang) or (p.tipo=="stellium_house" and c.ui.house.." "..p.context or "")
+  b[#b+1]="\\textbf{"..E(patternNames[c.lang][p.tipo]..(context~="" and " — "..context or "")).."}\\par\\nobreak "..E(table.concat(names,", ")).."\\par\\nobreak\\medskip"
+  b[#b+1]=text(c,"dominant","",p.chave_de_texto)
+ end
+ if #r.patterns==0 then b[#b+1]=text(c,"dominant","","no_configuration") end
+ return table.concat(b,"\n")
+end
+function sections.synthesis(c,title)
+ local b={"\\clearpage ",heading(c,"synthesis",title),text(c,"synthesis","","default")}
+ local si=S.signIndex(c.r.angles.Ascendant)
+ local dom,patterns,seen={},{},{}
+ for _,p in ipairs(c.r.dominants) do local key=p.tipo:match("_([a-z]+)$");dom[#dom+1]=c.ui[key] or key end
+ for _,p in ipairs(c.r.patterns) do if not seen[p.tipo] then seen[p.tipo]=true;patterns[#patterns+1]=patternNames[c.lang][p.tipo] end end
+ if #patterns==0 then patterns[1]=c.lang=="pt" and "nenhuma na lista fornecida" or "none in the supplied list" end
+ b[#b+1]=text(c,"synthesis","","integration",nil,{sun=T.sign(c.r.placements.Sun.sign,c.lang),
+ moon=T.sign(c.r.placements.Moon.sign,c.lang),asc=T.sign(si,c.lang),dominants=table.concat(dom,", "),patterns=table.concat(patterns,", ")})
+ for _,p in ipairs(c.r.dominants) do b[#b+1]=text(c,"dominant","",p.chave_de_texto) end
+ local summarized={}
+ for _,p in ipairs(c.r.patterns) do
+  if not summarized[p.tipo] then summarized[p.tipo]=true;b[#b+1]=text(c,"dominant","",p.chave_de_texto) end
+ end
+ if c.d.observacoes~="" then b[#b+1]=para(c.d.observacoes) end
+ return table.concat(b,"\n")
+end
+function sections.glossary(c,title)
+ local defs=c.lang=="pt" and {
+ {"Signo","Estilo simbólico associado a um setor de 30 graus do zodíaco."},{"Casa","Campo de experiência delimitado pelas cúspides fornecidas."},{"Aspecto","Relação angular entre dois corpos ou pontos."},{"Orbe","Distância informada em relação ao ângulo exato do aspecto."},{"Aplicativo / separativo","Estado fornecido indicando aproximação ou afastamento da exatidão."},{"Stellium","Grupo de três ou mais dos dez planetas no mesmo signo ou casa."},{"Regente clássico","Planeta associado ao signo pelo esquema tradicional de sete regentes."},{"Dignidade","Relação tradicional entre planeta e signo; não mede valor pessoal nem garante resultados."}
+ } or {
+ {"Sign","A symbolic style associated with a thirty-degree sector of the zodiac."},{"House","An area of experience bounded by the supplied cusps."},{"Aspect","An angular relationship between two bodies or points."},{"Orb","The supplied distance from the exact aspect angle."},{"Applying / separating","The supplied state indicating approach to or departure from exactness."},{"Stellium","Three or more of the ten planets in one sign or house."},{"Classical ruler","The planet associated with a sign in the traditional seven-ruler scheme."},{"Dignity","A traditional planet-sign relationship, not a measure of personal worth or guaranteed outcomes."}}
+ local b={"\\clearpage ",heading(c,"glossary",title),"\\begin{description}"}
+ for _,v in ipairs(defs) do b[#b+1]="\\item["..E(v[1]).."] "..E(v[2]) end
+ b[#b+1]="\\end{description}";return table.concat(b,"\n")
+end
+local function context(cfg)
+ if not D.current then error("Dados ausentes. Use SetNatalData ou LoadNatalData antes do relatório.",0) end
+ if cfg.idioma~="pt" and cfg.idioma~="en" then error("idioma deve ser pt ou en",0) end
+ if cfg.cover_style~="minimal" and cfg.cover_style~="plain" then error("cover style deve ser minimal ou plain",0) end
+ for _,k in ipairs({"cover","technical","interpretations","dominants","synthesis","glossary"}) do if cfg[k]~="true" and cfg[k]~="false" then error("Booleano inválido: "..k.."; use true ou false.",0) end end
+ local c={d=D.current,r=L.analyze(D.current),cfg=cfg,lang=cfg.idioma,ui=labels[cfg.idioma],warnings={},missing={}}
+ for _,w in ipairs(D.current.warnings or {}) do c.warnings[#c.warnings+1]=w end
+ if X.versao<"0.1.0" then c.warnings[#c.warnings+1]="Banco de textos anterior a 0.1.0" end
+ if D.current.reference and (D.current.lat==nil or D.current.lon==nil) then
+  c.warnings[#c.warnings+1]="Importacao de referencia: coordenadas ausentes; cuspides fornecidas preservadas"
+ end
+ return c
+end
+local function warnings(c)
+ local b={}
+ for _,w in ipairs(c.warnings) do
+  texio.write_nl("term and log","[natalreport] "..w)
+  b[#b+1]="\\PackageWarning{natalreport}{"..E(w).."}"
+ end
+ return table.concat(b,"\n")
+end
+function M.run(section,cfg,title)
+ if title=="" then title=nil end
+ local c=context(cfg);local b={}
+ if section=="report" then
+  if cfg.cover=="true" then b[#b+1]=sections.cover(c) end
+  b[#b+1]=sections.chart(c)
+  if cfg.technical=="true" then b[#b+1]=sections.technical(c) end
+  if cfg.interpretations=="true" then b[#b+1]=sections.interpretations(c) end
+  b[#b+1]=sections.angles(c)
+  if cfg.dominants=="true" then b[#b+1]=sections.dominants(c) end
+  if cfg.synthesis=="true" then b[#b+1]=sections.synthesis(c) end
+  if cfg.glossary=="true" then b[#b+1]=sections.glossary(c) end
+ elseif section=="dryrun" then
+  -- Walk every interpretation and section so diagnostics include hidden sections.
+  for _,k in ipairs({"interpretations","angles","dominants","synthesis"}) do sections[k](c) end
+  local states={Applying=0,Separating=0,Unspecified=0};for _,a in ipairs(c.d.aspects) do states[a.state]=states[a.state]+1 end
+  texio.write_nl("term and log",string.format("[NatalDryRun] planets=%d houses=%d aspects=%d Applying=%d Separating=%d Unspecified=%d patterns=%d",#c.d.planets,#c.d.houses,#c.d.aspects,states.Applying,states.Separating,states.Unspecified,#c.r.patterns))
+  for _,p in ipairs(c.r.patterns) do texio.write_nl("log","[NatalDryRun] pattern="..p.tipo.." members="..table.concat(p.membros,",")) end
+  local n=0;for _ in pairs(c.missing) do n=n+1 end
+  texio.write_nl("term and log","[NatalDryRun] missing_texts="..n)
+ else
+  if not sections[section] then error("Seção desconhecida: "..tostring(section),0) end
+  b[#b+1]=sections[section](c,title)
+ end
+ local emitted=(warnings(c)..table.concat(b,"\n")):gsub("[\r\n]+"," ")
+ tex.sprint(emitted)
+end
+function M.call(method,...)
+ local fn=({set=D.set,setReference=D.setReference,load=D.load,loadReference=D.loadReference,override=X.override,run=M.run})[method]
+ local ok,err=pcall(fn,...)
+ if not ok then
+  texio.write_nl("term and log","[natalreport] ERROR: "..tostring(err))
+  tex.sprint("\\PackageError{natalreport}{"..E(err).."}{Corrija o campo e consulte README.md.}")
+ end
+end
+return M
+end
+
+\end{luacode*}
+
+% Macros do gráfico
+\RequirePackage{tikz}
+\RequirePackage{fontspec}
+\RequirePackage{xstring}
+\RequirePackage{expl3}
+\usetikzlibrary{decorations.text}
+\makeatletter
+
+\AtBeginDocument{%
+ \IfFontExistsTF{Symbola}{}{%
+  \PackageError{natalreport}{Fonte Symbola ausente}{Instale a fonte Symbola (Debian/Ubuntu: fonts-symbola) e compile novamente com LuaLaTeX.}%
+ }%
+	\newfontfamily\astrofont{Symbola}[
+	BoldFont       = *,
+	ItalicFont     = *,
+	BoldItalicFont = *
+	]%
+}
+
+\PackageInfo{astropack}{Este pacote usa `current page` — compile DUAS vezes
+	para o posicionamento absoluto do gráfico ser resolvido corretamente}
+
+% =========================================================
+% CARREGAMENTO DO MÓDULO LUA EXTERNO
+% =========================================================
+\directlua{
+local ok, mod = pcall(require, "astrocalc")
+if not ok then
+texio.write_nl("term and log", tostring(mod))
+tex.sprint(string.char(92).."PackageError{astropack}{Falha ao carregar astrocalc.lua}{Verifique a integridade deste arquivo natalreport.sty.}")
+else
+astrocalc = mod
+if mod.VERSION ~= "1.10.0" then
+tex.sprint(string.char(92).."PackageError{astropack}{Versao incompativel de astrocalc}{Esta versao requer astrocalc 1.10.0.}")
+end
+end
+}
+
+% =========================================================
+% SÍMBOLOS (NOMES DOS PLANETAS) — API pública
+% =========================================================
+\newcommand{\Sun}{Sun}
+\newcommand{\Moon}{Moon}
+\newcommand{\Mercury}{Mercury}
+\newcommand{\Venus}{Venus}
+\newcommand{\Mars}{Mars}
+\newcommand{\Jupiter}{Jupiter}
+\newcommand{\Saturn}{Saturn}
+\newcommand{\Uranus}{Uranus}
+\newcommand{\Neptune}{Neptune}
+\newcommand{\Pluto}{Pluto}
+\newcommand{\Node}{Node}
+\newcommand{\Chiron}{Chiron}
+\newcommand{\SouthNode}{SouthNode}
+\newcommand{\Fortune}{Fortune}
+\newcommand{\Vertex}{Vertex}
+\newcommand{\Ascendant}{Ascendant}
+\newcommand{\IC}{IC}
+\newcommand{\DSC}{DSC}
+\newcommand{\MC}{MC}
+\newcommand{\Lilith}{Lilith}
+
+% =========================================================
+% CONFIGURAÇÕES DE SÍMBOLOS E NOMES
+% =========================================================
+\def\ZodiacSymbols{{♈},{♉},{♊},{♋},{♌},{♍},{♎},{♏},{♐},{♑},{♒},{♓}}
+
+\def\AstralSymbols{%
+	{☉},{☽},{☿},{♀},{♂},{♃},{♄},{♅},{♆},{♇},{☊},{⚸},{⚷},{⊗},{VX}%
+}
+
+\def\AspectSymbols{{☌},{☍},{△},{□},{⚹}}
+
+\providecommand{\SignNames}{ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITTARIUS, CAPRICORN, AQUARIUS, PISCES}
+
+% =========================================================
+% RAIO DO GRÁFICO
+% =========================================================
+\newlength{\astro@radiusLen}
+\def\astro@radiusRaw{0.4\paperwidth}
+
+\newcommand{\AstroPack@ResolveRadius}[1]{%
+	\IfDecimal{#1}%
+	{\def\astro@radiusCM{#1}}%
+	{%
+		\setlength{\astro@radiusLen}{\dimexpr#1\relax}%
+		\pgfmathsetmacro{\astro@radiusCM}%
+		{\strip@pt\astro@radiusLen * 0.03514598035}%
+	}%
+}
+
+\newcommand{\setChartRadius}[1]{\def\astro@radiusRaw{#1}}
+
+% =========================================================
+% DEFAULTS DE CORES, LARGURAS E POSIÇÃO
+% =========================================================
+% --- Cores ---
+\def\astro@lineColor{black}
+\def\astro@zodiacFill{none}
+\def\astro@zodiacTextColor{black}
+\def\astro@zodiacSymbolColor{black}
+\def\astro@houseLineColor{black}
+\def\astro@houseLabelColor{black}
+\def\astro@planetSymbolColor{black}
+\def\astro@planetTickColor{black}
+\def\astro@axisLabelColor{black}
+% --- Larguras ---
+\def\astro@lineWidth{thick}
+\def\astro@thinLineWidth{thin}
+\def\astro@axisLineWidth{thick}
+\def\astro@aspectLineWidth{}
+\def\astro@aspectDash{none}
+\def\astro@adjustedDash{on 1pt off 2pt}
+\def\astro@aspectOpacity{1}
+% --- Visibilidade ---
+\def\astro@showZodiac{true}
+\def\astro@showZodiacNames{true}
+\def\astro@showZodiacSymbols{true}
+\def\astro@showHouses{true}
+\def\astro@showHouseNumbers{true}
+\def\astro@showAxesLabels{true}
+\def\astro@showPlanetTicks{true}
+\def\astro@showAdjustedLinks{true}
+\def\astro@showAspects{true}
+% --- Posição ---
+\def\astro@xshift{0cm}
+\def\astro@yshift{0cm}
+\def\astro@rotate{0}
+\def\astro@scale{1}
+
+% =========================================================
+% CORES E COMPORTAMENTO DOS ASPECTOS (compatibilidade retroativa)
+% =========================================================
+\providecommand{\AspectApplyingColor}{blue!70!black}
+\providecommand{\AspectSeparatingColor}{red!70!black}
+\newcommand{\AspectsUseAdjusted}{1}
+
+% =========================================================
+% CONFIGURAÇÕES DO ALGORITMO DE REPULSÃO
+% =========================================================
+\newcommand{\SetSeparationMin}[1]{%
+	\directlua{astrocalc.texCall("setParameter","SEP_MIN", "\luaescapestring{\detokenize{#1}}")}%
+}
+\newcommand{\SetSeparationFactor}[1]{%
+	\directlua{astrocalc.texCall("setParameter","FATOR_INTENSIDADE", "\luaescapestring{\detokenize{#1}}")}%
+}
+\newcommand{\SetTolerance}[1]{%
+	\directlua{astrocalc.texCall("setParameter","TOLERANCIA", "\luaescapestring{\detokenize{#1}}")}%
+}
+\newcommand{\SetMaxIterations}[1]{%
+	\directlua{astrocalc.texCall("setParameter","MAX_ITERACOES", "\luaescapestring{\detokenize{#1}}")}%
+}
+% [v1.9.6] \SetAspectNames agora passa a lista como string e
+% deixa o Lua fazer o split. Antes, o argumento era expandido
+% cru dentro de um literal Lua, o que quebrava para qualquer
+% nome com hífen (`Semi-Sextile` era lido como `nil - nil`).
+\newcommand{\SetAspectNames}[1]{%
+	\directlua{astrocalc.texCall("setAspectNames",%
+	"\luaescapestring{\detokenize{#1}}")}%
+}
+	
+	% =========================================================
+	% RESOLUÇÃO DE DIMENSÕES AUXILIARES
+	% =========================================================
+	\newlength{\astro@tmpLen}
+	\newcommand{\AstroPack@ResolveDim}[2]{%
+\IfDecimal{#1}%
+{\def#2{#1}}%
+{%
+	\setlength{\astro@tmpLen}{\dimexpr#1\relax}%
+	\pgfmathsetmacro{#2}{\strip@pt\astro@tmpLen * 0.03514598035}%
+}%
+}
+
+% =========================================================
+% [v1.9.1] SANEAMENTO DE OPÇÕES — remove espaços em branco
+% ---------------------------------------------------------
+% O usuário pode escrever as opções indentadas:
+%     \CreateAstroChart*[
+%         radius=4,
+%         line color=blue,
+%     ]{...}{...}{...}
+%
+% Os tabs/newlines se transformam em espaços residuais antes
+% das chaves. O pgfkeys não os remove de forma confiável.
+% Aqui removemos espaços em torno de `,` e `=`, e nas pontas.
+% Usamos l3regex (parte do expl3, no kernel desde 2020).
+% =========================================================
+\ExplSyntaxOn
+\cs_new_protected:Npn \astro_parse_opts:n #1 {
+\tl_set:Nn \l_tmpa_tl { #1 }
+\tl_trim_spaces:N \l_tmpa_tl
+\exp_args:NV \pgfkeys \l_tmpa_tl
+}
+% Alias sem `_` e `:` para poder ser chamado fora do ExplSyntaxOn
+\cs_set_eq:NN \AstroParseOpts \astro_parse_opts:n
+\ExplSyntaxOff
+
+\newcommand{\AstroPack@ParseOpts}[1]{%
+\AstroParseOpts{/astro/.cd, #1}%
+}
+% =========================================================
+% OBJETO DE CONFIGURAÇÃO — família pgfkeys /astro
+% =========================================================
+\def\astro@borderPage {page}
+\def\astro@borderChart{chart}
+\def\astro@borderNone {none}
+
+\let\astro@borderMode\astro@borderNone
+
+\pgfkeys{
+/astro/.is family,
+/astro,
+% --- Integração com borda ---
+border/.is choice,
+border/page/.code  = {\let\astro@borderMode\astro@borderPage},
+border/chart/.code = {\let\astro@borderMode\astro@borderChart},
+border/none/.code  = {\let\astro@borderMode\astro@borderNone},
+border/.default    = none,
+% --- Raio ---
+radius/.store in   = \astro@radiusRaw,
+radius/.default    = 0.4\paperwidth,
+% --- Cores ---
+line color/.store in          = \astro@lineColor,
+line color/.default           = black,
+zodiac fill/.store in         = \astro@zodiacFill,
+zodiac fill/.default          = none,
+zodiac text color/.store in   = \astro@zodiacTextColor,
+zodiac text color/.default    = black,
+zodiac symbol color/.store in = \astro@zodiacSymbolColor,
+zodiac symbol color/.default  = black,
+house line color/.store in    = \astro@houseLineColor,
+house line color/.default     = black,
+house label color/.store in   = \astro@houseLabelColor,
+house label color/.default    = black,
+planet symbol color/.store in = \astro@planetSymbolColor,
+planet symbol color/.default  = black,
+planet tick color/.store in   = \astro@planetTickColor,
+planet tick color/.default    = black,
+axis label color/.store in    = \astro@axisLabelColor,
+axis label color/.default     = black,
+% --- Larguras ---
+line width/.store in          = \astro@lineWidth,
+line width/.default           = thick,
+thin line width/.store in     = \astro@thinLineWidth,
+thin line width/.default      = thin,
+axis line width/.store in     = \astro@axisLineWidth,
+axis line width/.default      = thick,
+aspect line width/.store in   = \astro@aspectLineWidth,
+aspect line width/.default    = {},
+aspect dash/.store in         = \astro@aspectDash,
+aspect dash/.default          = none,
+adjusted dash/.store in       = \astro@adjustedDash,
+adjusted dash/.default        = on 1pt off 2pt,
+aspect opacity/.store in      = \astro@aspectOpacity,
+aspect opacity/.default       = 1,
+% --- Visibilidade ---
+show zodiac/.store in          = \astro@showZodiac,
+show zodiac/.default           = true,
+show zodiac names/.store in    = \astro@showZodiacNames,
+show zodiac names/.default     = true,
+show zodiac symbols/.store in  = \astro@showZodiacSymbols,
+show zodiac symbols/.default   = true,
+show houses/.store in          = \astro@showHouses,
+show houses/.default           = true,
+show house numbers/.store in   = \astro@showHouseNumbers,
+show house numbers/.default    = true,
+show axes labels/.store in     = \astro@showAxesLabels,
+show axes labels/.default      = true,
+show planet ticks/.store in    = \astro@showPlanetTicks,
+show planet ticks/.default     = true,
+show adjusted links/.store in  = \astro@showAdjustedLinks,
+show adjusted links/.default   = true,
+show aspects/.store in         = \astro@showAspects,
+show aspects/.default          = true,
+% --- Posição ---
+xshift/.store in              = \astro@xshift,
+xshift/.default               = 0cm,
+yshift/.store in              = \astro@yshift,
+yshift/.default               = 0cm,
+rotate/.store in              = \astro@rotate,
+rotate/.default               = 0,
+scale/.store in               = \astro@scale,
+scale/.default                = 1,
+}
+
+\newcommand{\AstroConfig}[1]{%
+	\AstroParseOpts{/astro/.cd, #1}%
+}
+
+% =========================================================
+% HELPER: EXPANSÃO + DETOKENIZAÇÃO
+% =========================================================
+\def\AstroPack@Detokenize#1#2{%
+\edef#1{#2}%
+\edef#1{\expandafter\detokenize\expandafter{#1}}%
+}
+
+% =========================================================
+% BORDA DO GRÁFICO — hook para o astroborder
+% =========================================================
+\providecommand{\DrawChartBorder}{%
+\PackageError{astropack}{Borda solicitada sem astroborder}{Verifique a integridade deste arquivo natalreport.sty.}%
+}
+
+% =========================================================
+% COMANDO PRINCIPAL UNIFICADO
+% =========================================================
+\newcommand{\CreateAstroChart}{%
+\@ifstar{\AstroPack@ChartInline}{\AstroPack@ChartFull}%
+}
+
+% ---- Full-page ----
+\newcommand{\AstroPack@ChartFull}{%
+\@ifnextchar[{\AstroPack@ChartFull@opt}{\AstroPack@ChartFull@noopt}%
+}
+\newcommand{\AstroPack@ChartFull@noopt}[3]{%
+\AstroPack@ChartFull@impl{}{#1}{#2}{#3}%
+}
+\def\AstroPack@ChartFull@opt[#1]#2#3#4{%
+\AstroPack@ChartFull@impl{#1}{#2}{#3}{#4}%
+}
+\newcommand{\AstroPack@ChartFull@impl}[4]{%
+\begingroup
+\ifx\relax#1\relax\else \AstroPack@ParseOpts{#1}\fi
+\AstroPack@ResolveRadius{\astro@radiusRaw}%
+\AstroPack@ResolveDim{\astro@xshift}{\astro@xshiftCM}%
+\AstroPack@ResolveDim{\astro@yshift}{\astro@yshiftCM}%
+\AstroPack@BuildConfigString
+\AstroPack@Detokenize{\astro@pText}{#2}%
+\AstroPack@Detokenize{\astro@hText}{#3}%
+\AstroPack@Detokenize{\astro@aText}{#4}%
+\clearpage
+\null
+\thispagestyle{empty}%
+\begin{tikzpicture}[remember picture, overlay]
+	\directlua{astrocalc.texCall("renderChart",%
+	"\luaescapestring{\astro@pText}",%
+	"\luaescapestring{\astro@hText}",%
+	"\luaescapestring{\astro@aText}",%
+	"\luaescapestring{\astro@radiusCM}",%
+	"\luaescapestring{\SignNames}",%
+	"\luaescapestring{\ZodiacSymbols}",%
+	"\luaescapestring{\AstralSymbols}",%
+	"\luaescapestring{\AspectApplyingColor}",%
+	"\luaescapestring{\AspectSeparatingColor}",%
+	"\luaescapestring{\AspectsUseAdjusted}",%
+	"\luaescapestring{\astro@cfgTex}"%
+	)}%
+\AstroPack@DrawBorderIfChart
+\end{tikzpicture}%
+\vspace*{\fill}
+\clearpage
+\endgroup
+}
+
+% ---- Inline ----
+\newcommand{\AstroPack@ChartInline}{%
+\@ifnextchar[{\AstroPack@ChartInline@opt}{\AstroPack@ChartInline@noopt}%
+}
+\newcommand{\AstroPack@ChartInline@noopt}[3]{%
+\AstroPack@ChartInline@impl{}{#1}{#2}{#3}%
+}
+\def\AstroPack@ChartInline@opt[#1]#2#3#4{%
+\AstroPack@ChartInline@impl{#1}{#2}{#3}{#4}%
+}
+% [v1.9.3] xshift/yshift são aplicados fora do tikzpicture via
+% \hspace* e \raisebox. Sem isso, o \makebox[\textwidth][c]
+% re-centraliza o bbox aumentado pelo scope e anula o shift.
+\newcommand{\AstroPack@ChartInline@impl}[4]{%
+\begingroup
+\ifx\relax#1\relax\else \AstroPack@ParseOpts{#1}\fi
+\AstroPack@ResolveRadius{\astro@radiusRaw}%
+\AstroPack@ResolveDim{\astro@xshift}{\astro@xshiftCM}%
+\AstroPack@ResolveDim{\astro@yshift}{\astro@yshiftCM}%
+\AstroPack@BuildConfigString
+\AstroPack@Detokenize{\astro@pText}{#2}%
+\AstroPack@Detokenize{\astro@hText}{#3}%
+\AstroPack@Detokenize{\astro@aText}{#4}%
+\par\noindent
+\hspace*{\astro@xshiftCM cm}%
+\raisebox{\astro@yshiftCM cm}{%
+\makebox[\textwidth][c]{%
+	\begin{tikzpicture}
+		\directlua{astrocalc.texCall("renderChartInline",%
+		"\luaescapestring{\astro@pText}",%
+		"\luaescapestring{\astro@hText}",%
+		"\luaescapestring{\astro@aText}",%
+		"\luaescapestring{\astro@radiusCM}",%
+		"\luaescapestring{\SignNames}",%
+		"\luaescapestring{\ZodiacSymbols}",%
+		"\luaescapestring{\AstralSymbols}",%
+		"\luaescapestring{\AspectApplyingColor}",%
+		"\luaescapestring{\AspectSeparatingColor}",%
+		"\luaescapestring{\AspectsUseAdjusted}",%
+		"\luaescapestring{\astro@cfgTex}"%
+		)}%
+	\AstroPack@WarnInlineBorder
+\end{tikzpicture}%
+}%
+}%
+\par
+\endgroup
+}
+
+% =========================================================
+% CONSTRUÇÃO DA STRING DE CONFIGURAÇÃO
+% =========================================================
+\newcommand{\AstroPack@BuildConfigString}{%
+\directlua{token.set_macro("astro@cfgTex", astrocalc.encodeConfig({%
+line_color="\luaescapestring{\astro@lineColor}",%
+line_width="\luaescapestring{\astro@lineWidth}",%
+thin_line_width="\luaescapestring{\astro@thinLineWidth}",%
+axis_line_width="\luaescapestring{\astro@axisLineWidth}",%
+zodiac_fill="\luaescapestring{\astro@zodiacFill}",%
+zodiac_text_color="\luaescapestring{\astro@zodiacTextColor}",%
+zodiac_symbol_color="\luaescapestring{\astro@zodiacSymbolColor}",%
+house_line_color="\luaescapestring{\astro@houseLineColor}",%
+house_label_color="\luaescapestring{\astro@houseLabelColor}",%
+planet_symbol_color="\luaescapestring{\astro@planetSymbolColor}",%
+planet_tick_color="\luaescapestring{\astro@planetTickColor}",%
+axis_label_color="\luaescapestring{\astro@axisLabelColor}",%
+aspect_line_width="\luaescapestring{\astro@aspectLineWidth}",%
+aspect_dash="\luaescapestring{\astro@aspectDash}",%
+adjusted_dash="\luaescapestring{\astro@adjustedDash}",%
+aspect_opacity="\luaescapestring{\astro@aspectOpacity}",%
+show_zodiac="\luaescapestring{\astro@showZodiac}",%
+show_zodiac_names="\luaescapestring{\astro@showZodiacNames}",%
+show_zodiac_symbols="\luaescapestring{\astro@showZodiacSymbols}",%
+show_houses="\luaescapestring{\astro@showHouses}",%
+show_house_numbers="\luaescapestring{\astro@showHouseNumbers}",%
+show_axes_labels="\luaescapestring{\astro@showAxesLabels}",%
+show_planet_ticks="\luaescapestring{\astro@showPlanetTicks}",%
+show_adjusted_links="\luaescapestring{\astro@showAdjustedLinks}",%
+show_aspects="\luaescapestring{\astro@showAspects}",%
+xshift="\luaescapestring{\astro@xshiftCM}",%
+yshift="\luaescapestring{\astro@yshiftCM}",%
+rotate="\luaescapestring{\astro@rotate}",%
+scale="\luaescapestring{\astro@scale}",%
+}))}%
+}
+
+% =========================================================
+% DESPACHO DA BORDA
+% =========================================================
+\newcommand{\AstroPack@DrawBorderIfChart}{%
+\ifx\astro@borderMode\astro@borderNone\else
+\def\ShowPageBorder{0}% evita duplicar a borda automatica nesta pagina
+\begin{scope}[shift={(current page.center)}]
+\DrawChartBorder
+\end{scope}%
+\fi
+}
+
+\newcommand{\AstroPack@WarnInlineBorder}{%
+\ifx\astro@borderMode\astro@borderChart
+\PackageWarning{astropack}{border=chart não é suportado em modo
+inline (não há `current page center`); use border=page ou
+border=none}%
+\fi
+}
+
+% =========================================================
+% DRY RUN (diagnóstico, não gera PDF)
+% =========================================================
+\newcommand{\CreateAstroChartDryRun}[3]{%
+\begingroup
+\AstroPack@Detokenize{\astro@pText}{#1}%
+\AstroPack@Detokenize{\astro@hText}{#2}%
+\AstroPack@Detokenize{\astro@aText}{#3}%
+\directlua{astrocalc.texCall("dryRun",%
+"\luaescapestring{\astro@pText}",%
+"\luaescapestring{\astro@hText}",%
+"\luaescapestring{\astro@aText}"%
+)}%
+\endgroup
+}
+
+\makeatother
+
+% Macros da borda opcional
+\makeatletter
+\usetikzlibrary{calc}
+
+% =========================================================
+% PARÂMETROS (sobrescreva com \renewcommand no preâmbulo)
+% =========================================================
+\providecommand{\BorderColor}{black}
+\providecommand{\BorderLineWidth}{0.4pt}
+\providecommand{\BorderStyle}{simple}
+\providecommand{\BorderCornerStyle}{cross}
+\providecommand{\BorderCornerSize}{0.5}
+\providecommand{\BorderPageMargin}{.3}
+
+% Chave de ativação automática (0 = desliga, 1 = liga)
+\providecommand{\ShowPageBorder}{0}
+
+% =========================================================
+% CANTOS DECORATIVOS
+% =========================================================
+\newcommand{\AstroBorder@corners}[2]{%
+	\IfStrEqCase{\BorderCornerStyle}{
+		{cross}{%
+			\pgfmathsetmacro{\@ab@s}{\BorderCornerSize}
+			\foreach \sx in {-1, 1} {%
+				\foreach \sy in {-1, 1} {%
+					\pgfmathsetmacro{\@ab@xa}{\sx*(#1)}
+					\pgfmathsetmacro{\@ab@ya}{\sy*(#2)}
+					\pgfmathsetmacro{\@ab@xb}{\sx*(#1-\@ab@s)}
+					\pgfmathsetmacro{\@ab@yb}{\sy*(#2-\@ab@s)}
+					\draw[draw={\BorderColor}, line width={1.8\dimexpr\BorderLineWidth\relax}]
+					(\@ab@xa, \@ab@ya) -- (\@ab@xb, \@ab@ya);
+					\draw[draw={\BorderColor}, line width=\BorderLineWidth*1.8]
+					(\@ab@xa, \@ab@ya) -- (\@ab@xa, \@ab@yb);
+				}%
+			}%
+		}
+		{square}{%
+			\pgfmathsetmacro{\@ab@s}{\BorderCornerSize}
+			\foreach \sx in {-1, 1} {%
+				\foreach \sy in {-1, 1} {%
+					\pgfmathsetmacro{\@ab@xa}{\sx*(#1)}
+					\pgfmathsetmacro{\@ab@ya}{\sy*(#2)}
+					\pgfmathsetmacro{\@ab@xb}{\sx*(#1-\@ab@s)}
+					\pgfmathsetmacro{\@ab@yb}{\sy*(#2-\@ab@s)}
+					\fill[fill={\BorderColor}]
+					(\@ab@xa, \@ab@ya) rectangle
+					(\@ab@xb, \@ab@yb);
+				}%
+			}%
+		}
+		{none}{}%
+	}[]
+}
+
+% =========================================================
+% ESTILOS DE BORDA
+% =========================================================
+\newcommand{\AstroBorder@simple}[2]{%
+	\draw[draw={\BorderColor}, line width=\BorderLineWidth]
+	(-#1, -#2) rectangle (#1, #2);
+	\AstroBorder@corners{#1}{#2}
+}
+
+\newcommand{\AstroBorder@double}[2]{%
+	\draw[draw={\BorderColor}, line width=\BorderLineWidth]
+	(-#1, -#2) rectangle (#1, #2);
+	\draw[draw={\BorderColor}, line width=\BorderLineWidth]
+	(-#1+0.18, -#2+0.18) rectangle (#1-0.18, #2-0.18);
+	\AstroBorder@corners{#1}{#2}
+}
+
+\newcommand{\AstroBorder@dashed}[2]{%
+	\draw[draw={\BorderColor}, line width=\BorderLineWidth,
+	dash pattern=on 4pt off 2pt]
+	(-#1, -#2) rectangle (#1, #2);
+	\AstroBorder@corners{#1}{#2}
+}
+
+\newcommand{\AstroBorder@draw}[2]{%
+	\IfStrEqCase{\BorderStyle}{
+		{simple}{\AstroBorder@simple{#1}{#2}}
+		{double}{\AstroBorder@double{#1}{#2}}
+		{dashed}{\AstroBorder@dashed{#1}{#2}}
+	}[{\AstroBorder@simple{#1}{#2}}]
+}
+
+% =========================================================
+% DESENHO DA BORDA (em coordenadas locais, sem tikzpicture)
+% ---------------------------------------------------------
+% Assume que (0,0) é o centro da página. Emite apenas os
+% paths; não abre tikzpicture. Pode ser chamado de dentro de
+% um tikzpicture existente.
+% =========================================================
+\newcommand{\AstroBorder@drawInPlace}[1]{%
+	\pgfmathsetmacro{\@ab@w}{\paperwidth/2cm - #1}
+	\pgfmathsetmacro{\@ab@h}{\paperheight/2cm - #1}
+	\AstroBorder@draw{\@ab@w}{\@ab@h}
+}
+
+% =========================================================
+% DESENHO DA BORDA NA PÁGINA (abre tikzpicture próprio)
+% =========================================================
+\newcommand{\AstroBorder@drawPage}[1]{%
+	\begin{tikzpicture}[remember picture, overlay]
+		\begin{scope}[shift={(current page.center)}]
+			\AstroBorder@drawInPlace{#1}%
+		\end{scope}
+	\end{tikzpicture}%
+}
+
+% =========================================================
+% COMANDO PÚBLICO: \DrawPageBorder
+% ---------------------------------------------------------
+% Desenha a borda da página na página corrente, SEMPRE.
+% Não é mais condicionado por \ShowPageBorder.
+%   \DrawPageBorder        % margem \BorderPageMargin
+%   \DrawPageBorder[2]     % margem de 2 cm
+% =========================================================
+\newcommand{\DrawPageBorder}[1][\BorderPageMargin]{%
+	\AstroBorder@drawPage{#1}%
+}
+
+% =========================================================
+% INTEGRAÇÃO AUTOMÁTICA COM TODA PÁGINA
+% ---------------------------------------------------------
+% Usa o hook `shipout/background` (LaTeX 2020+) para
+% desenhar a borda em todas as páginas enquanto
+% \ShowPageBorder for 1. NÃO afeta \DrawPageBorder.
+% =========================================================
+\AddToHook{shipout/background}{%
+	\ifnum\ShowPageBorder=1\relax
+	\AstroBorder@drawPage{\BorderPageMargin}%
+	\fi
+}
+
+\providecommand{\DrawChartBorder}{}
+\renewcommand{\DrawChartBorder}{\AstroBorder@drawInPlace{\BorderPageMargin}}
+\makeatother
+
+% API do relatório
+\RequirePackage{longtable}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{colortbl}
+\makeatletter
+\directlua{local ok,m=pcall(require,"natalreport.natalrender");
+if ok then natalreport=m else
+texio.write_nl("term and log",tostring(m));
+tex.sprint(string.char(92).."PackageError{natalreport}{Falha no modulo Lua}{Verifique a integridade deste arquivo natalreport.sty.}")
+end}
+\PackageInfo{natalreport}{Compile DUAS vezes para estabilizar o posicionamento do grafico}
+\def\natal@idioma{pt}
+\def\natal@cover{true}
+\def\natal@coverstyle{minimal}
+\def\natal@technical{true}
+\def\natal@interpretations{true}
+\def\natal@dominants{true}
+\def\natal@synthesis{true}
+\def\natal@glossary{false}
+\def\natal@radius{0.35\paperwidth}
+\def\natal@colors{}
+\pgfkeys{/natal/.is family,/natal,
+idioma/.store in=\natal@idioma,
+cover/.store in=\natal@cover,
+cover style/.store in=\natal@coverstyle,
+show technical tables/.store in=\natal@technical,
+show interpretations/.store in=\natal@interpretations,
+show dominants/.store in=\natal@dominants,
+show synthesis/.store in=\natal@synthesis,
+show glossary/.store in=\natal@glossary,
+chart radius/.store in=\natal@radius,
+chart colors/.store in=\natal@colors,
+.unknown/.code={\PackageError{natalreport}{Chave natal desconhecida: \pgfkeyscurrentname}{Consulte README.md.}}}
+\newcommand{\NatalConfig}[1]{\pgfkeys{/natal/.cd,#1}}
+\providecommand{\NatalTextsHook}{}
+\newcommand{\natal@resetdata}{%
+\def\natal@nome{}\def\natal@data{}\def\natal@hora{}\def\natal@fuso{}\def\natal@local{}%
+\def\natal@lat{}\def\natal@lon{}\def\natal@casas{}\def\natal@tema{}\def\natal@observacoes{}%
+\def\natal@planetas{}\def\natal@cuspides{}\def\natal@aspectos{}}
+\pgfkeys{/natal/data/.is family,/natal/data,
+nome/.store in=\natal@nome,data/.store in=\natal@data,hora/.store in=\natal@hora,
+fuso/.store in=\natal@fuso,local/.store in=\natal@local,
+lat/.store in=\natal@lat,latitude/.store in=\natal@lat,
+lon/.store in=\natal@lon,longitude/.store in=\natal@lon,
+casas/.store in=\natal@casas,sistema_casas/.store in=\natal@casas,
+tema/.store in=\natal@tema,observacoes/.store in=\natal@observacoes,
+planetas/.store in=\natal@planetas,cuspides/.store in=\natal@cuspides,
+aspectos/.store in=\natal@aspectos,
+.unknown/.code={\PackageError{natalreport}{Campo desconhecido: \pgfkeyscurrentname}{Consulte o schema em README.md.}}}
+\newcommand{\SetNatalData}[1]{%
+\begingroup\natal@resetdata\pgfkeys{/natal/data/.cd,#1}%
+\directlua{natalreport.call("set",{
+nome="\luaescapestring{\expandafter\detokenize\expandafter{\natal@nome}}",
+data="\luaescapestring{\expandafter\detokenize\expandafter{\natal@data}}",
+hora="\luaescapestring{\expandafter\detokenize\expandafter{\natal@hora}}",
+fuso="\luaescapestring{\expandafter\detokenize\expandafter{\natal@fuso}}",
+["local"]="\luaescapestring{\expandafter\detokenize\expandafter{\natal@local}}",
+lat="\luaescapestring{\expandafter\detokenize\expandafter{\natal@lat}}",
+lon="\luaescapestring{\expandafter\detokenize\expandafter{\natal@lon}}",
+casas="\luaescapestring{\expandafter\detokenize\expandafter{\natal@casas}}",
+tema="\luaescapestring{\expandafter\detokenize\expandafter{\natal@tema}}",
+observacoes="\luaescapestring{\expandafter\detokenize\expandafter{\natal@observacoes}}",
+planetas="\luaescapestring{\expandafter\detokenize\expandafter{\natal@planetas}}",
+cuspides="\luaescapestring{\expandafter\detokenize\expandafter{\natal@cuspides}}",
+aspectos="\luaescapestring{\expandafter\detokenize\expandafter{\natal@aspectos}}"
+})}\endgroup}
+\newcommand{\LoadNatalData}[1]{\directlua{natalreport.call("load","\luaescapestring{\detokenize{#1}}")}}
+\newcommand{\LoadNatalReference}[1]{\directlua{natalreport.call("loadReference","\luaescapestring{\detokenize{#1}}")}}
+\newcommand{\NatalTextOverride}[4]{%
+\directlua{natalreport.call("override","\luaescapestring{\natal@idioma}",
+"\luaescapestring{\detokenize{#1}}","\luaescapestring{\detokenize{#2}}",
+"\luaescapestring{\detokenize{#3}}","\luaescapestring{\detokenize{#4}}")}}
+\newcommand{\NatalChartInternal}{%
+\AstroConfig{border=none}%
+\expandafter\AstroConfig\expandafter{\natal@colors}%
+\CreateAstroChart*[radius=\natal@radius]{\NatalPlanetsCSV}{\NatalHousesCSV}{\NatalAspectsText}}
+\newcommand{\natal@run}[2]{%
+\begingroup\NatalTextsHook
+\directlua{natalreport.call("run","\luaescapestring{#1}",{
+idioma="\luaescapestring{\natal@idioma}",cover="\luaescapestring{\natal@cover}",
+cover_style="\luaescapestring{\natal@coverstyle}",
+technical="\luaescapestring{\natal@technical}",interpretations="\luaescapestring{\natal@interpretations}",
+dominants="\luaescapestring{\natal@dominants}",synthesis="\luaescapestring{\natal@synthesis}",
+glossary="\luaescapestring{\natal@glossary}",
+applying="\luaescapestring{\AspectApplyingColor}",separating="\luaescapestring{\AspectSeparatingColor}"
+},"\luaescapestring{\detokenize{#2}}")}%
+\endgroup}
+\newcommand{\MakeNatalReport}{\natal@run{report}{}}
+\newcommand{\NatalCover}{\natal@run{cover}{}}
+\newcommand{\NatalChart}{\natal@run{chart}{}}
+\newcommand{\NatalPlanetTable}{\natal@run{planet_table}{}}
+\newcommand{\NatalHouseTable}{\natal@run{house_table}{}}
+\newcommand{\NatalAspectTable}{\natal@run{aspect_table}{}}
+\newcommand{\NatalInterpretations}{\natal@run{interpretations}{}}
+\newcommand{\NatalAngles}{\natal@run{angles}{}}
+\newcommand{\NatalDominants}{\natal@run{dominants}{}}
+\newcommand{\NatalSynthesis}{\natal@run{synthesis}{}}
+\newcommand{\NatalGlossary}{\natal@run{glossary}{}}
+\newcommand{\NatalSection}[2]{\natal@run{#1}{#2}}
+\newcommand{\NatalDryRun}{\natal@run{dryrun}{}}
+\makeatother
+\endinput
