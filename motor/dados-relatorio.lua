@@ -167,6 +167,21 @@ local function position_key(position)
   return table.concat({position.name, position.sign, position.house, tostring(position.retrograde)}, "|")
 end
 local position_library = {
+  ["Sun|Libra|6|false"] = 46,
+  ["Moon|Pisces|11|false"] = 47,
+  ["Mercury|Virgo|6|false"] = 48,
+  ["Venus|Scorpio|7|false"] = 49,
+  ["Mars|Libra|7|false"] = 50,
+  ["Jupiter|Gemini|2|true"] = 51,
+  ["Saturn|Leo|5|false"] = 52,
+  ["Uranus|Scorpio|7|false"] = 53,
+  ["Neptune|Sagittarius|8|false"] = 54,
+  ["Pluto|Libra|6|false"] = 55,
+  ["North Node|Scorpio|7|true"] = 56,
+  ["Lilith|Taurus|1|false"] = 57,
+  ["Chiron|Taurus|1|true"] = 58,
+  ["Fortune|Scorpio|8|false"] = 59,
+  ["Vertex|Virgo|6|false"] = 60,
   ["Sun|Aquarius|9|false"] = 16,
   ["Moon|Scorpio|6|false"] = 17,
   ["Mercury|Capricorn|8|false"] = 18,
