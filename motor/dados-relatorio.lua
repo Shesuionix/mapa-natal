@@ -201,10 +201,11 @@ local position_library = {
 for index, position in ipairs(reviewed.positions) do
   position_library[position_key(position)] = index
 end
-local selected = {}
+local selected, specific_positions = {}, 0
 do
   for _, position in ipairs(chart.positions) do
     local index = position_library[position_key(position)]
+    if index then specific_positions = specific_positions + 1 end
     selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
         index or 0, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
         position.house, position.retrograde and " · Retrógrado" or "")
@@ -222,14 +223,15 @@ local axis_pairs = {
   {"MC", "IC", "Meio do Céu e Fundo do Céu"}
 }
 local axis_library = {
-  [1] = {["Libra|Aries"]=1, ["Gemini|Sagittarius"]=3, ["Scorpio|Taurus"]=5},
-  [2] = {["Cancer|Capricorn"]=2, ["Pisces|Virgo"]=4, ["Leo|Aquarius"]=6}
+  [1] = {["Aries|Libra"]=7, ["Taurus|Scorpio"]=8, ["Cancer|Capricorn"]=9, ["Leo|Aquarius"]=10, ["Virgo|Pisces"]=11, ["Sagittarius|Gemini"]=12, ["Capricorn|Cancer"]=13, ["Aquarius|Leo"]=14, ["Pisces|Virgo"]=15, ["Libra|Aries"]=1, ["Gemini|Sagittarius"]=3, ["Scorpio|Taurus"]=5},
+  [2] = {["Aries|Libra"]=16, ["Taurus|Scorpio"]=17, ["Gemini|Sagittarius"]=18, ["Virgo|Pisces"]=19, ["Libra|Aries"]=20, ["Scorpio|Taurus"]=21, ["Sagittarius|Gemini"]=22, ["Capricorn|Cancer"]=23, ["Aquarius|Leo"]=24, ["Cancer|Capricorn"]=2, ["Pisces|Virgo"]=4, ["Leo|Aquarius"]=6}
 }
-local selected_axes = {}
+local selected_axes, specific_axes = {}, 0
 do
   for axis_index, axis in ipairs(axis_pairs) do
     local first, second = chart.angles[axis[1]], chart.angles[axis[2]]
     local index = axis_library[axis_index][first.sign .. "|" .. second.sign]
+    if index then specific_axes = specific_axes + 1 end
     selected_axes[#selected_axes+1] = ("\\NatalLeituraEixo{%d}{%s}{%s}{%s}{%s}{%s}"):format(
         index or 0, axis[3], signs[first.sign], angle(first.degree*60+first.minute),
         signs[second.sign], angle(second.degree*60+second.minute))
@@ -302,7 +304,7 @@ local house_library = {
   {35, 11, "Virgo", "", "Mercury", "Mercury|Capricorn|2|false"},
   {36, 12, "Libra", "Venus|Scorpio|12|false;Mars|Scorpio|12|false", "Venus", "Venus|Scorpio|12|false"},
 }
-local selected_houses = {}
+local selected_houses, specific_houses = {}, 0
 do
   local current_positions, current_occupants, current_aspects = editorial_facts(chart)
   local reviewed_positions, reviewed_occupants = editorial_facts(reviewed)
@@ -332,6 +334,7 @@ do
   end
   for house = 1, 12 do
     local cusp = chart.cusps[house]
+    if by_house[house] then specific_houses = specific_houses + 1 end
     selected_houses[#selected_houses+1] = by_house[house] or
       ("\\NatalCasaComposta{%d}{%s}{%s}%s\\par "):format(house, signs[cusp.sign],
         angle(cusp.degree*60+cusp.minute), composed.house(chart, house, names))
@@ -570,3 +573,13 @@ for _, aspect in ipairs(ranked) do
 end
 token.set_macro("NatalTotalDestaques", tostring(#highlights), "global")
 token.set_macro("NatalDestaques", table.concat(highlights, " "), "global")
+local coverage = {
+  {"posicoes", specific_positions, #chart.positions},
+  {"eixos", specific_axes, #axis_pairs},
+  {"casas", specific_houses, #chart.cusps},
+  {"aspectos", specific_aspects, #chart.aspects}
+}
+for _, section in ipairs(coverage) do
+  local label, specific, total = table.unpack(section)
+  texio.write_nl("log", ("[Cobertura] %s: %d proprios, %d compostos"):format(label, specific, total-specific))
+end
