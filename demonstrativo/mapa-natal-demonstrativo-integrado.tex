@@ -17,7 +17,8 @@
 
 
 
-\usepackage{tikz,booktabs,longtable}
+\IfFileExists{../base/natalreport.sty}{\usepackage{../base/natalreport}}{\usepackage{natalreport}}
+\usepackage{booktabs,longtable}
 \definecolor{natalink}{HTML}{263748}
 \definecolor{natalaccent}{HTML}{176B68}
 \newcommand{\PosicoesNatal}[1]{%
@@ -51,54 +52,94 @@
  #1{11}{Leão}{13}{01}{}%
  #1{12}{Virgem}{14}{41}{}%
 }
-\newcommand{\NatalSignos}{Áries,Touro,Gêmeos,Câncer,Leão,Virgem,Libra,Escorpião,Sagitário,Capricórnio,Aquário,Peixes}
-\newcommand{\NatalAngulo}[4]{%
- \foreach \signo [count=\indice from 0] in \NatalSignos {%
-  \edef\signoAtual{\signo}\edef\signoAlvo{#1}%
-  \ifx\signoAtual\signoAlvo
-   \pgfmathparse{180+200+13/60-(30*\indice+\number\numexpr#2\relax+\number\numexpr#3\relax/60)}%
-   \global\let#4\pgfmathresult
-  \fi
- }%
+% As tabelas e a roda usam as mesmas posições e cúspides.
+\begin{luacode*}
+local signs = {
+  ["Áries"]=0, ["Touro"]=30, ["Gêmeos"]=60, ["Câncer"]=90,
+  ["Leão"]=120, ["Virgem"]=150, ["Libra"]=180, ["Escorpião"]=210,
+  ["Sagitário"]=240, ["Capricórnio"]=270, ["Aquário"]=300, ["Peixes"]=330
 }
-\newcommand{\NatalPonto}[7]{%
- \NatalAngulo{#2}{#3}{#4}{\natalang}%
- \coordinate (corpo#7) at (\natalang:3.7);
- \fill[natalaccent] (corpo#7) circle (1.5pt);
- \pgfmathsetmacro{\natalraio}{3.28-0.34*mod(#7,3)}%
- \draw[natalaccent!75] (corpo#7)--(\natalang:\natalraio);
- \node[fill=white,inner sep=1.3pt,text=natalink,font=\scriptsize\bfseries]
-  at (\natalang:\natalraio) {#7};
-}
-\newcommand{\NatalCusp}[5]{%
- \NatalAngulo{#2}{#3}{#4}{\natalang}%
- \draw[natalink!45] (\natalang:1.48)--(\natalang:4.2);
- \node[anchor=west,font=\scriptsize,inner sep=1pt,fill=white]
-  at ({\natalang-4}:1.7) {#1};
- \if\relax\detokenize{#5}\relax\else
-  \node[font=\scriptsize\bfseries,text=natalaccent,fill=white,inner sep=1pt]
-   at (\natalang:4.31) {#5};
- \fi
-}
-\newcommand{\NatalLegenda}[7]{\textbf{#7}~#1\quad\allowbreak}
-\newcommand{\RodaNatal}{%
- \begin{center}
- \begin{tikzpicture}[scale=1.22]
-  \fill[natalaccent!5,even odd rule] (0,0) circle (4.95) (0,0) circle (4.2);
-  \draw[natalink,thick] (0,0) circle (4.95) (0,0) circle (4.2);
-  \draw[natalink!40] (0,0) circle (1.48);
-  \foreach \signo [count=\indice from 0] in \NatalSignos {
-   \pgfmathsetmacro{\borda}{380+13/60-30*\indice}
-   \draw[natalink!35] (\borda:4.2)--(\borda:4.95);
-   \node[text=natalink,font=\footnotesize] at ({\borda-15}:4.64) {\signo};
-  }
-  \CuspsNatal{\NatalCusp}
-  \PosicoesNatal{\NatalPonto}
-  \node[text=natalink,align=center,font=\small] at (0,0) {Seu\\mapa natal};
- \end{tikzpicture}
-
- \small\raggedright\PosicoesNatal{\NatalLegenda}\par
- \end{center}
+local function longitude(sign, degree, minute)
+  return string.format("%.10f", assert(signs[sign]) + tonumber(degree) + tonumber(minute) / 60)
+end
+local planets, houses = {}, {}
+function natalDemoPlanet(sign, degree, minute)
+  planets[#planets + 1] = longitude(sign, degree, minute)
+end
+function natalDemoHouse(sign, degree, minute)
+  houses[#houses + 1] = longitude(sign, degree, minute)
+end
+function natalDemoCoordinates()
+  assert(#planets == 15 and #houses == 12)
+  token.set_macro("NatalPlanetsCSV", table.concat(planets, ","), "global")
+  token.set_macro("NatalHousesCSV", table.concat(houses, ","), "global")
+end
+\end{luacode*}
+\newcommand{\NatalDemoPlanet}[7]{\directlua{natalDemoPlanet("#2", "#3", "#4")}}
+\newcommand{\NatalDemoHouse}[5]{\directlua{natalDemoHouse("#2", "#3", "#4")}}
+\PosicoesNatal{\NatalDemoPlanet}
+\CuspsNatal{\NatalDemoHouse}
+\directlua{natalDemoCoordinates()}
+\NatalConfig{chart radius=0.38\linewidth}
+\newcommand{\NatalAspectsText}{%
+Sun Square Moon (Orb: 1°59', Separating), 
+Sun Conjunction Venus (Orb: 5°40', Applying), 
+Sun Sextile Mars (Orb: 2°02', Applying), 
+Sun Trine Saturn (Orb: 8°13', Separating), 
+Sun Square Uranus (Orb: 1°33', Separating), 
+Moon Square Venus (Orb: 7°39', Separating), 
+Moon Conjunction Uranus (Orb: 3°32', Separating), 
+Mercury Square Jupiter (Orb: 3°15', Applying), 
+Mercury Square Saturn (Orb: 2°58', Applying), 
+Mercury Sextile Neptune (Orb: 0°47', Applying), 
+Mercury Trine Pluto (Orb: 1°41', Separating), 
+Venus Sextile Jupiter (Orb: 2°16', Separating), 
+Venus Trine Saturn (Orb: 2°32', Separating), 
+Venus Square Uranus (Orb: 4°06', Applying), 
+Jupiter Opposition Saturn (Orb: 0°16', Separating), 
+Neptune Sextile Pluto (Orb: 2°29', Separating), 
+Ascendant Square Sun (Orb: 9°56', Separating), 
+Ascendant Conjunction Moon (Orb: 7°56', Separating), 
+DSC Square Sun (Orb: 9°56', Separating), 
+DSC Opposition Moon (Orb: 7°56', Separating), 
+MC Opposition Sun (Orb: 5°14', Separating), 
+MC Square Moon (Orb: 3°14', Separating), 
+MC Trine Mars (Orb: 3°11', Separating), 
+MC Square Uranus (Orb: 6°47', Separating), 
+MC Trine Node (Orb: 0°14', Separating), 
+IC Conjunction Sun (Orb: 5°14', Separating), 
+IC Square Moon (Orb: 3°14', Separating), 
+IC Sextile Mars (Orb: 3°11', Separating), 
+IC Square Uranus (Orb: 6°47', Separating), 
+IC Sextile Node (Orb: 0°14', Separating), 
+Node Sextile Sun (Orb: 4°59', Applying), 
+Node Conjunction Mars (Orb: 2°57', Applying), 
+Lilith Opposition Mercury (Orb: 3°41', Applying), 
+Lilith Square Jupiter (Orb: 0°26', Applying), 
+Lilith Square Saturn (Orb: 0°43', Separating), 
+Lilith Trine Neptune (Orb: 2°53', Separating), 
+Lilith Trine Chiron (Orb: 0°15', Separating), 
+Chiron Square Sun (Orb: 7°45', Separating), 
+Chiron Opposition Moon (Orb: 9°44', Separating), 
+Chiron Sextile Mercury (Orb: 3°25', Applying), 
+Chiron Square Venus (Orb: 2°05', Separating), 
+Chiron Opposition Uranus (Orb: 6°11', Applying), 
+Chiron Trine Neptune (Orb: 2°37', Applying), 
+Chiron Opposition Pluto (Orb: 5°07', Separating), 
+Fortune Conjunction Sun (Orb: 7°56', Separating), 
+Fortune Square Moon (Orb: 5°57', Separating), 
+Fortune Sextile Node (Orb: 2°57', Separating), 
+Fortune Square Ascendant (Orb: 1°59', Separating), 
+Fortune Opposition MC (Orb: 2°42', Separating), 
+Fortune Conjunction IC (Orb: 2°42', Separating), 
+Fortune Square DSC (Orb: 1°59', Separating), 
+Vertex Square Sun (Orb: 3°56', Applying), 
+Vertex Opposition Moon (Orb: 5°55', Applying), 
+Vertex Square Venus (Orb: 1°43', Separating), 
+Vertex Opposition Uranus (Orb: 2°22', Applying), 
+Vertex Trine Neptune (Orb: 6°27', Separating), 
+Vertex Trine Lilith (Orb: 3°33', Separating), 
+Vertex Conjunction Chiron (Orb: 3°49', Separating)%
 }
 \newcommand{\LinhaPosicaoNatal}[7]{#1 & #2 & #3°#4\ensuremath{^{\prime}} & #5 & #6\\}
 \newcommand{\LinhaCuspNatal}[5]{#1 & #2 & #3°#4\ensuremath{^{\prime}} & #5\\}
@@ -125,8 +166,8 @@ Nas parcerias, você funciona melhor quando pode propor um começo concreto e ne
 \clearpage
 \clearpage
 \section{A roda do seu mapa}
-\RodaNatal
-Os números no interior da roda identificam as casas. Os números ligados aos pontos verdes correspondem aos planetas e pontos da legenda. ASC indica o Ascendente e MC, o Meio do Céu. As posições exatas estão nas \hyperref[tabelas-mapa]{tabelas do apêndice}.
+\begin{center}\NatalChartInternal\end{center}
+A roda mostra os signos, as casas e os aspectos do mapa. As posições exatas estão nas \hyperref[tabelas-mapa]{tabelas do apêndice}.
 \clearpage
 \section{Seu jeito de pensar, sentir e se expressar}
 \subtituloleitura{Seu raciocínio ganha clareza quando você consegue explicar uma ideia em voz alta}
