@@ -17,12 +17,17 @@
   \textit{#3, #4 · Casa #5#6}\par\smallskip
   \csname NatalPosicaoTexto#1\endcsname\par
 }
+\newcommand{\NatalLeituraEixo}[6]{%
+  \subsection*{#2}
+  \textit{#3, #4 · #5, #6}\par\smallskip
+  \csname NatalEixoTexto#1\endcsname\par
+}
 \directlua{dofile("dados-relatorio.lua")}
 \ifnum\NatalTemLeitura=1
   \title{Seu mapa natal}
 \else
-  \ifnum\NatalTotalLeituras>0
-    \title{Seu mapa natal\\\large Leituras de posições}
+  \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos\relax>0
+    \title{Seu mapa natal\\\large Leituras disponíveis}
   \else
     \title{Mapa natal\\\large Relatório técnico}
   \fi
@@ -37,11 +42,15 @@
   \clearpage
   \appendix
 \else
-  \ifnum\NatalTotalLeituras>0
+  \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos\relax>0
     \section*{Leituras disponíveis}
     A biblioteca tem textos revisados para \NatalTotalLeituras\space das 15 posições deste mapa.
     \input{leituras-posicoes-v1.tex}
     \NatalLeiturasSelecionadas
+    \ifnum\NatalTotalEixos>0
+      \section*{Eixos do mapa}
+      \NatalLeiturasEixos
+    \fi
     \clearpage
     \appendix
   \fi
