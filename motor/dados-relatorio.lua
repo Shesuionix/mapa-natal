@@ -73,7 +73,7 @@ for i, first in ipairs(chart.positions) do
   local cells = {glyph(symbols[i]) .. " " .. names[first.name]}
   for j, second in ipairs(chart.positions) do
     local symbol = j < i and pairs_by_body[first.name][second.name]
-    cells[#cells+1] = symbol and glyph(symbol) or (j == i and "—" or "")
+    cells[#cells+1] = symbol and glyph(symbol) or (j == i and "\\cellcolor{black}" or "")
   end
   row(grid, table.unpack(cells))
   grid[#grid+1] = "\\hline"
