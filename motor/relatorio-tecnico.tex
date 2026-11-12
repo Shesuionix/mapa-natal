@@ -1,7 +1,14 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage[margin=23mm]{geometry}
+\usepackage{array}
 \IfFileExists{../base/natalreport.sty}{\usepackage{../base/natalreport}}{\usepackage{../natalreport}}
 \usepackage{booktabs,longtable}
+\newcolumntype{L}[1]{w{l}{#1}}
+\newcolumntype{C}[1]{w{c}{#1}}
+\newcolumntype{D}[1]{w{r}{#1}}
+\renewcommand{\arraystretch}{1.12}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{\fill}
 \directlua{dofile("dados-relatorio.lua")}
 \NatalConfig{chart radius=0.38\linewidth}
 \title{Mapa natal\\\large Relatório técnico}
@@ -14,7 +21,7 @@
 \clearpage
 \section{Posições}
 R indica retrogradação na entrada.
-\begin{longtable}{@{}llrcc@{}}
+\begin{longtable}{@{}L{.27\linewidth}L{.25\linewidth}D{.17\linewidth}C{.10\linewidth}C{.06\linewidth}@{}}
 \toprule Corpo ou ponto & Signo & Posição & Casa & R\\ \midrule
 \endhead
 \NatalPosicoes
@@ -22,7 +29,7 @@ R indica retrogradação na entrada.
 \end{longtable}
 
 \section{Cúspides}
-\begin{longtable}{@{}clrl@{}}
+\begin{longtable}{@{}C{.12\linewidth}L{.34\linewidth}D{.22\linewidth}L{.20\linewidth}@{}}
 \toprule Casa & Signo & Posição & Ângulo\\ \midrule
 \endhead
 \NatalCusps
@@ -34,7 +41,7 @@ R indica retrogradação na entrada.
 A numeração das colunas segue a ordem das linhas. Cj é conjunção, Sx é sextil,
 Qd é quadratura, Tr é trígono e Op é oposição.
 \begin{center}
-\small\setlength{\tabcolsep}{3pt}
+\small\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{@{}l*{15}{c}@{}}
 \toprule
 Corpo ou ponto & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15\\
@@ -46,7 +53,7 @@ Corpo ou ponto & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15
 
 \section{Lista completa de aspectos}
 A lista inclui as relações com os ângulos.
-\begin{longtable}{@{}lllrl@{}}
+\begin{longtable}{@{}L{.18\linewidth}L{.18\linewidth}L{.19\linewidth}D{.12\linewidth}L{.20\linewidth}@{}}
 \toprule Origem & Destino & Tipo & Orbe & Fase\\ \midrule
 \endhead
 \NatalAspectos
@@ -55,7 +62,7 @@ A lista inclui as relações com os ângulos.
 
 \section{Velocidades informadas}
 A direção vem do sinal do delta. O rótulo e a razão reproduzem os valores do arquivo.
-\begin{longtable}{@{}lrlrr@{}}
+\begin{longtable}{@{}L{.22\linewidth}D{.19\linewidth}L{.19\linewidth}L{.15\linewidth}D{.12\linewidth}@{}}
 \toprule Corpo & Delta & Direção & Rótulo & Razão\\ \midrule
 \endhead
 \NatalVelocidades
