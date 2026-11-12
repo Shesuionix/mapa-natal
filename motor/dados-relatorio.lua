@@ -5,7 +5,6 @@ if #digest == 32 then
   digest = digest:gsub(".", function(byte) return ("%02x"):format(byte:byte()) end)
 end
 assert(#digest == 64 and digest:match("^%x+$"), "SHA-256 inválido")
-token.set_macro("NatalHashEntrada", digest:lower(), "global")
 texio.write_nl("term and log", "[Mapa Natal] SHA-256 " .. digest:lower())
 for _, warning in ipairs(chart.warnings) do
   texio.write_nl("term and log", "[Mapa Natal] " .. warning)
@@ -87,7 +86,7 @@ for i, first in ipairs(chart.positions) do
 end
 
 local motor_version = "0.1.0"
-token.set_macro("NatalVersaoMotor", motor_version, "global")
+texio.write_nl("log", "[Mapa Natal] Motor " .. motor_version)
 local reference_path = os.getenv("NATAL_VELOCIDADES")
 local reference, reference_version = {}, "Sem referência de velocidades"
 if reference_path and reference_path ~= "" then
@@ -108,7 +107,7 @@ if reference_path and reference_path ~= "" then
   file:close()
   reference_version = "Referência de velocidades " .. reference_version
 end
-token.set_macro("NatalVersaoVelocidades", reference_version, "global")
+texio.write_nl("log", "[Mapa Natal] " .. reference_version)
 for _, speed in ipairs(chart.speeds) do
   local seconds = math.abs(speed.delta_arcseconds)
   local direction = speed.delta_arcseconds < 0 and "Retrógrado" or
