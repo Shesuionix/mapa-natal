@@ -139,3 +139,24 @@ for macro, rows in pairs({
 }) do
   token.set_macro(macro, table.concat(rows, " "), "global")
 end
+-- Match the chart behind the reviewed text, independent of file formatting.
+local function editorial_key(data)
+  local parts, aspects = {}, {}
+  for _, position in ipairs(data.positions) do
+    parts[#parts+1] = ("%s:%d:%d:%s"):format(position.name, position.arcminutes,
+      position.house, tostring(position.retrograde))
+  end
+  for _, cusp in ipairs(data.cusps) do parts[#parts+1] = tostring(cusp.arcminutes) end
+  for _, aspect in ipairs(data.aspects) do
+    local first, second = aspect.first, aspect.second
+    if second < first then first, second = second, first end
+    aspects[#aspects+1] = ("%s:%s:%s:%d:%s"):format(first, second, aspect.kind, aspect.orb, aspect.phase)
+  end
+  table.sort(aspects)
+  return table.concat(parts, "|") .. "|" .. table.concat(aspects, "|")
+end
+
+local reviewed = reader.read("mapa-editorial-v1.txt")
+local matched = editorial_key(chart) == editorial_key(reviewed)
+token.set_macro("NatalTemLeitura", matched and "1" or "0", "global")
+if matched then texio.write_nl("log", "[Mapa Natal] Biblioteca editorial demonstrativa 1.0") end

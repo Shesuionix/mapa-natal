@@ -12,12 +12,22 @@
 \newcommand{\NatalGlifo}[1]{{\astrofont #1}}
 \directlua{dofile("dados-relatorio.lua")}
 \NatalConfig{chart radius=0.38\linewidth}
-\title{Mapa natal\\\large Relatório técnico}
+\newcommand{\subtituloleitura}[1]{\textbf{#1}\par\nopagebreak[4]}
+\ifnum\NatalTemLeitura=1
+  \title{Seu mapa natal}
+\else
+  \title{Mapa natal\\\large Relatório técnico}
+\fi
 \author{}
 \date{}
 \pdfvariable suppressoptionalinfo 767\relax
 \begin{document}
 \maketitle
+\ifnum\NatalTemLeitura=1
+  \input{leitura-demonstrativa-v1.tex}
+  \clearpage
+  \appendix
+\fi
 \section{Roda do mapa}
 \begin{center}\NatalChartInternal\end{center}
 \clearpage
