@@ -20,7 +20,8 @@
 \maketitle
 \begin{center}
 \footnotesize SHA-256 da entrada\par
-\texttt{\NatalHashEntrada}
+\texttt{\NatalHashEntrada}\par
+Motor \NatalVersaoMotor\quad\textbullet\quad\NatalVersaoVelocidades
 \end{center}
 \section{Roda do mapa}
 \begin{center}\NatalChartInternal\end{center}
@@ -65,10 +66,10 @@ A lista inclui as relações com os ângulos.
 \bottomrule
 \end{longtable}
 
-\section{Velocidades informadas}
-A direção vem do sinal do delta. O rótulo e a razão reproduzem os valores do arquivo.
-\begin{longtable}{@{}L{.22\linewidth}D{.19\linewidth}L{.19\linewidth}L{.15\linewidth}D{.12\linewidth}@{}}
-\toprule Corpo & Delta & Direção & Rótulo & Razão\\ \midrule
+\section{Velocidades}
+A direção vem do sinal do delta. A razão calculada divide o módulo do delta, em graus por dia, pela velocidade de referência do corpo. O traço indica ausência de referência.
+\begin{longtable}{@{}L{.16\linewidth}D{.14\linewidth}L{.14\linewidth}L{.14\linewidth}D{.13\linewidth}D{.13\linewidth}@{}}
+\toprule Corpo & Delta & Direção & Rótulo & Informada & Calculada\\ \midrule
 \endhead
 \NatalVelocidades
 \bottomrule

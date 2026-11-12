@@ -86,13 +86,49 @@ for i, first in ipairs(chart.positions) do
   grid[#grid+1] = "\\hline"
 end
 
+local motor_version = "0.1.0"
+token.set_macro("NatalVersaoMotor", motor_version, "global")
+local reference_path = os.getenv("NATAL_VELOCIDADES")
+local reference, reference_version = {}, "Sem referência de velocidades"
+if reference_path and reference_path ~= "" then
+  local file = assert(io.open(reference_path, "r"))
+  local header = file:read("*l") or ""
+  reference_version = assert(header:match("^versao=([%w%.%-]+)%s*$"), "Cabeçalho esperado: versao=IDENTIFICADOR")
+  local line_number = 1
+  for line in file:lines() do
+    line_number = line_number + 1
+    if line:match("%S") then
+      local name, value = line:match("^%s*([%a ]-)%s*=%s*(%d+%.?%d*)%s*$")
+      local rate = tonumber(value)
+      assert(name and names[name] and name ~= "Ascendant" and name ~= "DSC" and name ~= "MC" and name ~= "IC" and rate and rate > 0 and rate < math.huge and not reference[name],
+        ("%s:%d: corpo ou velocidade de referência inválida ou repetida"):format(reference_path, line_number))
+      reference[name] = rate
+    end
+  end
+  file:close()
+  reference_version = "Referência de velocidades " .. reference_version
+end
+token.set_macro("NatalVersaoVelocidades", reference_version, "global")
 for _, speed in ipairs(chart.speeds) do
   local seconds = math.abs(speed.delta_arcseconds)
   local direction = speed.delta_arcseconds < 0 and "Retrógrado" or
     (speed.delta_arcseconds == 0 and "Estacionário" or "Direto")
   local delta = ("%s%d°%02d\\ensuremath{^{\\prime}}%02d\\ensuremath{^{\\prime\\prime}}"):format(
     speed.delta_arcseconds < 0 and "-" or "", seconds // 3600, (seconds // 60) % 60, seconds % 60)
-  row(speeds, names[speed.name], delta, direction, speed.label, speed.ratio_text)
+  local ratio_text = "—"
+  local rate = reference[speed.name]
+  if rate then
+    local ratio = seconds / 3600 / rate
+    assert(ratio < math.huge, "Razão recalculada fora do intervalo: " .. speed.name)
+    ratio_text = ("%.2f"):format(ratio)
+    if math.abs(ratio - speed.ratio) > 0.05 then
+      texio.write_nl("term and log", ("[Mapa Natal] Linha %d (%s): razão informada %s, recalculada %s"):format(
+        speed.line, speed.name, speed.ratio_text, ratio_text))
+    end
+  elseif reference_path and reference_path ~= "" then
+    texio.write_nl("term and log", "[Mapa Natal] Sem velocidade de referência para " .. speed.name)
+  end
+  row(speeds, names[speed.name], delta, direction, speed.label, speed.ratio_text, ratio_text)
 end
 
 token.set_macro("NatalPlanetsCSV", table.concat(planet_csv, ","), "global")
