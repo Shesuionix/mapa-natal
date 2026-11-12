@@ -160,3 +160,23 @@ local reviewed = reader.read("mapa-editorial-v1.txt")
 local matched = editorial_key(chart) == editorial_key(reviewed)
 token.set_macro("NatalTemLeitura", matched and "1" or "0", "global")
 if matched then texio.write_nl("log", "[Mapa Natal] Biblioteca editorial demonstrativa 1.0") end
+
+-- Texts describe sign, house and motion together. Degrees are taken from the input.
+local selected = {}
+if not matched then
+  for index, position in ipairs(chart.positions) do
+    local model = reviewed.positions[index]
+    if position.name == model.name and position.sign == model.sign and
+      position.house == model.house and position.retrograde == model.retrograde then
+      selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
+        index, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
+        position.house, position.retrograde and " · Retrógrado" or "")
+    end
+  end
+end
+token.set_macro("NatalTotalLeituras", tostring(#selected), "global")
+token.set_macro("NatalLeiturasSelecionadas", table.concat(selected), "global")
+if #selected > 0 then
+  texio.write_nl("log", ("[Mapa Natal] Biblioteca de posições 1.0: %d de %d leituras"):format(
+    #selected, #chart.positions))
+end

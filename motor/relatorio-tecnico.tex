@@ -10,13 +10,22 @@
 \setlength{\LTleft}{0pt}
 \setlength{\LTright}{\fill}
 \newcommand{\NatalGlifo}[1]{{\astrofont #1}}
-\directlua{dofile("dados-relatorio.lua")}
 \NatalConfig{chart radius=0.38\linewidth}
 \newcommand{\subtituloleitura}[1]{\textbf{#1}\par\nopagebreak[4]}
+\newcommand{\NatalLeituraPosicao}[6]{%
+  \subsection*{#2}
+  \textit{#3, #4 · Casa #5#6}\par\smallskip
+  \csname NatalPosicaoTexto#1\endcsname\par
+}
+\directlua{dofile("dados-relatorio.lua")}
 \ifnum\NatalTemLeitura=1
   \title{Seu mapa natal}
 \else
-  \title{Mapa natal\\\large Relatório técnico}
+  \ifnum\NatalTotalLeituras>0
+    \title{Seu mapa natal\\\large Leituras de posições}
+  \else
+    \title{Mapa natal\\\large Relatório técnico}
+  \fi
 \fi
 \author{}
 \date{}
@@ -27,6 +36,15 @@
   \input{leitura-demonstrativa-v1.tex}
   \clearpage
   \appendix
+\else
+  \ifnum\NatalTotalLeituras>0
+    \section*{Leituras disponíveis}
+    A biblioteca tem textos revisados para \NatalTotalLeituras\space das 15 posições deste mapa.
+    \input{leituras-posicoes-v1.tex}
+    \NatalLeiturasSelecionadas
+    \clearpage
+    \appendix
+  \fi
 \fi
 \section{Roda do mapa}
 \begin{center}\NatalChartInternal\end{center}
