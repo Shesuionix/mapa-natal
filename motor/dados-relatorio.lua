@@ -221,11 +221,16 @@ local axis_pairs = {
   {"Ascendant", "DSC", "Ascendente e Descendente"},
   {"MC", "IC", "Meio do Céu e Fundo do Céu"}
 }
+local axis_library = {
+  [1] = {["Libra|Aries"]=1, ["Gemini|Sagittarius"]=3, ["Scorpio|Taurus"]=5},
+  [2] = {["Cancer|Capricorn"]=2, ["Pisces|Virgo"]=4, ["Leo|Aquarius"]=6}
+}
 local selected_axes = {}
 if not matched then
-  for index, axis in ipairs(axis_pairs) do
+  for axis_index, axis in ipairs(axis_pairs) do
     local first, second = chart.angles[axis[1]], chart.angles[axis[2]]
-    if first.sign == reviewed.angles[axis[1]].sign and second.sign == reviewed.angles[axis[2]].sign then
+    local index = axis_library[axis_index][first.sign .. "|" .. second.sign]
+    if index then
       selected_axes[#selected_axes+1] = ("\\NatalLeituraEixo{%d}{%s}{%s}{%s}{%s}{%s}"):format(
         index, axis[3], signs[first.sign], angle(first.degree*60+first.minute),
         signs[second.sign], angle(second.degree*60+second.minute))
@@ -235,7 +240,7 @@ end
 token.set_macro("NatalTotalEixos", tostring(#selected_axes), "global")
 token.set_macro("NatalLeiturasEixos", table.concat(selected_axes), "global")
 if #selected_axes > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de eixos 1.0: %d de 2 leituras"):format(#selected_axes))
+  texio.write_nl("log", ("[Mapa Natal] Biblioteca de eixos 1.1: %d de 2 leituras"):format(#selected_axes))
 end
 -- Dependencies of the reviewed prose, in house order.
 local house_rules = {
