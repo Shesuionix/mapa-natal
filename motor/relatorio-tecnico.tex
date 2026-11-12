@@ -28,11 +28,16 @@
   \csname NatalCasaTexto#1\endcsname\par
   \endgroup
 }
+\newcommand{\NatalLeituraAspecto}[6]{%
+  \subsection*{#2 e #4 · #3}
+  \textit{Orbe #5 · #6}\par\smallskip
+  \csname NatalAspectoTexto#1\endcsname\par
+}
 \directlua{dofile("dados-relatorio.lua")}
 \ifnum\NatalTemLeitura=1
   \title{Seu mapa natal}
 \else
-  \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas\relax>0
+  \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas+\NatalTotalAspectos\relax>0
     \title{Seu mapa natal\\\large Leituras disponíveis}
   \else
     \title{Mapa natal\\\large Relatório técnico}
@@ -48,7 +53,7 @@
   \clearpage
   \appendix
 \else
-  \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas\relax>0
+  \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas+\NatalTotalAspectos\relax>0
     \section*{Leituras disponíveis}
     A biblioteca tem textos revisados para \NatalTotalLeituras\space das 15 posições deste mapa.
     \input{leituras-posicoes-v1.tex}
@@ -62,6 +67,12 @@
       Há leituras revisadas para \NatalTotalCasas\space das 12 casas deste mapa.
       \input{leituras-casas-v1.tex}
       \NatalLeiturasCasas
+    \fi
+    \ifnum\NatalTotalAspectos>0
+      \section*{Aspectos do mapa}
+      Há leituras revisadas para \NatalTotalAspectos\space dos \NatalAspectosEntrada\space aspectos deste mapa.\par
+      \input{leituras-aspectos-v1.tex}
+      \NatalLeiturasAspectos
     \fi
     \clearpage
     \appendix

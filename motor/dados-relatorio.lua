@@ -256,3 +256,32 @@ token.set_macro("NatalLeiturasCasas", table.concat(selected_houses), "global")
 if #selected_houses > 0 then
   texio.write_nl("log", ("[Mapa Natal] Biblioteca de casas 1.0: %d de 12 leituras"):format(#selected_houses))
 end
+local function aspect_key(aspect)
+  local first, second = aspect.first, aspect.second
+  if second < first then first, second = second, first end
+  return table.concat({first, aspect.kind, second}, "|")
+end
+
+local selected_aspects = {}
+if not matched then
+  local current_positions = editorial_facts(chart)
+  local reviewed_positions = editorial_facts(reviewed)
+  local library = {}
+  for index, aspect in ipairs(reviewed.aspects) do library[aspect_key(aspect)] = index end
+  for _, aspect in ipairs(chart.aspects) do
+    local index = library[aspect_key(aspect)]
+    if index and current_positions[aspect.first] == reviewed_positions[aspect.first] and
+      current_positions[aspect.second] == reviewed_positions[aspect.second] then
+      selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}"):format(
+        index, names[aspect.first], types[aspect.kind][1], names[aspect.second],
+        angle(aspect.orb), phases[aspect.phase])
+    end
+  end
+end
+token.set_macro("NatalTotalAspectos", tostring(#selected_aspects), "global")
+token.set_macro("NatalAspectosEntrada", tostring(#chart.aspects), "global")
+token.set_macro("NatalLeiturasAspectos", table.concat(selected_aspects), "global")
+if #selected_aspects > 0 then
+  texio.write_nl("log", ("[Mapa Natal] Biblioteca de aspectos 1.0: %d de %d leituras"):format(
+    #selected_aspects, #chart.aspects))
+end
