@@ -348,7 +348,102 @@ local function aspect_key(aspect)
   return table.concat({first, aspect.kind, second}, "|")
 end
 
-local selected_aspects = {}
+local contextual_aspects = {
+  ["Mars:Sextile:Sun:Mars|Sagittarius|7|false:Sun|Aquarius|9|false"] = 59,
+  ["Jupiter:Opposition:Sun:Jupiter|Leo|3|true:Sun|Aquarius|9|false"] = 60,
+  ["Neptune:Conjunction:Sun:Neptune|Aquarius|9|false:Sun|Aquarius|9|false"] = 61,
+  ["Jupiter:Square:Moon:Jupiter|Leo|3|true:Moon|Scorpio|6|false"] = 62,
+  ["Moon:Square:Uranus:Moon|Scorpio|6|false:Uranus|Aquarius|9|false"] = 63,
+  ["Jupiter:Trine:Venus:Jupiter|Leo|3|true:Venus|Sagittarius|7|false"] = 64,
+  ["Saturn:Opposition:Venus:Saturn|Gemini|1|true:Venus|Sagittarius|7|false"] = 65,
+  ["Pluto:Conjunction:Venus:Pluto|Sagittarius|7|false:Venus|Sagittarius|7|false"] = 66,
+  ["Jupiter:Opposition:Neptune:Jupiter|Leo|3|true:Neptune|Aquarius|9|false"] = 67,
+  ["Jupiter:Trine:Pluto:Jupiter|Leo|3|true:Pluto|Sagittarius|7|false"] = 68,
+  ["Saturn:Trine:Uranus:Saturn|Gemini|1|true:Uranus|Aquarius|9|false"] = 69,
+  ["Pluto:Opposition:Saturn:Pluto|Sagittarius|7|false:Saturn|Gemini|1|true"] = 70,
+  ["Ascendant:Trine:Sun:Gemini:Sun|Aquarius|9|false"] = 71,
+  ["Ascendant:Opposition:Moon:Gemini:Moon|Scorpio|6|false"] = 72,
+  ["Ascendant:Opposition:Mars:Gemini:Mars|Sagittarius|7|false"] = 73,
+  ["Ascendant:Square:Uranus:Gemini:Uranus|Aquarius|9|false"] = 74,
+  ["Ascendant:Conjunction:North Node:Gemini:North Node|Gemini|1|true"] = 75,
+  ["DSC:Sextile:Sun:Sagittarius:Sun|Aquarius|9|false"] = 76,
+  ["DSC:Conjunction:Moon:Sagittarius:Moon|Scorpio|6|false"] = 77,
+  ["DSC:Conjunction:Mars:Sagittarius:Mars|Sagittarius|7|false"] = 78,
+  ["DSC:Square:Uranus:Sagittarius:Uranus|Aquarius|9|false"] = 79,
+  ["DSC:Opposition:North Node:Sagittarius:North Node|Gemini|1|true"] = 80,
+  ["MC:Square:Mars:Pisces:Mars|Sagittarius|7|false"] = 81,
+  ["MC:Conjunction:Uranus:Pisces:Uranus|Aquarius|9|false"] = 82,
+  ["MC:Square:North Node:Pisces:North Node|Gemini|1|true"] = 83,
+  ["IC:Square:Mars:Virgo:Mars|Sagittarius|7|false"] = 84,
+  ["IC:Opposition:Uranus:Virgo:Uranus|Aquarius|9|false"] = 85,
+  ["IC:Square:North Node:Virgo:North Node|Gemini|1|true"] = 86,
+  ["IC:Trine:Lilith:Virgo:Lilith|Aries|11|false"] = 87,
+  ["North Node:Trine:Sun:North Node|Gemini|1|true:Sun|Aquarius|9|false"] = 88,
+  ["Mars:Opposition:North Node:Mars|Sagittarius|7|false:North Node|Gemini|1|true"] = 89,
+  ["Neptune:Trine:North Node:Neptune|Aquarius|9|false:North Node|Gemini|1|true"] = 90,
+  ["Lilith:Square:Sun:Lilith|Aries|11|false:Sun|Aquarius|9|false"] = 91,
+  ["Lilith:Sextile:Uranus:Lilith|Aries|11|false:Uranus|Aquarius|9|false"] = 92,
+  ["Chiron:Conjunction:Mercury:Chiron|Capricorn|8|false:Mercury|Capricorn|8|false"] = 93,
+  ["Fortune:Trine:Moon:Fortune|Pisces|10|false:Moon|Scorpio|6|false"] = 94,
+  ["Fortune:Square:Venus:Fortune|Pisces|10|false:Venus|Sagittarius|7|false"] = 95,
+  ["Fortune:Square:Saturn:Fortune|Pisces|10|false:Saturn|Gemini|1|true"] = 96,
+  ["Fortune:Square:Pluto:Fortune|Pisces|10|false:Pluto|Sagittarius|7|false"] = 97,
+  ["Moon:Square:Vertex:Moon|Scorpio|6|false:Vertex|Aquarius|9|false"] = 98,
+  ["Saturn:Trine:Vertex:Saturn|Gemini|1|true:Vertex|Aquarius|9|false"] = 99,
+  ["Uranus:Conjunction:Vertex:Uranus|Aquarius|9|false:Vertex|Aquarius|9|false"] = 100,
+  ["Lilith:Sextile:Vertex:Lilith|Aries|11|false:Vertex|Aquarius|9|false"] = 101,
+  ["Ascendant:Square:Vertex:Gemini:Vertex|Aquarius|9|false"] = 102,
+  ["DSC:Square:Vertex:Sagittarius:Vertex|Aquarius|9|false"] = 103,
+  ["Jupiter:Trine:Sun:Jupiter|Leo|10|true:Sun|Sagittarius|1|false"] = 104,
+  ["Saturn:Opposition:Sun:Saturn|Gemini|8|true:Sun|Sagittarius|1|false"] = 105,
+  ["Pluto:Conjunction:Sun:Pluto|Sagittarius|1|false:Sun|Sagittarius|1|false"] = 106,
+  ["Mercury:Sextile:Moon:Mercury|Capricorn|2|false:Moon|Pisces|4|false"] = 107,
+  ["Moon:Trine:Venus:Moon|Pisces|4|false:Venus|Scorpio|12|false"] = 108,
+  ["Mars:Trine:Moon:Mars|Scorpio|12|false:Moon|Pisces|4|false"] = 109,
+  ["Moon:Trine:Saturn:Moon|Pisces|4|false:Saturn|Gemini|8|true"] = 110,
+  ["Moon:Conjunction:Uranus:Moon|Pisces|4|false:Uranus|Aquarius|4|false"] = 111,
+  ["Mars:Sextile:Mercury:Mars|Scorpio|12|false:Mercury|Capricorn|2|false"] = 112,
+  ["Mercury:Opposition:Saturn:Mercury|Capricorn|2|false:Saturn|Gemini|8|true"] = 113,
+  ["Mars:Conjunction:Venus:Mars|Scorpio|12|false:Venus|Scorpio|12|false"] = 114,
+  ["Neptune:Square:Venus:Neptune|Aquarius|3|false:Venus|Scorpio|12|false"] = 115,
+  ["Mars:Square:Neptune:Mars|Scorpio|12|false:Neptune|Aquarius|3|false"] = 116,
+  ["Jupiter:Trine:Pluto:Jupiter|Leo|10|true:Pluto|Sagittarius|1|false"] = 117,
+  ["Saturn:Trine:Uranus:Saturn|Gemini|8|true:Uranus|Aquarius|4|false"] = 118,
+  ["Ascendant:Square:Moon:Scorpio:Moon|Pisces|4|false"] = 119,
+  ["Ascendant:Square:Uranus:Scorpio:Uranus|Aquarius|4|false"] = 120,
+  ["DSC:Square:Moon:Taurus:Moon|Pisces|4|false"] = 121,
+  ["DSC:Square:Uranus:Taurus:Uranus|Aquarius|4|false"] = 122,
+  ["MC:Trine:Sun:Leo:Sun|Sagittarius|1|false"] = 123,
+  ["Jupiter:Conjunction:MC:Jupiter|Leo|10|true:Leo"] = 124,
+  ["MC:Trine:Pluto:Leo:Pluto|Sagittarius|1|false"] = 125,
+  ["Lilith:Trine:MC:Lilith|Aries|6|false:Leo"] = 126,
+  ["IC:Sextile:Sun:Aquarius:Sun|Sagittarius|1|false"] = 127,
+  ["IC:Opposition:Jupiter:Aquarius:Jupiter|Leo|10|true"] = 128,
+  ["IC:Sextile:Pluto:Aquarius:Pluto|Sagittarius|1|false"] = 129,
+  ["North Node:Opposition:Sun:North Node|Gemini|7|true:Sun|Sagittarius|1|false"] = 130,
+  ["Moon:Square:North Node:Moon|Pisces|4|false:North Node|Gemini|7|true"] = 131,
+  ["Neptune:Trine:North Node:Neptune|Aquarius|3|false:North Node|Gemini|7|true"] = 132,
+  ["Lilith:Trine:Sun:Lilith|Aries|6|false:Sun|Sagittarius|1|false"] = 133,
+  ["Jupiter:Trine:Lilith:Jupiter|Leo|10|true:Lilith|Aries|6|false"] = 134,
+  ["Lilith:Sextile:Saturn:Lilith|Aries|6|false:Saturn|Gemini|8|true"] = 135,
+  ["Lilith:Sextile:Uranus:Lilith|Aries|6|false:Uranus|Aquarius|4|false"] = 136,
+  ["Lilith:Trine:Pluto:Lilith|Aries|6|false:Pluto|Sagittarius|1|false"] = 137,
+  ["Chiron:Conjunction:Mercury:Chiron|Capricorn|2|false:Mercury|Capricorn|2|false"] = 138,
+  ["Chiron:Sextile:Venus:Chiron|Capricorn|2|false:Venus|Scorpio|12|false"] = 139,
+  ["Chiron:Sextile:Mars:Chiron|Capricorn|2|false:Mars|Scorpio|12|false"] = 140,
+  ["Fortune:Square:Sun:Fortune|Virgo|10|false:Sun|Sagittarius|1|false"] = 141,
+  ["Fortune:Opposition:Moon:Fortune|Virgo|10|false:Moon|Pisces|4|false"] = 142,
+  ["Fortune:Square:Pluto:Fortune|Virgo|10|false:Pluto|Sagittarius|1|false"] = 143,
+  ["Fortune:Square:North Node:Fortune|Virgo|10|false:North Node|Gemini|7|true"] = 144,
+  ["Chiron:Trine:Fortune:Chiron|Capricorn|2|false:Fortune|Virgo|10|false"] = 145,
+  ["Sun:Trine:Vertex:Sun|Sagittarius|1|false:Vertex|Aries|5|false"] = 146,
+  ["Jupiter:Trine:Vertex:Jupiter|Leo|10|true:Vertex|Aries|5|false"] = 147,
+  ["Pluto:Trine:Vertex:Pluto|Sagittarius|1|false:Vertex|Aries|5|false"] = 148,
+  ["Lilith:Conjunction:Vertex:Lilith|Aries|6|false:Vertex|Aries|5|false"] = 149,
+  ["MC:Trine:Vertex:Leo:Vertex|Aries|5|false"] = 150,
+  ["IC:Sextile:Vertex:Aquarius:Vertex|Aries|5|false"] = 151,
+}
+local selected_aspects, specific_aspects = {}, 0
 do
   local current_positions = editorial_facts(chart)
   local reviewed_positions = editorial_facts(reviewed)
@@ -360,6 +455,11 @@ do
     local index = library[aspect_key(aspect)]
     if current_positions[aspect.first] ~= reviewed_positions[aspect.first] or
       current_positions[aspect.second] ~= reviewed_positions[aspect.second] then index = nil end
+    local first, second = aspect.first, aspect.second
+    if second < first then first, second = second, first end
+    local key = table.concat({first,aspect.kind,second,current_positions[first],current_positions[second]}, ":")
+    index = contextual_aspects[key] or index
+    if index then specific_aspects = specific_aspects + 1 end
     selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}"):format(
         index or 0, names[aspect.first], types[aspect.kind][1], names[aspect.second],
         angle(aspect.orb), phases[aspect.phase])
@@ -374,3 +474,55 @@ if #selected_aspects > 0 then
   texio.write_nl("log", ("[Mapa Natal] Aspectos apresentados: %d de %d leituras"):format(
     #selected_aspects, #chart.aspects))
 end
+texio.write_nl("log", ("[Mapa Natal] Aspectos com texto específico: %d de %d"):format(specific_aspects, #chart.aspects))
+-- Pick distinct pairs so each chapter develops a different part of the map.
+local topics = {
+  {title="Expressão e aprendizado", bodies={Sun=true,Mercury=true,Ascendant=true}, houses={[1]=true,[3]=true,[9]=true},
+    action="Explique uma ideia com suas palavras e dê um exemplo do que ela muda na prática."},
+  {title="Relações e compromissos", bodies={Moon=true,Venus=true,DSC=true}, houses={[7]=true,[8]=true},
+    action="Numa decisão a dois, diga o que já consegue assumir e combinem quando o acordo será revisto."},
+  {title="Trabalho e direção", bodies={Mars=true,Saturn=true,MC=true}, houses={[2]=true,[6]=true,[10]=true},
+    action="Escolha uma entrega concreta e mostre qual decisão sua ajudou a produzir o resultado."}
+}
+local function synthesis()
+  local placements = {}
+  for _, p in ipairs(chart.positions) do placements[p.name] = p end
+  for name, cusp in pairs(chart.angles) do placements[name] = cusp end
+  local used = {}
+  local result = {
+    ("O Sol em %s na casa %d, a Lua em %s na casa %d e o Ascendente em %s orientam a leitura."):format(
+      signs[placements.Sun.sign], placements.Sun.house,
+      signs[placements.Moon.sign], placements.Moon.house, signs[placements.Ascendant.sign]),
+    "\\par "
+  }
+  for _, topic in ipairs(topics) do
+    local best, best_score
+    for _, a in ipairs(chart.aspects) do
+      local key = aspect_key(a)
+      if not used[key] then
+        local score = 0
+        for _, name in ipairs({a.first,a.second}) do
+          if topic.bodies[name] then score = score + 2 end
+          if topic.houses[placements[name].house] then score = score + 1 end
+        end
+        if score > 0 and (not best or score > best_score or
+          (score == best_score and (a.orb < best.orb or (a.orb == best.orb and key < aspect_key(best))))) then
+          best, best_score = a, score
+        end
+      end
+    end
+    result[#result+1] = "\\subsection*{" .. topic.title .. "}"
+    if best then
+      used[aspect_key(best)] = true
+      result[#result+1] = ("%s e %s em %s. %s"):format(
+        names[best.first], names[best.second], types[best.kind][1]:lower(), composed.aspect(best, placements))
+    else
+      local p = placements[({["Expressão e aprendizado"]="Mercury",["Relações e compromissos"]="Venus",["Trabalho e direção"]="Saturn"})[topic.title]]
+      result[#result+1] = composed.position(p)
+    end
+    result[#result+1] = "\\par\\smallskip " .. topic.action .. "\\par "
+  end
+  return table.concat(result, " ")
+end
+
+if not matched then token.set_macro("NatalSinteseTematica", synthesis(), "global") end

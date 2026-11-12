@@ -39,7 +39,7 @@
   \title{Seu mapa natal}
 \else
   \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas+\NatalTotalAspectos\relax>0
-    \title{Seu mapa natal\\\large Leituras disponíveis}
+    \title{Seu mapa natal\\\large Leitura temática e dados do mapa}
   \else
     \title{Mapa natal\\\large Relatório técnico}
   \fi
@@ -51,10 +51,13 @@
 \maketitle
 \ifnum\NatalTemLeitura=1
   \input{leitura-demonstrativa-v1.tex}
-  \clearpage
+\else
+  \section*{Síntese temática}
+  \NatalSinteseTematica
 \fi
+\clearpage
   \ifnum\numexpr\NatalTotalLeituras+\NatalTotalEixos+\NatalTotalCasas+\NatalTotalAspectos\relax>0
-    \section*{Leituras disponíveis}
+    \section*{Leitura temática e dados do mapa}
     O relatório apresenta \NatalTotalLeituras\space leituras de posições.\par
     \input{leituras-posicoes-v1.tex}
     \NatalLeiturasSelecionadas
