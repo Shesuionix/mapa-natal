@@ -1,5 +1,12 @@
 local reader = dofile("entrada.lua")
-local chart = reader.read(os.getenv("NATAL_ENTRADA") or "exemplo.txt")
+local chart, raw = reader.read(os.getenv("NATAL_ENTRADA") or "exemplo.txt")
+local digest = require("sha2").digest256(raw)
+if #digest == 32 then
+  digest = digest:gsub(".", function(byte) return ("%02x"):format(byte:byte()) end)
+end
+assert(#digest == 64 and digest:match("^%x+$"), "SHA-256 inválido")
+token.set_macro("NatalHashEntrada", digest:lower(), "global")
+texio.write_nl("term and log", "[Mapa Natal] SHA-256 " .. digest:lower())
 for _, warning in ipairs(chart.warnings) do
   texio.write_nl("term and log", "[Mapa Natal] " .. warning)
 end

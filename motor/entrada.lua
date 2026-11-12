@@ -158,7 +158,7 @@ function input.read(path)
       warn(speed.line, "sinal do delta diverge da indicação de retrogradação: " .. speed.name)
     end
   end
-  return chart
+  return chart, raw
 end
 
 return input
