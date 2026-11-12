@@ -16,8 +16,8 @@ local names = {
   Fortune="Fortuna", Vertex="Vertex", Ascendant="ASC", DSC="DSC", MC="MC", IC="IC"
 }
 local types = {
-  Conjunction={"Conjunção","Cj"}, Sextile={"Sextil","Sx"}, Square={"Quadratura","Qd"},
-  Trine={"Trígono","Tr"}, Opposition={"Oposição","Op"}
+  Conjunction={"Conjunção","☌"}, Sextile={"Sextil","⚹"}, Square={"Quadratura","□"},
+  Trine={"Trígono","△"}, Opposition={"Oposição","☍"}
 }
 local phases = {Applying="Aplicativo", Separating="Separativo"}
 local angles = {[1]="ASC", [4]="IC", [7]="DSC", [10]="MC"}
@@ -58,10 +58,22 @@ for index, aspect in ipairs(chart.aspects) do
   end
 end
 
+local symbols = {"☉", "☽", "☿", "♀", "♂", "♃", "♄", "♅", "♆", "♇", "☊", "⚸", "⚷", "⊗", "VX"}
+local function glyph(symbol)
+  return "\\NatalGlifo{" .. symbol .. "}"
+end
+local grid_header = {"Corpo ou ponto"}
+for _, symbol in ipairs(symbols) do
+  grid_header[#grid_header+1] = glyph(symbol)
+end
+row(grid, table.unpack(grid_header))
+grid[#grid+1] = "\\midrule"
+
 for i, first in ipairs(chart.positions) do
-  local cells = {i .. " " .. names[first.name]}
+  local cells = {glyph(symbols[i]) .. " " .. names[first.name]}
   for j, second in ipairs(chart.positions) do
-    cells[#cells+1] = j == i and "—" or (j < i and pairs_by_body[first.name][second.name] or "")
+    local symbol = j < i and pairs_by_body[first.name][second.name]
+    cells[#cells+1] = symbol and glyph(symbol) or (j == i and "—" or "")
   end
   row(grid, table.unpack(cells))
 end

@@ -9,6 +9,7 @@
 \renewcommand{\arraystretch}{1.12}
 \setlength{\LTleft}{0pt}
 \setlength{\LTright}{\fill}
+\newcommand{\NatalGlifo}[1]{{\astrofont #1}}
 \directlua{dofile("dados-relatorio.lua")}
 \NatalConfig{chart radius=0.38\linewidth}
 \title{Mapa natal\\\large Relatório técnico}
@@ -38,14 +39,12 @@ R indica retrogradação na entrada.
 
 \clearpage
 \section{Grade de aspectos}
-A numeração das colunas segue a ordem das linhas. Cj é conjunção, Sx é sextil,
-Qd é quadratura, Tr é trígono e Op é oposição.
+\NatalGlifo{☌} conjunção \quad \NatalGlifo{⚹} sextil \quad \NatalGlifo{□} quadratura \quad
+\NatalGlifo{△} trígono \quad \NatalGlifo{☍} oposição.
 \begin{center}
 \small\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{@{}l*{15}{c}@{}}
 \toprule
-Corpo ou ponto & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15\\
-\midrule
 \NatalGrade
 \bottomrule
 \end{tabular}
