@@ -200,3 +200,59 @@ token.set_macro("NatalLeiturasEixos", table.concat(selected_axes), "global")
 if #selected_axes > 0 then
   texio.write_nl("log", ("[Mapa Natal] Biblioteca de eixos 1.0: %d de 2 leituras"):format(#selected_axes))
 end
+-- Dependencies of the reviewed prose, in house order.
+local house_rules = {
+  {"Venus", "Moon|Square|Venus"},
+  {"Mars", "Mars|Sextile|Sun"},
+  {"Jupiter", "Jupiter|Square|Mercury"},
+  {"Saturn", "Jupiter|Opposition|Saturn"},
+  {"Saturn", "Saturn|Trine|Venus"},
+  {"Jupiter", "Jupiter|Opposition|Saturn"},
+  {"Mars", "Mars|Sextile|Sun"},
+  {"Venus", "Saturn|Trine|Venus"},
+  {"Mercury", "Jupiter|Square|Mercury"},
+  {"Moon", "MC|Square|Moon"},
+  {"Sun", "Sun|Conjunction|Venus"},
+  {"Mercury", "Mercury|Trine|Pluto"}
+}
+local function editorial_facts(data)
+  local positions, occupants, aspects = {}, {}, {}
+  for house = 1, 12 do occupants[house] = {} end
+  for _, position in ipairs(data.positions) do
+    local key = table.concat({position.name, position.sign, position.house, tostring(position.retrograde)}, "|")
+    positions[position.name] = key
+    local house = occupants[position.house]
+    house[#house+1] = key
+  end
+  for name, cusp in pairs(data.angles) do positions[name] = cusp.sign end
+  for _, aspect in ipairs(data.aspects) do
+    local first, second = aspect.first, aspect.second
+    if second < first then first, second = second, first end
+    aspects[table.concat({first, aspect.kind, second}, "|")] = true
+  end
+  for house = 1, 12 do occupants[house] = table.concat(occupants[house], ";") end
+  return positions, occupants, aspects
+end
+
+local selected_houses = {}
+if not matched then
+  local current_positions, current_occupants, current_aspects = editorial_facts(chart)
+  local reviewed_positions, reviewed_occupants = editorial_facts(reviewed)
+  for house, rule in ipairs(house_rules) do
+    local ruler, aspect = rule[1], rule[2]
+    local first, second = aspect:match("^([^|]+)|[^|]+|([^|]+)$")
+    if chart.cusps[house].sign == reviewed.cusps[house].sign and
+      current_occupants[house] == reviewed_occupants[house] and
+      current_positions[ruler] == reviewed_positions[ruler] and current_aspects[aspect] and
+      current_positions[first] == reviewed_positions[first] and
+      current_positions[second] == reviewed_positions[second] then
+      selected_houses[#selected_houses+1] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(
+        house, signs[chart.cusps[house].sign], angle(chart.cusps[house].degree*60+chart.cusps[house].minute))
+    end
+  end
+end
+token.set_macro("NatalTotalCasas", tostring(#selected_houses), "global")
+token.set_macro("NatalLeiturasCasas", table.concat(selected_houses), "global")
+if #selected_houses > 0 then
+  texio.write_nl("log", ("[Mapa Natal] Biblioteca de casas 1.0: %d de 12 leituras"):format(#selected_houses))
+end
