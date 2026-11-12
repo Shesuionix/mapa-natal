@@ -276,10 +276,37 @@ local function editorial_facts(data)
   return positions, occupants, aspects
 end
 
+local house_library = {
+  {13, 1, "Gemini", "Saturn|Gemini|1|true;North Node|Gemini|1|true", "Mercury", "Mercury|Capricorn|8|false"},
+  {14, 2, "Cancer", "", "Moon", "Moon|Scorpio|6|false"},
+  {15, 3, "Leo", "Jupiter|Leo|3|true", "Sun", "Sun|Aquarius|9|false"},
+  {16, 4, "Virgo", "", "Mercury", "Mercury|Capricorn|8|false"},
+  {17, 5, "Libra", "", "Venus", "Venus|Sagittarius|7|false"},
+  {18, 6, "Scorpio", "Moon|Scorpio|6|false", "Mars", "Mars|Sagittarius|7|false"},
+  {19, 7, "Sagittarius", "Venus|Sagittarius|7|false;Mars|Sagittarius|7|false;Pluto|Sagittarius|7|false", "Jupiter", "Jupiter|Leo|3|true"},
+  {20, 8, "Capricorn", "Mercury|Capricorn|8|false;Chiron|Capricorn|8|false", "Saturn", "Saturn|Gemini|1|true"},
+  {21, 9, "Aquarius", "Sun|Aquarius|9|false;Uranus|Aquarius|9|false;Neptune|Aquarius|9|false;Vertex|Aquarius|9|false", "Saturn", "Saturn|Gemini|1|true"},
+  {22, 10, "Pisces", "Fortune|Pisces|10|false", "Jupiter", "Jupiter|Leo|3|true"},
+  {23, 11, "Aries", "Lilith|Aries|11|false", "Mars", "Mars|Sagittarius|7|false"},
+  {24, 12, "Taurus", "", "Venus", "Venus|Sagittarius|7|false"},
+  {25, 1, "Scorpio", "Sun|Sagittarius|1|false;Pluto|Sagittarius|1|false", "Mars", "Mars|Scorpio|12|false"},
+  {26, 2, "Sagittarius", "Mercury|Capricorn|2|false;Chiron|Capricorn|2|false", "Jupiter", "Jupiter|Leo|10|true"},
+  {27, 3, "Capricorn", "Neptune|Aquarius|3|false", "Saturn", "Saturn|Gemini|8|true"},
+  {28, 4, "Aquarius", "Moon|Pisces|4|false;Uranus|Aquarius|4|false", "Saturn", "Saturn|Gemini|8|true"},
+  {29, 5, "Pisces", "Vertex|Aries|5|false", "Jupiter", "Jupiter|Leo|10|true"},
+  {30, 6, "Aries", "Lilith|Aries|6|false", "Mars", "Mars|Scorpio|12|false"},
+  {31, 7, "Taurus", "North Node|Gemini|7|true", "Venus", "Venus|Scorpio|12|false"},
+  {32, 8, "Gemini", "Saturn|Gemini|8|true", "Mercury", "Mercury|Capricorn|2|false"},
+  {33, 9, "Cancer", "", "Moon", "Moon|Pisces|4|false"},
+  {34, 10, "Leo", "Jupiter|Leo|10|true;Fortune|Virgo|10|false", "Sun", "Sun|Sagittarius|1|false"},
+  {35, 11, "Virgo", "", "Mercury", "Mercury|Capricorn|2|false"},
+  {36, 12, "Libra", "Venus|Scorpio|12|false;Mars|Scorpio|12|false", "Venus", "Venus|Scorpio|12|false"},
+}
 local selected_houses = {}
 if not matched then
   local current_positions, current_occupants, current_aspects = editorial_facts(chart)
   local reviewed_positions, reviewed_occupants = editorial_facts(reviewed)
+  local by_house = {}
   for house, rule in ipairs(house_rules) do
     local ruler, aspect = rule[1], rule[2]
     local first, second = aspect:match("^([^|]+)|[^|]+|([^|]+)$")
@@ -288,15 +315,29 @@ if not matched then
       current_positions[ruler] == reviewed_positions[ruler] and current_aspects[aspect] and
       current_positions[first] == reviewed_positions[first] and
       current_positions[second] == reviewed_positions[second] then
-      selected_houses[#selected_houses+1] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(
+      by_house[house] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(
         house, signs[chart.cusps[house].sign], angle(chart.cusps[house].degree*60+chart.cusps[house].minute))
     end
+  end
+  do
+    for _, entry in ipairs(house_library) do
+      local index, house, sign, occupants, ruler, ruler_key = table.unpack(entry)
+      local cusp = chart.cusps[house]
+      if not by_house[house] and cusp.sign == sign and current_occupants[house] == occupants and
+        current_positions[ruler] == ruler_key then
+        by_house[house] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(
+          index, signs[cusp.sign], angle(cusp.degree*60+cusp.minute))
+      end
+    end
+  end
+  for house = 1, 12 do
+    if by_house[house] then selected_houses[#selected_houses+1] = by_house[house] end
   end
 end
 token.set_macro("NatalTotalCasas", tostring(#selected_houses), "global")
 token.set_macro("NatalLeiturasCasas", table.concat(selected_houses), "global")
 if #selected_houses > 0 then
-  texio.write_nl("log", ("[Mapa Natal] Biblioteca de casas 1.0: %d de 12 leituras"):format(#selected_houses))
+  texio.write_nl("log", ("[Mapa Natal] Biblioteca de casas 1.1: %d de 12 leituras"):format(#selected_houses))
 end
 local function aspect_key(aspect)
   local first, second = aspect.first, aspect.second
