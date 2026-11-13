@@ -22,8 +22,12 @@ O lote reúne A a D e as entradas 01 a 07 do acervo. São onze mapas, com as seg
 
 | Seção | Observadas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 131 | 119 | 12 |
-| Aspectos | 529 | 470 | 59 |
+| Casas | 131 | 131 | 0 |
+| Aspectos | 529 | 529 | 0 |
+
+O caso 05 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 59 aspectos na cópia de comparação. O lote acrescentou 85 textos. Os 11 mapas agora passam em modo estrito e os dez já validados preservaram a seleção editorial. As 131 chaves de casas e as 529 de aspectos correspondem ao que foi observado no lote.
+
+A cópia de comparação do caso 05 registra a exclusão do trígono Fortuna–Vertex. A linha original informa 2°28′ e o orbe pelas posições para esse trígono é 50°10′. Recolocar a linha fez o modo estrito bloquear a geração.
 
 O caso 02 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 54 aspectos. O caso 01 passou com 15 posições, 2 eixos, 12 casas e 55 aspectos na cópia de comparação. Os dois casos acrescentaram 163 textos próprios. A seleção dos oito mapas já validados foi preservada.
 
