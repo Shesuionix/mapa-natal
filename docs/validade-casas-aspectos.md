@@ -22,12 +22,16 @@ O lote reúne A a D e as entradas 01 a 07 do acervo. São onze mapas, com as seg
 
 | Seção | Observadas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 131 | 60 | 71 |
-| Aspectos | 529 | 242 | 287 |
+| Casas | 131 | 71 | 60 |
+| Aspectos | 529 | 263 | 266 |
 
 O caso 06 informa `Stationary` na posição de Netuno e no bloco de velocidades. O leitor preserva a entrada original, identifica a posição estacionária e usa `Neptune|Scorpio|5|stationary` na seleção. A posição estacionária participa também das chaves dos aspectos de Netuno. O caso 06 tem textos próprios para as 15 posições, os 2 eixos, as 12 casas e os 40 aspectos. O lote de 65 novos textos preserva as dependências cadastradas nos mapas A a D.
 
 O relatório do caso 06 usa a cópia de comparação do acervo. Nela, `ALTERACOES.txt` registra que a quadratura Fortuna–Vertex foi retirada dessa cópia. O original informa 6°22′ e as longitudes publicadas resultam em 70°14′ de orbe para quadratura. Recolocar a linha original provocou um erro geométrico no modo estrito. O PDF validado corresponde aos 40 aspectos da cópia de comparação.
+
+O caso 07 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 44 aspectos. Foram cadastrados 3 textos de posições, 11 de casas e 21 de aspectos. A casa 2 seleciona o texto já cadastrado para o caso 06 porque as posições e o aspecto do regente coincidem na chave editorial.
+
+O caso 07 também usa a cópia de comparação do acervo. O registro `ALTERACOES.txt` identifica a quadratura Fortuna–Vertex retirada da cópia. O original informa 2°43′ e as longitudes publicadas resultam em 72°43′ de orbe para quadratura. O modo estrito bloqueou a entrada com a linha original recolocada.
 
 Os números são lacunas confirmadas neste lote. A enumeração de todos os contextos válidos depende das regras de orbe da fonte, das convenções dos pontos e da definição uniforme das dependências de cada texto de casa. A grade básica continua disponível para localizar lacunas por casa e signo ou por par e tipo de aspecto.
 
