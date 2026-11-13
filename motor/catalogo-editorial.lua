@@ -75,11 +75,22 @@ local house_rules = {
   {"Mercury", "Mercury|Trine|Pluto"}
 }
 
+local traditional_rulers = {
+  Aries="Mars", Taurus="Venus", Gemini="Mercury", Cancer="Moon", Leo="Sun",
+  Virgo="Mercury", Libra="Venus", Scorpio="Mars", Sagittarius="Jupiter",
+  Capricorn="Saturn", Aquarius="Saturn", Pisces="Jupiter"
+}
+
+local function house_key(number, sign, members, ruler_position)
+  return ("%d|%s|ocupantes=%s|regente=%s|posicao=%s"):format(
+    number, sign, members, traditional_rulers[sign], ruler_position)
+end
+
 local function editorial_facts(data)
   local positions, occupants, aspects = {}, {}, {}
   for house = 1, 12 do occupants[house] = {} end
   for _, position in ipairs(data.positions) do
-    local key = table.concat({position.name, position.sign, position.house, tostring(position.retrograde)}, "|")
+    local key = position_key(position)
     positions[position.name] = key
     local house = occupants[position.house]
     house[#house+1] = key
@@ -94,7 +105,7 @@ local function editorial_facts(data)
   return positions, occupants, aspects
 end
 
-local house_library = {
+local house_entries = {
   {37, 1, "Aries", "Lilith|Taurus|1|false;Chiron|Taurus|1|true", "Mars", "Mars|Libra|7|false"},
   {38, 2, "Taurus", "Jupiter|Gemini|2|true", "Venus", "Venus|Scorpio|7|false"},
   {39, 3, "Gemini", "", "Mercury", "Mercury|Virgo|6|false"},
@@ -137,6 +148,48 @@ local function aspect_key(aspect)
   local first, second = aspect.first, aspect.second
   if second < first then first, second = second, first end
   return table.concat({first, aspect.kind, second}, "|")
+end
+
+local function contextual_aspect_key(aspect, locations)
+  local first, second = aspect.first, aspect.second
+  if second < first then first, second = second, first end
+  return table.concat({first, aspect.kind, second, locations[first], locations[second]}, ":")
+end
+
+local function house_aspect_key(key, dependency, locations)
+  local first, second = dependency:match("^([^|]+)|[^|]+|([^|]+)$")
+  return key .. "|aspecto=" .. dependency .. ":" .. locations[first] .. ":" .. locations[second]
+end
+
+local function houses(reviewed)
+  local library = {}
+  local positions, occupants, aspects = editorial_facts(reviewed)
+  for number, rule in ipairs(house_rules) do
+    local ruler, dependency = table.unpack(rule)
+    local sign = reviewed.cusps[number].sign
+    assert(ruler == traditional_rulers[sign] and aspects[dependency], "Dependência inválida na casa " .. number)
+    local key = house_key(number, sign, occupants[number], positions[ruler])
+    library[house_aspect_key(key, dependency, positions)] = number
+  end
+  for _, entry in ipairs(house_entries) do
+    local id, number, sign, members, ruler, ruler_position = table.unpack(entry)
+    assert(ruler == traditional_rulers[sign], "Regente inválido no texto " .. id)
+    local key = house_key(number, sign, members, ruler_position)
+    assert(not library[key], "Chave duplicada: " .. key)
+    library[key] = id
+  end
+  return library
+end
+
+local function select_house(number, chart, positions, occupants, aspects, library)
+  local sign = chart.cusps[number].sign
+  local key = house_key(number, sign, occupants[number], positions[traditional_rulers[sign]])
+  local dependency = house_rules[number][2]
+  if aspects[dependency] then
+    local contextual = house_aspect_key(key, dependency, positions)
+    if library[contextual] then return library[contextual], contextual end
+  end
+  return library[key], key
 end
 
 local contextual_aspects = {
@@ -297,9 +350,23 @@ local function positions(reviewed)
   return library
 end
 
+local function aspects(reviewed)
+  local library = {}
+  local locations = editorial_facts(reviewed)
+  for index, aspect in ipairs(reviewed.aspects) do
+    local key = contextual_aspect_key(aspect, locations)
+    library[key] = index
+  end
+  for key, index in pairs(contextual_aspects) do
+    assert(not library[key], "Aspecto cadastrado duas vezes: " .. key)
+    library[key] = index
+  end
+  return library
+end
+
 return {
   positions=positions, position_key=position_key,
-  axis_pairs=axis_pairs, axes=axis_library, house_rules=house_rules,
-  facts=editorial_facts, houses=house_library, aspect_key=aspect_key,
-  contextual_aspects=contextual_aspects
+  axis_pairs=axis_pairs, axes=axis_library,
+  facts=editorial_facts, houses=houses, select_house=select_house,
+  aspect_key=aspect_key, contextual_aspect_key=contextual_aspect_key, aspects=aspects
 }

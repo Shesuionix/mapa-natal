@@ -15,15 +15,30 @@ A chave editorial de posição é `corpo|signo|casa|retrograde`. O grau e o minu
 
 ## Resultado
 
-Das 4.320 chaves da grade inicial, **576 são excluídas** pelas regras de retrogradação. A auditoria encontrou uma configuração reproduzível para **3.672 chaves**, incluindo as 60 que já têm texto. Restam **3.612 textos a escrever para as chaves demonstradas**. As outras **72 chaves** são Vertex nas casas 1, 2, 3, 10, 11 e 12, em todos os signos. Permanecem em aberto até a confirmação do sistema de casas, da convenção de Vertex e do tratamento de latitudes da fonte de produção. A falta de exemplo na busca não prova impossibilidade.
+Das 4.320 chaves da grade inicial, **576 são excluídas** pelas regras de retrogradação. A auditoria encontrou uma configuração reproduzível para **3.684 chaves**, incluindo as 60 que já têm texto. Restam **3.624 textos a escrever para as chaves demonstradas**. As outras **60 chaves** são Vertex nas casas 1, 2, 3, 11 e 12, em todos os signos. Permanecem em aberto até a confirmação do sistema de casas, da convenção de Vertex e do tratamento de latitudes da fonte de produção. A falta de exemplo na busca não prova impossibilidade.
 
-As 72 ocorrências demonstradas de Vertex cobrem as casas 4 a 9 nos 12 signos. Destas, 64 têm exemplo em Placidus e 8 têm exemplo em Campanus. Campanus entra aqui como evidência de possibilidade geométrica em uma entrada com ASC e MC nas cúspides 1 e 10. O arquivo atual não declara o sistema usado pelo operador. Também não identifica a variante do Nodo Norte ou da Lilith. Essas escolhas podem alterar a quantidade de chaves aplicáveis à fonte comercial.
+As 84 ocorrências demonstradas de Vertex cobrem as casas 4 a 10 nos 12 signos. As casas 4 a 9 têm 64 exemplos em Placidus e 8 em Campanus. A casa 10 tem 12 exemplos de fronteira em Placidus. Neles, o Vertex fica imediatamente antes do MC e ambos são exportados no mesmo minuto, seja por truncamento ou arredondamento. O intervalo adotado pelo leitor inclui a cúspide de início e, nesse caso, admite o Vertex na casa 10. Uma fonte que atribua a casa antes de arredondar pode exportar a casa 9 para a mesma geometria. A auditoria mantém as duas possibilidades documentadas. [Implementação de casas e Vertex](https://github.com/aloistr/swisseph/blob/master/swehouse.c)
+
+A busca exploratória do Vertex também percorreu latitudes de −89° a 89°, ângulos siderais locais a cada 0,5° e vários sistemas de casas da Swiss Ephemeris, mantendo os resultados compatíveis com a ordem zodiacal e com os quatro ângulos nas cúspides. Os exemplos encontrados fora das casas 4 a 9 eram coincidências com o minuto do MC. A grade exploratória amostra a geometria. A exclusão definitiva de outras casas depende das convenções da fonte. [Convenções e casos polares da Swiss Ephemeris](https://www.astro.com/swisseph/swisseph.htm)
+
+## Convenções observadas nos mapas A a D
+
+Foi ajustado um instante para cada mapa a partir das longitudes publicadas de Sol e Lua, usando Urano, Netuno e Plutão para localizar o ano provável no intervalo de 1800 a 2099. O teste conferiu Sol, Júpiter, Saturno, Urano, Netuno e Plutão com diferença inferior a 1′. Os deltas fornecidos de Nodo Norte e Lilith também são compatíveis com os valores médios calculados. A tabela mostra diferenças absolutas em longitude, em minutos de arco.
+
+| Mapa | Nodo médio | Nodo verdadeiro | Lilith média | Lilith osculante | Lilith interpolada |
+|---|---:|---:|---:|---:|---:|
+| A | 0,82 | 72,42 | 0,72 | 554,93 | 267,79 |
+| B | 0,16 | 76,17 | 0,93 | 358,40 | 50,34 |
+| C | 0,78 | 27,81 | 0,20 | 18,17 | 276,37 |
+| D | 0,17 | 52,12 | 0,68 | 857,80 | 258,51 |
+
+Os dados sustentam a inferência de Nodo Norte médio e Lilith média nos quatro exemplos. O arquivo de produção ainda não declara essas variantes. As chaves demonstradas para Nodo direto e Lilith retrógrada continuam no inventário geral. Se a fonte de produção for confirmada como exclusivamente média para os dois pontos, serão 288 chaves a menos nessa configuração, 144 por ponto. [Variantes de Nodo e Lilith na Swiss Ephemeris](https://www.astro.com/swisseph/swisseph.htm)
 
 Para a Fortuna, a auditoria usa `ASC + Lua − Sol` no mapa diurno e `ASC + Sol − Lua` no noturno, com o horizonte da roda definido pelo eixo ASC–DSC. As quatro entradas de referência A a D são compatíveis com essa convenção dentro de um minuto de arco. O cálculo serve para produzir evidências e o motor continua lendo a Fortuna informada no arquivo.
 
 ## Reprodução
 
-Cada linha de `evidencias-posicoes.tsv` guarda a chave, o dia juliano UT, latitude e longitude geográficas em graus, sistema de casas (`P` Placidus ou `C` Campanus) e variante. São configurações de auditoria e usam coordenadas em grade. A busca usa efeméride geocêntrica tropical, datas a partir de 1800 e até 2099, com passo diário. Para os corpos e a Fortuna usa latitude 0° e longitudes em passos de 15°. Para Vertex usa 1º de janeiro de 2000, latitudes inteiras de −66° a 66° e longitudes inteiras de −180° a 179°. O intervalo de busca não limita datas aceitas pelo leitor.
+Cada linha de `evidencias-posicoes.tsv` guarda a chave, o dia juliano UT, latitude e longitude geográficas em graus, sistema de casas (`P` Placidus ou `C` Campanus) e variante. A busca usa efeméride geocêntrica tropical, datas a partir de 1800 e até 2099, com passo diário. Para os corpos e a Fortuna usa latitude 0° e longitudes em passos de 15°. Para Vertex usa 1º de janeiro de 2000, latitudes inteiras de −66° a 66° e longitudes inteiras de −180° a 179°. A variante `cuspide-minuto` registra a busca dirigida perto do zênite, com a latitude derivada da declinação do MC e um deslocamento de 0,00005°. O intervalo de busca não limita datas aceitas pelo leitor.
 
 Para regenerar as evidências, use `pysweph==2.10.3.6` em ambiente de desenvolvimento e obtenha `sepl_18.se1`, `semo_18.se1` e `seas_18.se1` do diretório oficial. O script exige Swiss Ephemeris 2.10.03, confere o SHA-256 dos arquivos e interrompe diante de uma substituição de efeméride. Python e os arquivos de efemérides são usados nesta auditoria de desenvolvimento. A geração de relatórios continua local em LuaLaTeX com os quatro blocos fornecidos pelo operador. [Arquivos de efemérides da Astrodienst](https://github.com/aloistr/swisseph/tree/master/ephe) · [Versão do vínculo Python](https://pypi.org/project/pysweph/2.10.3.6/)
 
@@ -32,6 +47,6 @@ python ferramentas/gerar-evidencias-posicoes.py CAMINHO_DAS_EFEMERIDES docs/evid
 texlua motor/inventario-editorial.lua
 ```
 
-O inventário separa as posições demonstradas ainda sem texto das que permanecem em aberto. Casas e aspectos ainda aparecem pelas chaves básicas, pois a validade das combinações contextuais é uma etapa posterior.
+O inventário separa as posições demonstradas ainda sem texto das que permanecem em aberto. Para casas e aspectos, a [auditoria contextual](validade-casas-aspectos.md) usa os mapas fornecidos na execução.
 
 Referências para o movimento em longitude, as variantes lunares, a geometria do Vertex e a Fortuna. [Movimento geocêntrico do Sol e da Lua](https://tile.loc.gov/storage-services/public/gdcmassbookdig/astronomicallore01grim/astronomicallore01grim.pdf) · [Documentação da Swiss Ephemeris](https://www.astro.com/swisseph/swisseph.htm) · [Implementação de casas e Vertex](https://github.com/aloistr/swisseph/blob/master/swehouse.c) · [Fórmulas da Fortuna](https://www.astro.com/faq/fq_fh_calc_e.htm)

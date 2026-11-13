@@ -1,8 +1,6 @@
 local catalog = dofile("catalogo-editorial.lua")
 local position_key, aspect_key, editorial_facts = catalog.position_key, catalog.aspect_key, catalog.facts
 local axis_pairs, axis_library = catalog.axis_pairs, catalog.axes
-local house_rules, house_library = catalog.house_rules, catalog.houses
-local contextual_aspects = catalog.contextual_aspects
 local composed = dofile("leitura-composta.lua")
 local reader = dofile("entrada.lua")
 local chart, raw = reader.read(os.getenv("NATAL_ENTRADA") or "exemplo.txt")
@@ -216,40 +214,19 @@ end
 local selected_houses, specific_houses = {}, 0
 do
   local current_positions, current_occupants, current_aspects = editorial_facts(chart)
-  local reviewed_positions, reviewed_occupants = editorial_facts(reviewed)
-  local by_house = {}
-  for house, rule in ipairs(house_rules) do
-    local ruler, aspect = rule[1], rule[2]
-    local first, second = aspect:match("^([^|]+)|[^|]+|([^|]+)$")
-    if chart.cusps[house].sign == reviewed.cusps[house].sign and
-      current_occupants[house] == reviewed_occupants[house] and
-      current_positions[ruler] == reviewed_positions[ruler] and current_aspects[aspect] and
-      current_positions[first] == reviewed_positions[first] and
-      current_positions[second] == reviewed_positions[second] then
-      by_house[house] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(
-        house, signs[chart.cusps[house].sign], angle(chart.cusps[house].degree*60+chart.cusps[house].minute))
-    end
-  end
-  do
-    for _, entry in ipairs(house_library) do
-      local index, house, sign, occupants, ruler, ruler_key = table.unpack(entry)
-      local cusp = chart.cusps[house]
-      if not by_house[house] and cusp.sign == sign and current_occupants[house] == occupants and
-        current_positions[ruler] == ruler_key then
-        by_house[house] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(
-          index, signs[cusp.sign], angle(cusp.degree*60+cusp.minute))
-      end
-    end
-  end
+  local library = catalog.houses(reviewed)
   for house = 1, 12 do
     local cusp = chart.cusps[house]
-    if by_house[house] then specific_houses = specific_houses + 1 end
-    if not by_house[house] then
-      gap("casa", ("%d|%s|ocupantes=%s"):format(house, cusp.sign, current_occupants[house]))
+    local index, key = catalog.select_house(house, chart, current_positions, current_occupants, current_aspects, library)
+    local degree = angle(cusp.degree*60+cusp.minute)
+    if index then
+      specific_houses = specific_houses + 1
+      selected_houses[#selected_houses+1] = ("\\NatalLeituraCasa{%d}{%s}{%s}"):format(index, signs[cusp.sign], degree)
+    else
+      gap("casa", key)
+      selected_houses[#selected_houses+1] = ("\\NatalCasaComposta{%d}{%s}{%s}%s\\par "):format(
+        house, signs[cusp.sign], degree, composed.house(chart, house, names))
     end
-    selected_houses[#selected_houses+1] = by_house[house] or
-      ("\\NatalCasaComposta{%d}{%s}{%s}%s\\par "):format(house, signs[cusp.sign],
-        angle(cusp.degree*60+cusp.minute), composed.house(chart, house, names))
   end
 end
 token.set_macro("NatalTotalCasas", tostring(#selected_houses), "global")
@@ -262,20 +239,13 @@ local selected_aspects, specific_aspects = {}, 0
 local aspect_ids = {}
 do
   local current_positions = editorial_facts(chart)
-  local reviewed_positions = editorial_facts(reviewed)
-  local library, locations = {}, {}
+  local library, locations = catalog.aspects(reviewed), {}
   for name, cusp in pairs(chart.angles) do locations[name] = cusp end
   for _, p in ipairs(chart.positions) do locations[p.name] = p end
-  for index, aspect in ipairs(reviewed.aspects) do library[aspect_key(aspect)] = index end
   for id, aspect in ipairs(chart.aspects) do
     aspect_ids[aspect_key(aspect)] = id
-    local index = library[aspect_key(aspect)]
-    if current_positions[aspect.first] ~= reviewed_positions[aspect.first] or
-      current_positions[aspect.second] ~= reviewed_positions[aspect.second] then index = nil end
-    local first, second = aspect.first, aspect.second
-    if second < first then first, second = second, first end
-    local key = table.concat({first,aspect.kind,second,current_positions[first],current_positions[second]}, ":")
-    index = contextual_aspects[key] or index
+    local key = catalog.contextual_aspect_key(aspect, current_positions)
+    local index = library[key]
     if index then specific_aspects = specific_aspects + 1 end
     selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}{%d}"):format(
         index or 0, names[aspect.first], types[aspect.kind][1], names[aspect.second],

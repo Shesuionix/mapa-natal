@@ -3,7 +3,6 @@ local reader = dofile(folder .. "entrada.lua")
 local catalog = dofile(folder .. "catalogo-editorial.lua")
 local domain = reader.domain()
 local reviewed = reader.read(folder .. "mapa-editorial-v1.txt")
-local positions, occupants = catalog.facts(reviewed)
 
 local function read_placement_evidence(path)
   local file = assert(io.open(path, "rb"))
@@ -59,34 +58,18 @@ for axis, library in ipairs(catalog.axes) do
 end
 
 local house_bases, aspect_bases = {}, {}
-local function house_key(number, sign, members, ruler, ruler_position)
-  local base = number .. "|" .. sign
-  house_bases[base] = true
-  return ("%s|ocupantes=%s|regente=%s|posicao=%s"):format(base, members, ruler, ruler_position)
-end
-for number, rule in ipairs(catalog.house_rules) do
-  local ruler, aspect = table.unpack(rule)
-  local first, second = aspect:match("^([^|]+)|[^|]+|([^|]+)$")
-  local key = house_key(number, reviewed.cusps[number].sign, occupants[number], ruler, positions[ruler])
-  add(houses, key .. "|aspecto=" .. aspect .. ":" .. positions[first] .. ":" .. positions[second], number)
-end
-for _, entry in ipairs(catalog.houses) do
-  local id, number, sign, members, ruler, ruler_position = table.unpack(entry)
-  add(houses, house_key(number, sign, members, ruler, ruler_position), id)
+local house_library = catalog.houses(reviewed)
+for key, id in pairs(house_library) do
+  house_bases[assert(key:match("^(%d+|%a+)|"))] = true
+  add(houses, key, id)
 end
 
-local function add_aspect(key, id)
-  local first, kind, second, context = key:match("^([^:]+):([^:]+):([^:]+):(.+)$")
+for key, id in pairs(catalog.aspects(reviewed)) do
+  local first, kind, second = key:match("^([^:]+):([^:]+):([^:]+):")
   assert(first, "Chave de aspecto inválida: " .. key)
   aspect_bases[catalog.aspect_key({first=first, kind=kind, second=second})] = true
-  add(aspects, first .. ":" .. kind .. ":" .. second .. ":" .. context, id)
+  add(aspects, key, id)
 end
-for id, aspect in ipairs(reviewed.aspects) do
-  local first, second = aspect.first, aspect.second
-  if second < first then first, second = second, first end
-  add_aspect(table.concat({first, aspect.kind, second, positions[first], positions[second]}, ":"), id)
-end
-for key, id in pairs(catalog.contextual_aspects) do add_aspect(key, id) end
 
 for _, item in ipairs(sections) do
   for id, unused in pairs(item.texts) do
@@ -149,7 +132,7 @@ matrix(axes, axis_keys, axes.entries)
 matrix(houses, house_keys, house_bases)
 matrix(aspects, aspect_keys, aspect_bases)
 
-local evidence = read_placement_evidence(arg[1] or folder .. "../docs/evidencias-posicoes.tsv")
+local evidence = read_placement_evidence(folder .. "../docs/evidencias-posicoes.tsv")
 for key in pairs(evidence) do
   assert(placement_set[key], "Evidência de posição fora da grade: " .. key)
 end
@@ -163,10 +146,59 @@ for _, key in ipairs(placement_keys) do
   end
 end
 
+local function contextual_inventory(chart, house_evidence, aspect_evidence)
+  local current_positions, current_occupants, current_aspects = catalog.facts(chart)
+  local locations = {}
+  for name, cusp in pairs(chart.angles) do locations[name] = cusp end
+  for _, axis in ipairs(catalog.axis_pairs) do
+    assert(reader.orb_matches({kind="Opposition", orb=0}, locations[axis[1]], locations[axis[2]]),
+      "Ângulos do eixo fora de oposição na evidência: " .. axis[1] .. "–" .. axis[2])
+  end
+  for _, position in ipairs(chart.positions) do
+    locations[position.name] = position
+    local house = position.house
+    assert(reader.in_house(position, chart.cusps[house], chart.cusps[house % 12 + 1]),
+      "Posição fora da casa na evidência: linha " .. position.line)
+  end
+  for _, aspect in ipairs(chart.aspects) do
+    assert(reader.orb_matches(aspect, locations[aspect.first], locations[aspect.second]),
+      "Orbe incompatível na evidência: linha " .. aspect.line)
+    aspect_evidence[catalog.contextual_aspect_key(aspect, current_positions)] = true
+  end
+  for number = 1, 12 do
+    local _, key = catalog.select_house(number, chart, current_positions, current_occupants, current_aspects, house_library)
+    house_evidence[key] = true
+  end
+end
+
+local contextual_houses, contextual_aspects = {}, {}
+contextual_inventory(reviewed, contextual_houses, contextual_aspects)
+for _, path in ipairs(arg) do
+  local ok, failure = pcall(function()
+    contextual_inventory(reader.read(path), contextual_houses, contextual_aspects)
+  end)
+  if not ok then error(path .. ": " .. tostring(failure), 0) end
+end
+
+local function contextual_status(registered, observed)
+  local total, missing, unverified = 0, {}, 0
+  for key in pairs(observed) do
+    total = total + 1
+    if not registered[key] then missing[#missing + 1] = key end
+  end
+  for key in pairs(registered) do
+    if not observed[key] then unverified = unverified + 1 end
+  end
+  table.sort(missing)
+  return total, missing, unverified
+end
+local house_total, house_missing, house_unverified = contextual_status(houses.entries, contextual_houses)
+local aspect_total, aspect_missing, aspect_unverified = contextual_status(aspects.entries, contextual_aspects)
+
 print("MAPA NATAL — INVENTÁRIO DE COBERTURA EDITORIAL")
 print("Somente textos próprios cadastrados. Composição não conta como cobertura.")
 print("Posições: cada evidência aponta para uma configuração reproduzível. Chaves sem evidência ficam em aberto.")
-print("Casas e aspectos usam projeções básicas. A presença de uma chave básica não cobre outros contextos.")
+print("Casas e aspectos: a grade básica é uma projeção. A auditoria contextual conta apenas as entradas conferidas nesta execução.")
 print()
 print(("Posições | %d chaves demonstradas | %d chaves demonstradas sem texto | %d chaves em aberto | %d excluídas"):format(
   proven, #proven_missing, #pending, #excluded))
@@ -174,6 +206,11 @@ for _, item in ipairs(sections) do
   print(("%s | %d textos próprios | %d/%d chaves na grade | %d chaves sem texto na grade"):format(
     item.label, item.count, item.covered, item.candidates, #item.missing))
 end
+print(("Casas | %d chaves observadas | %d sem texto próprio | %d textos sem evidência neste lote"):format(
+  house_total, #house_missing, house_unverified))
+print(("Aspectos | %d chaves observadas | %d sem texto próprio | %d textos sem evidência neste lote"):format(
+  aspect_total, #aspect_missing, aspect_unverified))
+print("Entradas adicionais na auditoria contextual: " .. #arg)
 for _, item in ipairs(sections) do
   print("\n" .. item.label .. " — textos cadastrados")
   local by_id = {}
@@ -194,3 +231,7 @@ for _, item in ipairs(sections) do
     for _, key in ipairs(item.missing) do print(key) end
   end
 end
+print("\nCasas — combinações observadas sem texto próprio")
+for _, key in ipairs(house_missing) do print(key) end
+print("\nAspectos — combinações observadas sem texto próprio")
+for _, key in ipairs(aspect_missing) do print(key) end

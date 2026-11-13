@@ -26,6 +26,19 @@ function input.position_exclusion(name, retrograde)
   return retrograde and retrograde_exclusions[name] or nil
 end
 
+function input.in_house(position, cusp, next_cusp)
+  return (position.arcminutes - cusp.arcminutes) % 21600 < (next_cusp.arcminutes - cusp.arcminutes) % 21600
+end
+
+local function expected_orb(first, kind, second)
+  local distance = math.abs(first.arcminutes - second.arcminutes)
+  return math.abs(math.min(distance, 21600 - distance) - aspect_angles[kind] * 60)
+end
+
+function input.orb_matches(aspect, first, second)
+  return math.abs(expected_orb(first, aspect.kind, second) - aspect.orb) <= 1.5
+end
+
 local function trim(value)
   return value:match("^%s*(.-)%s*$")
 end
@@ -150,16 +163,15 @@ function input.read(path)
   for _, position in ipairs(chart.positions) do
     local cusp = chart.cusps[position.house]
     local next_cusp = chart.cusps[position.house%12+1]
-    if (position.arcminutes-cusp.arcminutes)%21600 >= (next_cusp.arcminutes-cusp.arcminutes)%21600 then
+    if not input.in_house(position, cusp, next_cusp) then
       warn(position.line, "casa informada diverge das cúspides: " .. position.name)
     end
   end
   for _, aspect in ipairs(chart.aspects) do
     local first = position_by_name[aspect.first] or chart.angles[aspect.first]
     local second = position_by_name[aspect.second] or chart.angles[aspect.second]
-    local distance = math.abs(first.arcminutes - second.arcminutes)
-    local expected = math.abs(math.min(distance, 21600-distance) - aspect_angles[aspect.kind]*60)
-    if math.abs(expected-aspect.orb) > 1.5 then
+    if not input.orb_matches(aspect, first, second) then
+      local expected = expected_orb(first, aspect.kind, second)
       warn(aspect.line, ("orbe informado %d′; orbe pelas posições %d′"):format(aspect.orb, expected))
     end
   end

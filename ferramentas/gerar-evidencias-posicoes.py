@@ -4,6 +4,7 @@ import argparse
 import csv
 from datetime import date, timedelta
 from hashlib import sha256
+from math import asin, atan2, cos, degrees, radians, sin
 from pathlib import Path
 
 import swisseph as swe
@@ -132,6 +133,27 @@ def find_vertex(witnesses):
                 if geometry:
                     cusps, angles = geometry
                     register(witnesses, "Vertex", angles[3], cusps, False, (jd, lat, lon, system, "primeira-vertical"))
+
+    # Perto do zênite, Vertex e MC podem cair no mesmo minuto exportado.
+    # No intervalo usado pelo leitor, a cúspide é o primeiro ponto da casa 10.
+    obliquity = radians(swe.calc_ut(jd, swe.ECL_NUT)[0][0])
+    sidereal = swe.sidtime(jd) * 15
+    for index, sign in enumerate(SIGNS):
+        target = radians(index * 30 + 15.254)
+        right_ascension = degrees(atan2(cos(obliquity) * sin(target), cos(target)))
+        declination = degrees(asin(sin(obliquity) * sin(target)))
+        longitude = (right_ascension - sidereal + 180) % 360 - 180
+        for offset in (-0.00005, 0.00005):
+            latitude = declination + offset
+            cusps, angles = chart(jd, latitude, longitude, "P")
+            vertex, mc = angles[3], cusps[9]
+            separation = (mc - vertex) % 360
+            if (0 < separation < 1 / 60 and sign_of(vertex) == sign
+                    and int(vertex * 60) == int(mc * 60) and round(vertex * 60) == round(mc * 60)):
+                witnesses[("Vertex", sign, 10, "false")] = (jd, latitude, longitude, "P", "cuspide-minuto")
+                break
+        else:
+            raise RuntimeError(f"Vertex junto ao MC não encontrado para {sign}")
 
 
 def main():
