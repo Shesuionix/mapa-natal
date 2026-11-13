@@ -22,8 +22,10 @@ O lote reúne A a D e as entradas 01 a 07 do acervo. São onze mapas, com as seg
 
 | Seção | Observadas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 131 | 83 | 48 |
-| Aspectos | 529 | 309 | 220 |
+| Casas | 131 | 95 | 36 |
+| Aspectos | 529 | 361 | 168 |
+
+O caso 03 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 52 aspectos. O leitor conferiu as 52 relações da entrada do acervo com zero avisos. O lote adicionou 79 textos. Os mapas A a D e os casos 04, 06 e 07 mantiveram as seleções já verificadas.
 
 O caso 04 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 46 aspectos. Foram cadastrados 73 textos próprios. A geração usou as 46 relações da entrada do acervo, com zero avisos no leitor. Os mapas A a D e os casos 06 e 07 mantiveram a seleção editorial já verificada.
 
