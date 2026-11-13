@@ -22,8 +22,12 @@ O lote reúne A a D e as entradas 01 a 07 do acervo. São onze mapas, com as seg
 
 | Seção | Observadas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 131 | 95 | 36 |
-| Aspectos | 529 | 361 | 168 |
+| Casas | 131 | 119 | 12 |
+| Aspectos | 529 | 470 | 59 |
+
+O caso 02 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 54 aspectos. O caso 01 passou com 15 posições, 2 eixos, 12 casas e 55 aspectos na cópia de comparação. Os dois casos acrescentaram 163 textos próprios. A seleção dos oito mapas já validados foi preservada.
+
+A cópia de comparação do caso 01 traz a exclusão documentada do sextil Fortuna–Vertex. A linha original informa 2°38′ e o orbe pelas posições para esse sextil é 52°36′. Recolocar a linha fez o modo estrito bloquear a geração. O caso 02 usa os 54 aspectos da entrada do acervo.
 
 O caso 03 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 52 aspectos. O leitor conferiu as 52 relações da entrada do acervo com zero avisos. O lote adicionou 79 textos. Os mapas A a D e os casos 04, 06 e 07 mantiveram as seleções já verificadas.
 
