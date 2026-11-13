@@ -22,8 +22,10 @@ O lote reúne A a D e as entradas 01 a 07 do acervo. São onze mapas, com as seg
 
 | Seção | Observadas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 131 | 71 | 60 |
-| Aspectos | 529 | 263 | 266 |
+| Casas | 131 | 83 | 48 |
+| Aspectos | 529 | 309 | 220 |
+
+O caso 04 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 46 aspectos. Foram cadastrados 73 textos próprios. A geração usou as 46 relações da entrada do acervo, com zero avisos no leitor. Os mapas A a D e os casos 06 e 07 mantiveram a seleção editorial já verificada.
 
 O caso 06 informa `Stationary` na posição de Netuno e no bloco de velocidades. O leitor preserva a entrada original, identifica a posição estacionária e usa `Neptune|Scorpio|5|stationary` na seleção. A posição estacionária participa também das chaves dos aspectos de Netuno. O caso 06 tem textos próprios para as 15 posições, os 2 eixos, as 12 casas e os 40 aspectos. O lote de 65 novos textos preserva as dependências cadastradas nos mapas A a D.
 
