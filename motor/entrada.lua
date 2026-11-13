@@ -161,4 +161,13 @@ function input.read(path)
   return chart, raw
 end
 
+function input.domain()
+  local zodiac = {}
+  for name, degrees in pairs(signs) do zodiac[degrees // 30 + 1] = name end
+  return {
+    signs=zodiac, bodies={table.unpack(bodies)}, angles={"Ascendant","DSC","MC","IC"},
+    aspects={table.unpack(aspect_types)}
+  }
+end
+
 return input
