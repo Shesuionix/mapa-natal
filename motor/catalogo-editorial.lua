@@ -1,8 +1,10 @@
 local function position_key(position)
-  return table.concat({position.name, position.sign, position.house, tostring(position.retrograde)}, "|")
+  local motion = position.stationary and "stationary" or tostring(position.retrograde)
+  return table.concat({position.name, position.sign, position.house, motion}, "|")
 end
 
 local position_library = {
+  ["Neptune|Scorpio|5|stationary"] = 61,
   ["Sun|Libra|6|false"] = 46,
   ["Moon|Pisces|11|false"] = 47,
   ["Mercury|Virgo|6|false"] = 48,
@@ -99,13 +101,15 @@ local function editorial_facts(data)
   for _, aspect in ipairs(data.aspects) do
     local first, second = aspect.first, aspect.second
     if second < first then first, second = second, first end
-    aspects[table.concat({first, aspect.kind, second}, "|")] = true
+    aspects[table.concat({first, aspect.kind, second}, "|")] = aspect
   end
   for house = 1, 12 do occupants[house] = table.concat(occupants[house], ";") end
   return positions, occupants, aspects
 end
 
 local house_entries = {
+  {49, 5, "Scorpio", "Neptune|Scorpio|5|stationary;Vertex|Sagittarius|5|false", "Mars", "Mars|Libra|4|false",
+    "Mars|Sextile|Vertex", "Mars|Libra|4|false", "Vertex|Sagittarius|5|false"},
   {37, 1, "Aries", "Lilith|Taurus|1|false;Chiron|Taurus|1|true", "Mars", "Mars|Libra|7|false"},
   {38, 2, "Taurus", "Jupiter|Gemini|2|true", "Venus", "Venus|Scorpio|7|false"},
   {39, 3, "Gemini", "", "Mercury", "Mercury|Virgo|6|false"},
@@ -156,9 +160,14 @@ local function contextual_aspect_key(aspect, locations)
   return table.concat({first, aspect.kind, second, locations[first], locations[second]}, ":")
 end
 
+local function house_dependency_key(key, dependency, first_position, second_position)
+  if dependency == "nenhum" then return key .. "|aspecto=nenhum" end
+  return key .. "|aspecto=" .. dependency .. ":" .. first_position .. ":" .. second_position
+end
+
 local function house_aspect_key(key, dependency, locations)
   local first, second = dependency:match("^([^|]+)|[^|]+|([^|]+)$")
-  return key .. "|aspecto=" .. dependency .. ":" .. locations[first] .. ":" .. locations[second]
+  return house_dependency_key(key, dependency, locations[first], locations[second])
 end
 
 local function houses(reviewed)
@@ -172,9 +181,18 @@ local function houses(reviewed)
     library[house_aspect_key(key, dependency, positions)] = number
   end
   for _, entry in ipairs(house_entries) do
-    local id, number, sign, members, ruler, ruler_position = table.unpack(entry)
+    local id, number, sign, members, ruler, ruler_position, dependency, first_position, second_position = table.unpack(entry)
     assert(ruler == traditional_rulers[sign], "Regente inválido no texto " .. id)
     local key = house_key(number, sign, members, ruler_position)
+    if dependency then
+      if dependency ~= "nenhum" then
+        local first, second = dependency:match("^([^|]+)|[^|]+|([^|]+)$")
+        assert(first and first < second and first_position and second_position and
+          ((first == ruler and first_position == ruler_position) or (second == ruler and second_position == ruler_position)),
+          "Dependência de aspecto inválida no texto " .. id)
+      end
+      key = house_dependency_key(key, dependency, first_position, second_position)
+    end
     assert(not library[key], "Chave duplicada: " .. key)
     library[key] = id
   end
@@ -183,13 +201,24 @@ end
 
 local function select_house(number, chart, positions, occupants, aspects, library)
   local sign = chart.cusps[number].sign
-  local key = house_key(number, sign, occupants[number], positions[traditional_rulers[sign]])
-  local dependency = house_rules[number][2]
-  if aspects[dependency] then
-    local contextual = house_aspect_key(key, dependency, positions)
-    if library[contextual] then return library[contextual], contextual end
+  local ruler = traditional_rulers[sign]
+  local key = house_key(number, sign, occupants[number], positions[ruler])
+  local primary, orb
+  for dependency, aspect in pairs(aspects) do
+    if (aspect.first == ruler or aspect.second == ruler) and
+      (not primary or aspect.orb < orb or (aspect.orb == orb and dependency < primary)) then
+      primary, orb = dependency, aspect.orb
+    end
   end
-  return library[key], key
+  local contextual = primary and house_aspect_key(key, primary, positions) or house_dependency_key(key, "nenhum")
+  if library[contextual] then return library[contextual], contextual end
+  local reviewed_dependency = house_rules[number][2]
+  if aspects[reviewed_dependency] then
+    local reviewed_key = house_aspect_key(key, reviewed_dependency, positions)
+    if library[reviewed_key] then return library[reviewed_key], reviewed_key end
+  end
+  if library[key] then return library[key], key end
+  return nil, contextual
 end
 
 local contextual_aspects = {

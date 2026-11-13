@@ -93,9 +93,9 @@
     \clearpage
   \fi
 \section{Posições}
-R indica retrogradação na entrada.
+R indica retrogradação e E indica posição estacionária informada na entrada.
 \begin{longtable}{@{}L{.27\linewidth}L{.25\linewidth}D{.17\linewidth}C{.10\linewidth}C{.06\linewidth}@{}}
-\toprule Corpo ou ponto & Signo & Posição & Casa & R\\ \midrule
+\toprule Corpo ou ponto & Signo & Posição & Casa & Mov.\\ \midrule
 \endhead
 \NatalPosicoes
 \bottomrule
@@ -133,7 +133,7 @@ A lista inclui as relações com os ângulos.
 \end{longtable}
 
 \section{Velocidades}
-A direção vem do sinal do delta. A razão calculada divide o módulo do delta, em graus por dia, pela velocidade de referência do corpo. O traço indica ausência de referência.
+A direção vem do sinal do delta. Com delta zero, o estado estacionário depende de indicação explícita na entrada. A razão calculada divide o módulo do delta, em graus por dia, pela velocidade de referência do corpo. O traço indica ausência de referência.
 \begin{longtable}{@{}L{.16\linewidth}D{.14\linewidth}L{.14\linewidth}L{.14\linewidth}D{.13\linewidth}D{.13\linewidth}@{}}
 \toprule Corpo & Delta & Direção & Rótulo & Informada & Calculada\\ \midrule
 \endhead

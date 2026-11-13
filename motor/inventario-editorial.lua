@@ -127,7 +127,16 @@ for i, first in ipairs(endpoints) do
   end
 end
 
-matrix(placements, placement_keys, placements.entries)
+local moving_entries, stationary_entries = {}, {}
+for key, id in pairs(placements.entries) do
+  if key:match("|stationary$") then
+    assert(placement_set[key:gsub("|stationary$", "|true")], "Posição estacionária incompatível: " .. key)
+    stationary_entries[key] = id
+  else
+    moving_entries[key] = id
+  end
+end
+matrix(placements, placement_keys, moving_entries)
 matrix(axes, axis_keys, axes.entries)
 matrix(houses, house_keys, house_bases)
 matrix(aspects, aspect_keys, aspect_bases)
@@ -146,6 +155,7 @@ for _, key in ipairs(placement_keys) do
   end
 end
 
+local stationary_keys, observed_orbs = {}, {}
 local function contextual_inventory(chart, house_evidence, aspect_evidence)
   local current_positions, current_occupants, current_aspects = catalog.facts(chart)
   local locations = {}
@@ -159,11 +169,14 @@ local function contextual_inventory(chart, house_evidence, aspect_evidence)
     local house = position.house
     assert(reader.in_house(position, chart.cusps[house], chart.cusps[house % 12 + 1]),
       "Posição fora da casa na evidência: linha " .. position.line)
+    if position.stationary then stationary_keys[catalog.position_key(position)] = true end
   end
   for _, aspect in ipairs(chart.aspects) do
     assert(reader.orb_matches(aspect, locations[aspect.first], locations[aspect.second]),
       "Orbe incompatível na evidência: linha " .. aspect.line)
     aspect_evidence[catalog.contextual_aspect_key(aspect, current_positions)] = true
+    local base = catalog.aspect_key(aspect)
+    observed_orbs[base] = math.max(observed_orbs[base] or 0, aspect.orb)
   end
   for number = 1, 12 do
     local _, key = catalog.select_house(number, chart, current_positions, current_occupants, current_aspects, house_library)
@@ -194,14 +207,16 @@ local function contextual_status(registered, observed)
 end
 local house_total, house_missing, house_unverified = contextual_status(houses.entries, contextual_houses)
 local aspect_total, aspect_missing, aspect_unverified = contextual_status(aspects.entries, contextual_aspects)
+local stationary_total, stationary_missing = contextual_status(stationary_entries, stationary_keys)
 
 print("MAPA NATAL — INVENTÁRIO DE COBERTURA EDITORIAL")
 print("Somente textos próprios cadastrados. Composição não conta como cobertura.")
 print("Posições: cada evidência aponta para uma configuração reproduzível. Chaves sem evidência ficam em aberto.")
 print("Casas e aspectos: a grade básica é uma projeção. A auditoria contextual conta apenas as entradas conferidas nesta execução.")
 print()
-print(("Posições | %d chaves demonstradas | %d chaves demonstradas sem texto | %d chaves em aberto | %d excluídas"):format(
+print(("Posições sem marca estacionária | %d chaves demonstradas | %d chaves demonstradas sem texto | %d chaves em aberto | %d excluídas"):format(
   proven, #proven_missing, #pending, #excluded))
+print(("Posições estacionárias no lote | chaves observadas: %d | sem texto próprio: %d"):format(stationary_total, #stationary_missing))
 for _, item in ipairs(sections) do
   print(("%s | %d textos próprios | %d/%d chaves na grade | %d chaves sem texto na grade"):format(
     item.label, item.count, item.covered, item.candidates, #item.missing))
@@ -231,7 +246,14 @@ for _, item in ipairs(sections) do
     for _, key in ipairs(item.missing) do print(key) end
   end
 end
+print("\nPosições estacionárias — combinações observadas sem texto próprio")
+for _, key in ipairs(stationary_missing) do print(key) end
 print("\nCasas — combinações observadas sem texto próprio")
 for _, key in ipairs(house_missing) do print(key) end
 print("\nAspectos — combinações observadas sem texto próprio")
 for _, key in ipairs(aspect_missing) do print(key) end
+print("\nAspectos — maior orbe observado por par e tipo (minutos de arco)")
+local orb_keys = {}
+for key in pairs(observed_orbs) do orb_keys[#orb_keys + 1] = key end
+table.sort(orb_keys)
+for _, key in ipairs(orb_keys) do print(key .. "\t" .. observed_orbs[key]) end

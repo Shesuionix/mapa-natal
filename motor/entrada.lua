@@ -15,15 +15,15 @@ local aliases = {ASC="Ascendant", Node="North Node"}
 local aspect_angles = {Conjunction=0, Sextile=60, Square=90, Trine=120, Opposition=180}
 local aspect_types = {"Conjunction", "Sextile", "Square", "Trine", "Opposition"}
 local labels = {Fast=true, Average=true, Slow=true, Retrograde=true, Direct=true, Stationary=true}
-local retrograde_exclusions = {
+local movement_exclusions = {
   Sun="longitude geocêntrica direta",
   Moon="longitude geocêntrica direta",
-  Fortune="ponto calculado sem marcador de retrogradação",
-  Vertex="ponto geométrico sem marcador de retrogradação"
+  Fortune="ponto calculado sem marcador de movimento",
+  Vertex="ponto geométrico sem marcador de movimento"
 }
 
-function input.position_exclusion(name, retrograde)
-  return retrograde and retrograde_exclusions[name] or nil
+function input.position_exclusion(name, marker)
+  return marker and movement_exclusions[name] or nil
 end
 
 function input.in_house(position, cusp, next_cusp)
@@ -53,7 +53,7 @@ function input.read(path)
   local raw = file:read("*a")
   file:close()
 
-  local chart = {positions={}, cusps={}, aspects={}, speeds={}, warnings={}, angles={}}
+  local chart = {positions={}, cusps={}, aspects={}, speeds={}, warnings={}, angles={}, aspect_orb_errors=0}
   local position_by_name, supplied_angles, aspect_pairs, speed_names = {}, {}, {}, {}
   local line_number = 0
   local function fail(line, message)
@@ -129,12 +129,15 @@ function input.read(path)
         else
           local marker, pos_house = tail:match("^, (.-)in (%d+)%a%a House$")
           if not body_ids[name] or position_by_name[name] or not pos_house or
-            tonumber(pos_house) < 1 or tonumber(pos_house) > 12 or (marker ~= "" and marker ~= "Retrograde, ") then
-            fail(line_number, "corpo, casa ou indicação de retrogradação inválida ou repetida")
+            tonumber(pos_house) < 1 or tonumber(pos_house) > 12 or
+            (marker ~= "" and marker ~= "Retrograde, " and marker ~= "Stationary, ") then
+            fail(line_number, "corpo, casa ou indicação de movimento inválida ou repetida")
           end
-          position.name, position.house, position.retrograde = name, tonumber(pos_house), marker ~= ""
-          local exclusion = input.position_exclusion(name, position.retrograde)
-          if exclusion then fail(line_number, ("marcador Retrograde inválido para %s (%s)"):format(name, exclusion)) end
+          position.name, position.house = name, tonumber(pos_house)
+          position.retrograde = marker == "Retrograde, "
+          position.stationary = marker == "Stationary, "
+          local exclusion = input.position_exclusion(name, position.retrograde or position.stationary)
+          if exclusion then fail(line_number, ("marcador %s inválido para %s (%s)"):format(marker:match("^%a+"), name, exclusion)) end
           position_by_name[name] = position
         end
       end
@@ -173,12 +176,14 @@ function input.read(path)
     if not input.orb_matches(aspect, first, second) then
       local expected = expected_orb(first, aspect.kind, second)
       warn(aspect.line, ("orbe informado %d′; orbe pelas posições %d′"):format(aspect.orb, expected))
+      chart.aspect_orb_errors = chart.aspect_orb_errors + 1
     end
   end
   if #chart.speeds == 0 then fail(line_number, "bloco de velocidades ausente") end
   for _, speed in ipairs(chart.speeds) do
-    local retrograde = position_by_name[speed.name].retrograde
-    if speed.delta_arcseconds ~= 0 and (speed.delta_arcseconds < 0) ~= retrograde then
+    local position = position_by_name[speed.name]
+    speed.stationary = position.stationary or speed.label == "Stationary"
+    if not position.stationary and speed.delta_arcseconds ~= 0 and (speed.delta_arcseconds < 0) ~= position.retrograde then
       warn(speed.line, "sinal do delta diverge da indicação de retrogradação: " .. speed.name)
     end
   end

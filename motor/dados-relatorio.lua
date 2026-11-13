@@ -3,6 +3,7 @@ local position_key, aspect_key, editorial_facts = catalog.position_key, catalog.
 local axis_pairs, axis_library = catalog.axis_pairs, catalog.axes
 local composed = dofile("leitura-composta.lua")
 local reader = dofile("entrada.lua")
+local strict = os.getenv("NATAL_EXIGIR_TEXTOS_PROPRIOS") == "1"
 local chart, raw = reader.read(os.getenv("NATAL_ENTRADA") or "exemplo.txt")
 local digest = require("sha2").digest256(raw)
 if #digest == 32 then
@@ -12,6 +13,9 @@ assert(#digest == 64 and digest:match("^%x+$"), "SHA-256 inválido")
 texio.write_nl("term and log", "[Mapa Natal] SHA-256 " .. digest:lower())
 for _, warning in ipairs(chart.warnings) do
   texio.write_nl("term and log", "[Mapa Natal] " .. warning)
+end
+if strict and chart.aspect_orb_errors > 0 then
+  error(("Geometria incompatível. Total de orbes divergentes: %d. Consulte o log."):format(chart.aspect_orb_errors), 0)
 end
 
 local signs = {
@@ -45,7 +49,7 @@ end
 for index, position in ipairs(chart.positions) do
   planet_csv[index] = ("%.10f"):format(position.arcminutes / 60)
   row(positions, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
-    position.house, position.retrograde and "R" or "")
+    position.house, position.stationary and "E" or (position.retrograde and "R" or ""))
 end
 for house, cusp in ipairs(chart.cusps) do
   cusp_csv[house] = ("%.10f"):format(cusp.arcminutes / 60)
@@ -89,7 +93,7 @@ for i, first in ipairs(chart.positions) do
   grid[#grid+1] = "\\hline"
 end
 
-local motor_version = "0.1.0"
+local motor_version = "0.2.0"
 texio.write_nl("log", "[Mapa Natal] Motor " .. motor_version)
 local reference_path = os.getenv("NATAL_VELOCIDADES")
 local reference, reference_version = {}, "Sem referência de velocidades"
@@ -115,7 +119,7 @@ texio.write_nl("log", "[Mapa Natal] " .. reference_version)
 for _, speed in ipairs(chart.speeds) do
   local seconds = math.abs(speed.delta_arcseconds)
   local direction = speed.delta_arcseconds < 0 and "Retrógrado" or
-    (speed.delta_arcseconds == 0 and "Estacionário" or "Direto")
+    (speed.delta_arcseconds > 0 and "Direto" or (speed.stationary and "Estacionário" or "Indefinida"))
   local delta = ("%s%d°%02d\\ensuremath{^{\\prime}}%02d\\ensuremath{^{\\prime\\prime}}"):format(
     speed.delta_arcseconds < 0 and "-" or "", seconds // 3600, (seconds // 60) % 60, seconds % 60)
   local ratio_text = "—"
@@ -147,8 +151,7 @@ end
 local function editorial_key(data)
   local parts, aspects = {}, {}
   for _, position in ipairs(data.positions) do
-    parts[#parts+1] = ("%s:%d:%d:%s"):format(position.name, position.arcminutes,
-      position.house, tostring(position.retrograde))
+    parts[#parts+1] = ("%d:%s"):format(position.arcminutes, position_key(position))
   end
   for _, cusp in ipairs(data.cusps) do parts[#parts+1] = tostring(cusp.arcminutes) end
   for _, aspect in ipairs(data.aspects) do
@@ -179,7 +182,7 @@ do
     if index then specific_positions = specific_positions + 1 end
     selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
         index or 0, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
-        position.house, position.retrograde and " · Retrógrado" or "")
+        position.house, position.stationary and " · Estacionário" or (position.retrograde and " · Retrógrado" or ""))
     if not index then gap("posicao", position_key(position)) end
     if not index then selected[#selected] = selected[#selected] .. composed.position(position) .. "\\par " end
   end
@@ -369,6 +372,6 @@ end
 for _, item in ipairs(missing) do
   texio.write_nl("log", "[Lacuna editorial] " .. item)
 end
-if os.getenv("NATAL_EXIGIR_TEXTOS_PROPRIOS") == "1" and #missing > 0 then
+if strict and #missing > 0 then
   error(("Cobertura editorial incompleta: %d leituras sem texto próprio. Consulte o log."):format(#missing), 0)
 end

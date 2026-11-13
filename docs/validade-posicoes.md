@@ -1,21 +1,23 @@
 # Validade das combinações de posições
 
-A chave editorial de posição é `corpo|signo|casa|retrograde`. O grau e o minuto localizam o ponto no mapa. O leitor confere a casa informada contra o intervalo das cúspides e registra a divergência. Para confirmar uma chave nesta auditoria, a casa precisa corresponder ao intervalo e o signo precisa corresponder à longitude. A escolha de um texto exige a chave completa.
+A chave editorial de posição é `corpo|signo|casa|movimento`. O grau e o minuto localizam o ponto no mapa. O leitor confere a casa informada contra o intervalo das cúspides e registra a divergência. Para confirmar uma chave nesta auditoria, a casa precisa corresponder ao intervalo e o signo precisa corresponder à longitude. A escolha de um texto exige a chave completa.
 
 ## Regras
 
 | Caso | Tratamento |
 |---|---|
-| Sol e Lua | A longitude geocêntrica é direta. O leitor rejeita o marcador `Retrograde`. |
-| Fortuna e Vertex | O contrato trata ambos como pontos calculados sem estado de retrogradação. O leitor rejeita o marcador `Retrograde`. |
+| Sol e Lua | A longitude geocêntrica é direta. O leitor rejeita `Retrograde` e `Stationary` na posição. |
+| Fortuna e Vertex | O contrato trata ambos como pontos calculados sem estado de movimento editorial. O leitor rejeita `Retrograde` e `Stationary` na posição. |
 | Nodo Norte | A fonte pode usar Nodo médio ou verdadeiro. A auditoria admite ocorrências diretas e retrógradas demonstradas para uma dessas variantes. |
 | Lilith | A fonte pode usar apogeu médio ou osculante. A auditoria admite ocorrências diretas e retrógradas demonstradas para uma dessas variantes. |
 | Demais corpos | A auditoria confirma o estado pelo sinal da velocidade em longitude. |
 | Próximo de uma fronteira | As evidências usam margem de 0,02° em relação ao limite de signo e à cúspide. Para corpos e pontos com velocidade, exigem módulo acima de 0,0002°/dia. São margens da auditoria, destinadas a evitar que o arredondamento altere a chave. |
 
+O campo final conserva `true` para `Retrograde` e `false` para posição sem marcador. Uma posição com `Stationary` usa `stationary`, inclusive nas chaves de casas e aspectos. Com delta zero, o painel mostra `Estacionário` se houver marca explícita na posição ou rótulo no bloco de velocidades. Sem essa indicação, mostra `Indefinida`. Um rótulo exclusivo do bloco de velocidades permanece técnico e a chave editorial da posição segue o marcador do bloco de posições.
+
 ## Resultado
 
-Das 4.320 chaves da grade inicial, **576 são excluídas** pelas regras de retrogradação. A auditoria encontrou uma configuração reproduzível para **3.684 chaves**, incluindo as 60 que já têm texto. Restam **3.624 textos a escrever para as chaves demonstradas**. As outras **60 chaves** são Vertex nas casas 1, 2, 3, 11 e 12, em todos os signos. Permanecem em aberto até a confirmação do sistema de casas, da convenção de Vertex e do tratamento de latitudes da fonte de produção. A falta de exemplo na busca não prova impossibilidade.
+Das 4.320 chaves da grade sem estado estacionário, **576 são excluídas** pelas regras de retrogradação. A auditoria encontrou uma configuração reproduzível para **3.684 chaves**, incluindo as 60 que já têm texto. Restam **3.624 textos a escrever para as chaves demonstradas**. As outras **60 chaves** são Vertex nas casas 1, 2, 3, 11 e 12, em todos os signos. Permanecem em aberto até a confirmação do sistema de casas, da convenção de Vertex e do tratamento de latitudes da fonte de produção. A falta de exemplo na busca não prova impossibilidade. A grade foi gerada com velocidades afastadas de zero. O lote contextual conta as posições explicitamente estacionárias à parte e já confirmou a chave de Netuno em Escorpião na casa 5, com texto próprio.
 
 As 84 ocorrências demonstradas de Vertex cobrem as casas 4 a 10 nos 12 signos. As casas 4 a 9 têm 64 exemplos em Placidus e 8 em Campanus. A casa 10 tem 12 exemplos de fronteira em Placidus. Neles, o Vertex fica imediatamente antes do MC e ambos são exportados no mesmo minuto, seja por truncamento ou arredondamento. O intervalo adotado pelo leitor inclui a cúspide de início e, nesse caso, admite o Vertex na casa 10. Uma fonte que atribua a casa antes de arredondar pode exportar a casa 9 para a mesma geometria. A auditoria mantém as duas possibilidades documentadas. [Implementação de casas e Vertex](https://github.com/aloistr/swisseph/blob/master/swehouse.c)
 
