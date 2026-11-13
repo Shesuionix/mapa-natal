@@ -216,6 +216,11 @@ local position_library = {
 for index, position in ipairs(reviewed.positions) do
   position_library[position_key(position)] = index
 end
+local missing = {}
+local function gap(section, key)
+  missing[#missing+1] = section .. ": " .. key
+end
+
 local selected, specific_positions = {}, 0
 do
   for _, position in ipairs(chart.positions) do
@@ -224,6 +229,7 @@ do
     selected[#selected+1] = ("\\NatalLeituraPosicao{%d}{%s}{%s}{%s}{%d}{%s}"):format(
         index or 0, names[position.name], signs[position.sign], angle(position.degree*60+position.minute),
         position.house, position.retrograde and " · Retrógrado" or "")
+    if not index then gap("posicao", position_key(position)) end
     if not index then selected[#selected] = selected[#selected] .. composed.position(position) .. "\\par " end
   end
 end
@@ -250,6 +256,7 @@ do
     selected_axes[#selected_axes+1] = ("\\NatalLeituraEixo{%d}{%s}{%s}{%s}{%s}{%s}"):format(
         index or 0, axis[3], signs[first.sign], angle(first.degree*60+first.minute),
         signs[second.sign], angle(second.degree*60+second.minute))
+    if not index then gap("eixo", axis[1] .. "|" .. first.sign .. "|" .. second.sign) end
     if not index then selected_axes[#selected_axes] = selected_axes[#selected_axes] ..
       composed.axis(axis[1], first, axis[2], second, axis_index) .. "\\par " end
   end
@@ -350,6 +357,9 @@ do
   for house = 1, 12 do
     local cusp = chart.cusps[house]
     if by_house[house] then specific_houses = specific_houses + 1 end
+    if not by_house[house] then
+      gap("casa", ("%d|%s|ocupantes=%s"):format(house, cusp.sign, current_occupants[house]))
+    end
     selected_houses[#selected_houses+1] = by_house[house] or
       ("\\NatalCasaComposta{%d}{%s}{%s}%s\\par "):format(house, signs[cusp.sign],
         angle(cusp.degree*60+cusp.minute), composed.house(chart, house, names))
@@ -483,6 +493,7 @@ do
     selected_aspects[#selected_aspects+1] = ("\\NatalLeituraAspecto{%d}{%s}{%s}{%s}{%s}{%s}{%d}"):format(
         index or 0, names[aspect.first], types[aspect.kind][1], names[aspect.second],
         angle(aspect.orb), phases[aspect.phase], id)
+    if not index then gap("aspecto", key) end
     if not index then selected_aspects[#selected_aspects] = selected_aspects[#selected_aspects] ..
       composed.aspect(aspect, locations) .. "\\par " end
   end
@@ -597,4 +608,10 @@ local coverage = {
 for _, section in ipairs(coverage) do
   local label, specific, total = table.unpack(section)
   texio.write_nl("log", ("[Cobertura] %s: %d proprios, %d compostos"):format(label, specific, total-specific))
+end
+for _, item in ipairs(missing) do
+  texio.write_nl("log", "[Lacuna editorial] " .. item)
+end
+if os.getenv("NATAL_EXIGIR_TEXTOS_PROPRIOS") == "1" and #missing > 0 then
+  error(("Cobertura editorial incompleta: %d leituras sem texto próprio. Consulte o log."):format(#missing), 0)
 end
