@@ -49,12 +49,14 @@ O caso 07 também usa a cópia de comparação do acervo. O registro `ALTERACOES
 
 Foram acrescentadas quatro entradas reproduzíveis com Sol em Áries e Virgem na casa 10 e em Câncer e Aquário na casa 12. Cada uma deriva de um instante e local presentes no TSV de evidências. As quatro passaram no leitor sem avisos e selecionaram o texto solar correspondente. [Método de reprodução](validade-posicoes.md)
 
-O mapa de Sol em Aquário na casa 12 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 29 aspectos. Ele acrescentou 54 textos próprios à biblioteca, incluindo 13 posições. Os 11 mapas de referência mantiveram a seleção de textos. Os três mapas sintéticos restantes ainda exigem textos próprios para passar em modo estrito.
+O mapa de Sol em Aquário na casa 12 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 29 aspectos. Ele acrescentou 54 textos próprios à biblioteca, incluindo 13 posições. Os 11 mapas de referência mantiveram a seleção de textos.
+
+O mapa de Sol em Virgem na casa 10 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 33 aspectos. Ele acrescentou 58 textos próprios e preservou a seleção dos 12 mapas já validados. Ainda faltam 59 textos para o mapa de Sol em Câncer na casa 12 e 60 para o de Sol em Áries na casa 10.
 
 | Seção | Observadas em 15 mapas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 179 | 143 | 36 |
-| Aspectos | 660 | 558 | 102 |
+| Casas | 179 | 155 | 24 |
+| Aspectos | 660 | 591 | 69 |
 
 Os números são lacunas confirmadas neste lote. A enumeração de todos os contextos válidos depende das regras de orbe da fonte, das convenções dos pontos e da definição uniforme das dependências de cada texto de casa. A grade básica continua disponível para localizar lacunas por casa e signo ou por par e tipo de aspecto.
 
