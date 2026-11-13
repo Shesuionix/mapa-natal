@@ -53,14 +53,16 @@ O mapa de Sol em Aquário na casa 12 passou em modo estrito com 15 posições, 2
 
 O mapa de Sol em Virgem na casa 10 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 33 aspectos. Ele acrescentou 58 textos próprios e preservou a seleção dos 12 mapas já validados.
 
-O mapa de Sol em Câncer na casa 12 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 35 aspectos. Ele acrescentou 59 textos próprios e preservou a seleção dos 13 mapas já validados. Restam 60 textos para o mapa de Sol em Áries na casa 10.
+O mapa de Sol em Câncer na casa 12 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 35 aspectos. Ele acrescentou 59 textos próprios e preservou a seleção dos 13 mapas já validados.
+
+O mapa de Sol em Áries na casa 10 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 34 aspectos. Ele acrescentou 60 textos próprios e preservou a seleção dos 14 mapas já validados. Os 15 mapas auditados agora passam em modo estrito.
 
 | Seção | Observadas em 15 mapas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 179 | 167 | 12 |
-| Aspectos | 660 | 626 | 34 |
+| Casas | 179 | 179 | 0 |
+| Aspectos | 660 | 660 | 0 |
 
-Os números são lacunas confirmadas neste lote. A enumeração de todos os contextos válidos depende das regras de orbe da fonte, das convenções dos pontos e da definição uniforme das dependências de cada texto de casa. A grade básica continua disponível para localizar lacunas por casa e signo ou por par e tipo de aspecto.
+A cobertura desta tabela vale para as combinações observadas nos 15 mapas. A enumeração de todos os contextos válidos depende das regras de orbe da fonte, das convenções dos pontos e da definição uniforme das dependências de cada texto de casa. A grade básica continua disponível para localizar lacunas por casa e signo ou por par e tipo de aspecto.
 
 ```sh
 texlua motor/inventario-editorial.lua mapa-b.txt mapa-c.txt mapa-d.txt
