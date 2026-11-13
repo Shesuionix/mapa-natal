@@ -22,10 +22,12 @@ O lote reúne A a D e as entradas 01 a 07 do acervo. São onze mapas, com as seg
 
 | Seção | Observadas | Com texto próprio | Sem texto próprio |
 |---|---:|---:|---:|
-| Casas | 131 | 49 | 82 |
-| Aspectos | 529 | 202 | 327 |
+| Casas | 131 | 60 | 71 |
+| Aspectos | 529 | 242 | 287 |
 
-O caso 06 informa `Stationary` na posição de Netuno e no bloco de velocidades. O leitor preserva a entrada original, identifica a posição estacionária e usa `Neptune|Scorpio|5|stationary` na seleção. A posição e a casa 5 desse caso já têm textos próprios. A posição estacionária participa também das chaves dos aspectos de Netuno no mapa.
+O caso 06 informa `Stationary` na posição de Netuno e no bloco de velocidades. O leitor preserva a entrada original, identifica a posição estacionária e usa `Neptune|Scorpio|5|stationary` na seleção. A posição estacionária participa também das chaves dos aspectos de Netuno. O caso 06 tem textos próprios para as 15 posições, os 2 eixos, as 12 casas e os 40 aspectos. O lote de 65 novos textos preserva as dependências cadastradas nos mapas A a D.
+
+O relatório do caso 06 usa a cópia de comparação do acervo. Nela, `ALTERACOES.txt` registra que a quadratura Fortuna–Vertex foi retirada dessa cópia. O original informa 6°22′ e as longitudes publicadas resultam em 70°14′ de orbe para quadratura. Recolocar a linha original provocou um erro geométrico no modo estrito. O PDF validado corresponde aos 40 aspectos da cópia de comparação.
 
 Os números são lacunas confirmadas neste lote. A enumeração de todos os contextos válidos depende das regras de orbe da fonte, das convenções dos pontos e da definição uniforme das dependências de cada texto de casa. A grade básica continua disponível para localizar lacunas por casa e signo ou por par e tipo de aspecto.
 
