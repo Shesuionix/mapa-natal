@@ -45,6 +45,15 @@ O caso 07 passou em modo estrito com 15 posições, 2 eixos, 12 casas e 44 aspec
 
 O caso 07 também usa a cópia de comparação do acervo. O registro `ALTERACOES.txt` identifica a quadratura Fortuna–Vertex retirada da cópia. O original informa 2°43′ e as longitudes publicadas resultam em 72°43′ de orbe para quadratura. O modo estrito bloqueou a entrada com a linha original recolocada.
 
+## Ampliação com mapas sintéticos
+
+Foram acrescentadas quatro entradas reproduzíveis com Sol em Áries e Virgem na casa 10 e em Câncer e Aquário na casa 12. Cada uma deriva de um instante e local presentes no TSV de evidências. As quatro passaram no leitor sem avisos e selecionaram o texto solar correspondente. O modo estrito sinaliza as demais leituras pendentes em cada mapa. [Método de reprodução](validade-posicoes.md)
+
+| Seção | Observadas em 15 mapas | Com texto próprio | Sem texto próprio |
+|---|---:|---:|---:|
+| Casas | 179 | 131 | 48 |
+| Aspectos | 660 | 529 | 131 |
+
 Os números são lacunas confirmadas neste lote. A enumeração de todos os contextos válidos depende das regras de orbe da fonte, das convenções dos pontos e da definição uniforme das dependências de cada texto de casa. A grade básica continua disponível para localizar lacunas por casa e signo ou por par e tipo de aspecto.
 
 ```sh

@@ -4,6 +4,7 @@ import argparse
 import csv
 from datetime import date, timedelta
 from hashlib import sha256
+from itertools import combinations
 from math import asin, atan2, cos, degrees, radians, sin
 from pathlib import Path
 
@@ -36,6 +37,14 @@ EPHEMERIS_FLAGS = swe.FLG_JPLEPH | swe.FLG_SWIEPH | swe.FLG_MOSEPH
 MARGIN = 0.02  # Graus. Evita que o arredondamento mude a chave registrada.
 FIRST_DAY = date(1800, 1, 1)
 LAST_DAY = date(2099, 12, 31)
+VALIDATION_SUNS = (
+    ("Sun", "Aries", 10, "false"),
+    ("Sun", "Virgo", 10, "false"),
+    ("Sun", "Cancer", 12, "false"),
+    ("Sun", "Aquarius", 12, "false"),
+)
+ASPECT_ANGLES = {"Conjunction": 0, "Sextile": 60, "Square": 90, "Trine": 120, "Opposition": 180}
+HOUSE_SUFFIXES = {1: "st", 2: "nd", 3: "rd"}
 
 
 def longitude_and_speed(jd, body):
@@ -156,10 +165,93 @@ def find_vertex(witnesses):
             raise RuntimeError(f"Vertex junto ao MC não encontrado para {sign}")
 
 
+def chart_for_validation(jd, lat, lon, system):
+    geometry = chart(jd, lat, lon, system)
+    if geometry is None:
+        raise ValueError(f"Geometria de casas incompatível para {jd}, {lat}, {lon}, {system}")
+    cusps, angles = geometry
+    planets = {name: longitude_and_speed(jd, variants[0][0]) for name, variants in BODIES.items()}
+    sun, moon = planets["Sun"][0], planets["Moon"][0]
+    phase = moon - sun
+    fortune = (angles[0] + (phase if (sun - angles[0]) % 360 > 180 else -phase)) % 360
+    planets.update({"Fortune": (fortune, 0), "Vertex": (angles[3], 0)})
+    locations = {name: longitude for name, (longitude, _) in planets.items()}
+    angle_houses = {"ASC": 1, "DSC": 7, "MC": 10, "IC": 4}
+    locations.update({name: cusps[house - 1] for name, house in angle_houses.items()})
+    return cusps, planets, locations
+
+
+def validation_input(jd, lat, lon, system, expected_sun):
+    cusps, planets, locations = chart_for_validation(jd, lat, lon, system)
+    _, _, before = chart_for_validation(jd - 1 / 1440, lat, lon, system)
+    _, _, after = chart_for_validation(jd + 1 / 1440, lat, lon, system)
+    minutes = {name: round(longitude * 60) % 21600 for name, longitude in locations.items()}
+    cusp_minutes = [round(cusp * 60) % 21600 for cusp in cusps]
+
+    def location(value):
+        sign, within = divmod(value, 1800)
+        return f"{SIGNS[sign]} {within // 60}°{within % 60:02}'"
+
+    positions = []
+    for name, (_, speed) in planets.items():
+        value = minutes[name]
+        house = next(index + 1 for index, cusp in enumerate(cusp_minutes)
+                     if (value - cusp) % 21600 < (cusp_minutes[(index + 1) % 12] - cusp) % 21600)
+        if name == "Sun" and (name, SIGNS[value // 1800], house, str(speed < 0).lower()) != expected_sun:
+            raise ValueError(f"Posição solar divergente: {expected_sun}")
+        marker = ", Retrograde" if speed < 0 else ""
+        suffix = HOUSE_SUFFIXES.get(house, "th")
+        positions.append(f"{name} in {location(value)}{marker}, in {house}{suffix} House")
+    positions += [f"{name} in {location(minutes[name])}" for name in ("ASC", "MC")]
+    houses = [f"{i}{HOUSE_SUFFIXES.get(i, 'th')} House in {location(cusp)}"
+              for i, cusp in enumerate(cusp_minutes, 1)]
+
+    def separation(values, first, second, cycle):
+        return abs((values[first] - values[second] + cycle / 2) % cycle - cycle / 2)
+
+    aspects = []
+    for first, second in combinations(locations, 2):
+        if first not in planets and second not in planets:
+            continue
+        distance = separation(locations, first, second, 360)
+        kind, angle = min(ASPECT_ANGLES.items(), key=lambda item: abs(distance - item[1]))
+        maximum = 3 if first not in planets or second not in planets else 6
+        if abs(distance - angle) > maximum:
+            continue
+        orb = round(abs(separation(minutes, first, second, 21600) - angle * 60))
+        earlier_orb = abs(separation(before, first, second, 360) - angle)
+        later_orb = abs(separation(after, first, second, 360) - angle)
+        approaching = later_orb < earlier_orb
+        phase = "Applying" if approaching else "Separating"
+        aspects.append(f"{first} {kind} {second} (Orb: {orb // 60}°{orb % 60:02}', {phase})")
+
+    speed = planets["Sun"][1]
+    seconds = round(speed * 3600)
+    degrees_per_day, remainder = divmod(seconds, 3600)
+    ratio = speed / (360 / 365.2422)
+    solar_speed = f"Sun: {degrees_per_day}°{remainder // 60:02}'{remainder % 60:02}'' (Direct, cca {ratio:.4f}x avg speed)"
+    return "\n\n".join(("\n".join(positions), "\n".join(houses), "\n".join(aspects), solar_speed)) + "\n"
+
+
+def write_validation_inputs(directory, evidence):
+    directory.mkdir(parents=True, exist_ok=True)
+    with evidence.open(encoding="ascii", newline="") as source:
+        rows = {tuple(row["chave"].split("|")): row for row in csv.DictReader(source, delimiter="\t")}
+    for body, sign, house, motion in VALIDATION_SUNS:
+        key = (body, sign, str(house), motion)
+        row = rows[key]
+        jd, lat, lon = (float(row[field]) for field in ("dia_juliano_ut", "latitude", "longitude"))
+        contents = validation_input(jd, lat, lon, row["sistema"], (body, sign, house, motion))
+        filename = f"sol-{sign.lower()}-casa-{house}.txt"
+        (directory / filename).write_text(contents, encoding="utf-8", newline="\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ephemeris", type=Path, help="Diretório com os três arquivos .se1")
-    parser.add_argument("output", type=Path, help="Arquivo TSV a gravar")
+    parser.add_argument("output", type=Path, help="Arquivo TSV a gravar ou usar como fonte dos mapas")
+    parser.add_argument("--mapas-validacao", type=Path, metavar="DIRETORIO",
+                        help="Gerar mapas sintéticos a partir do TSV existente")
     args = parser.parse_args()
     if swe.version != "2.10.03":
         raise RuntimeError(f"Esperado Swiss Ephemeris 2.10.03, recebido {swe.version}")
@@ -168,6 +260,9 @@ def main():
         if digest != expected_hash:
             raise RuntimeError(f"SHA-256 inesperado: {filename}")
     swe.set_ephe_path(str(args.ephemeris.resolve()))
+    if args.mapas_validacao:
+        write_validation_inputs(args.mapas_validacao, args.output)
+        return
     witnesses = {}
     find_planets_and_fortune(witnesses)
     find_vertex(witnesses)
