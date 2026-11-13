@@ -301,6 +301,18 @@ local function editorial_facts(data)
 end
 
 local house_library = {
+  {37, 1, "Aries", "Lilith|Taurus|1|false;Chiron|Taurus|1|true", "Mars", "Mars|Libra|7|false"},
+  {38, 2, "Taurus", "Jupiter|Gemini|2|true", "Venus", "Venus|Scorpio|7|false"},
+  {39, 3, "Gemini", "", "Mercury", "Mercury|Virgo|6|false"},
+  {40, 4, "Cancer", "", "Moon", "Moon|Pisces|11|false"},
+  {41, 5, "Leo", "Saturn|Leo|5|false", "Sun", "Sun|Libra|6|false"},
+  {42, 6, "Virgo", "Sun|Libra|6|false;Mercury|Virgo|6|false;Pluto|Libra|6|false;Vertex|Virgo|6|false", "Mercury", "Mercury|Virgo|6|false"},
+  {43, 7, "Libra", "Venus|Scorpio|7|false;Mars|Libra|7|false;Uranus|Scorpio|7|false;North Node|Scorpio|7|true", "Venus", "Venus|Scorpio|7|false"},
+  {44, 8, "Scorpio", "Neptune|Sagittarius|8|false;Fortune|Scorpio|8|false", "Mars", "Mars|Libra|7|false"},
+  {45, 9, "Sagittarius", "", "Jupiter", "Jupiter|Gemini|2|true"},
+  {46, 10, "Capricorn", "", "Saturn", "Saturn|Leo|5|false"},
+  {47, 11, "Aquarius", "Moon|Pisces|11|false", "Saturn", "Saturn|Leo|5|false"},
+  {48, 12, "Pisces", "", "Jupiter", "Jupiter|Gemini|2|true"},
   {13, 1, "Gemini", "Saturn|Gemini|1|true;North Node|Gemini|1|true", "Mercury", "Mercury|Capricorn|8|false"},
   {14, 2, "Cancer", "", "Moon", "Moon|Scorpio|6|false"},
   {15, 3, "Leo", "Jupiter|Leo|3|true", "Sun", "Sun|Aquarius|9|false"},
