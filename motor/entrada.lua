@@ -15,6 +15,16 @@ local aliases = {ASC="Ascendant", Node="North Node"}
 local aspect_angles = {Conjunction=0, Sextile=60, Square=90, Trine=120, Opposition=180}
 local aspect_types = {"Conjunction", "Sextile", "Square", "Trine", "Opposition"}
 local labels = {Fast=true, Average=true, Slow=true, Retrograde=true, Direct=true, Stationary=true}
+local retrograde_exclusions = {
+  Sun="longitude geocêntrica direta",
+  Moon="longitude geocêntrica direta",
+  Fortune="ponto calculado sem marcador de retrogradação",
+  Vertex="ponto geométrico sem marcador de retrogradação"
+}
+
+function input.position_exclusion(name, retrograde)
+  return retrograde and retrograde_exclusions[name] or nil
+end
 
 local function trim(value)
   return value:match("^%s*(.-)%s*$")
@@ -110,6 +120,8 @@ function input.read(path)
             fail(line_number, "corpo, casa ou indicação de retrogradação inválida ou repetida")
           end
           position.name, position.house, position.retrograde = name, tonumber(pos_house), marker ~= ""
+          local exclusion = input.position_exclusion(name, position.retrograde)
+          if exclusion then fail(line_number, ("marcador Retrograde inválido para %s (%s)"):format(name, exclusion)) end
           position_by_name[name] = position
         end
       end

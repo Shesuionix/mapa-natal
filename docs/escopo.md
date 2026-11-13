@@ -39,4 +39,6 @@ A prioridade atual é completar e validar a biblioteca de textos próprios para 
 
 O motor já lê os quatro blocos, seleciona textos, gera a roda e as tabelas e registra o SHA-256 no log local. O modo de verificação estrita pode ser ativado com `NATAL_EXIGIR_TEXTOS_PROPRIOS=1`. A cobertura integral da biblioteca e a tabela de referência de velocidades continuam pendentes.
 
+A auditoria das posições demonstrou 3.672 combinações. Destas, 60 têm texto próprio. As chaves de Vertex sem evidência, as convenções de origem do Nodo Norte e da Lilith e as regras contextuais de casas e aspectos continuam pendentes. [Critérios e reprodução](validade-posicoes.md).
+
 Preço, canal, prazo de entrega, janela de reemissão e verificação de autoria e licenças continuam pendentes. Insumos e relatórios que identificam clientes são tratados localmente.

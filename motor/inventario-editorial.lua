@@ -5,6 +5,23 @@ local domain = reader.domain()
 local reviewed = reader.read(folder .. "mapa-editorial-v1.txt")
 local positions, occupants = catalog.facts(reviewed)
 
+local function read_placement_evidence(path)
+  local file = assert(io.open(path, "rb"))
+  local header = file:read("*l")
+  assert(header and header:gsub("\r$", "") == "chave\tdia_juliano_ut\tlatitude\tlongitude\tsistema\tvariante",
+    "Cabeçalho inválido no inventário de evidências: " .. path)
+  local evidence = {}
+  for line in file:lines() do
+    local key, jd, lat, lon, system, variant = line:gsub("\r$", ""):match(
+      "^([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)\t([PC])\t([%a%-]+)$")
+    assert(key and tonumber(jd) and tonumber(lat) and tonumber(lon), "Evidência inválida: " .. line)
+    assert(not evidence[key], "Evidência duplicada: " .. key)
+    evidence[key] = true
+  end
+  file:close()
+  return evidence
+end
+
 local function read_text_ids(filename, macro)
   local file = assert(io.open(folder .. filename, "rb"))
   local source = file:read("*a")
@@ -92,17 +109,18 @@ local function matrix(item, candidates, registered)
 end
 
 local placement_keys, axis_keys, house_keys, aspect_keys = {}, {}, {}, {}
-local excluded = {}
-local no_retrograde = {Sun=true, Moon=true}
+local excluded, placement_set = {}, {}
 for _, name in ipairs(domain.bodies) do
   for _, sign in ipairs(domain.signs) do
     for house = 1, 12 do
       for _, retrograde in ipairs({false, true}) do
         local key = catalog.position_key({name=name, sign=sign, house=house, retrograde=retrograde})
-        if retrograde and no_retrograde[name] then
-          excluded[#excluded+1] = key
+        local exclusion = reader.position_exclusion(name, retrograde)
+        if exclusion then
+          excluded[#excluded+1] = {key=key, reason=exclusion}
         else
           placement_keys[#placement_keys+1] = key
+          placement_set[key] = true
         end
       end
     end
@@ -131,12 +149,27 @@ matrix(axes, axis_keys, axes.entries)
 matrix(houses, house_keys, house_bases)
 matrix(aspects, aspect_keys, aspect_bases)
 
+local evidence = read_placement_evidence(arg[1] or folder .. "../docs/evidencias-posicoes.tsv")
+for key in pairs(evidence) do
+  assert(placement_set[key], "Evidência de posição fora da grade: " .. key)
+end
+local proven, proven_missing, pending = 0, {}, {}
+for _, key in ipairs(placement_keys) do
+  if evidence[key] then
+    proven = proven + 1
+    if not placements.entries[key] then proven_missing[#proven_missing+1] = key end
+  else
+    pending[#pending+1] = key
+  end
+end
+
 print("MAPA NATAL — INVENTÁRIO DE COBERTURA EDITORIAL")
 print("Somente textos próprios cadastrados. Composição não conta como cobertura.")
-print("A grade é combinatória, com exclusão inicial do Sol e da Lua retrógrados para mapas natais geocêntricos.")
-print("As chaves ausentes restantes são candidatas à triagem. Sua ocorrência em mapas reais ainda precisa ser determinada.")
+print("Posições: cada evidência aponta para uma configuração reproduzível. Chaves sem evidência ficam em aberto.")
 print("Casas e aspectos usam projeções básicas. A presença de uma chave básica não cobre outros contextos.")
 print()
+print(("Posições | %d chaves demonstradas | %d chaves demonstradas sem texto | %d chaves em aberto | %d excluídas"):format(
+  proven, #proven_missing, #pending, #excluded))
 for _, item in ipairs(sections) do
   print(("%s | %d textos próprios | %d/%d chaves na grade | %d chaves sem texto na grade"):format(
     item.label, item.count, item.covered, item.candidates, #item.missing))
@@ -147,8 +180,17 @@ for _, item in ipairs(sections) do
   for key, id in pairs(item.entries) do by_id[#by_id+1] = {key=key, id=id} end
   table.sort(by_id, function(a,b) return a.id < b.id end)
   for _, entry in ipairs(by_id) do print(("%03d\t%s"):format(entry.id, entry.key)) end
-  print("\n" .. item.label .. " — chaves sem texto na grade")
-  for _, key in ipairs(item.missing) do print(key) end
+  if item == placements then
+    print("\nPosições — combinações demonstradas sem texto próprio")
+    for _, key in ipairs(proven_missing) do print(key) end
+    print("\nPosições — combinações em aberto")
+    for _, key in ipairs(pending) do
+      print(("%s\t%s"):format(key, placements.entries[key] and "texto cadastrado" or "sem texto"))
+    end
+    print("\nPosições — combinações excluídas e motivo")
+    for _, entry in ipairs(excluded) do print(entry.key .. "\t" .. entry.reason) end
+  else
+    print("\n" .. item.label .. " — chaves sem texto na grade")
+    for _, key in ipairs(item.missing) do print(key) end
+  end
 end
-print("\nPosições — excluídas na triagem inicial (Sol e Lua retrógrados)")
-for _, key in ipairs(excluded) do print(key) end
