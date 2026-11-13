@@ -19,8 +19,24 @@ A primeira oferta é um relatório natal em PDF sob encomenda para pessoa físic
 - Painel de velocidades: delta em graus por dia como premissa, direção pelo sinal e razão pelo módulo do delta dividido pela velocidade de referência. Registrar divergências de rótulo e razão no log.
 - Meta operacional: menos de 15 minutos para gerar, revisar e enviar. Medir atendimento, validação e cálculo para estimar o custo total.
 
+## Pipeline de produção
+
+Entrada → Validação → Modelo normalizado → Análise → Plano editorial → Conteúdo → Renderização → PDF → Controle de qualidade
+
+1. **Entrada.** Receber do operador o arquivo com posições, cúspides, aspectos e velocidades.
+2. **Validação.** Conferir o contrato de entrada e registrar erros e divergências com a localização no arquivo. Interromper a geração se houver erro bloqueante.
+3. **Modelo normalizado.** Usar os mesmos dados normalizados para a análise, a roda e as tabelas.
+4. **Análise.** Aplicar regras versionadas para identificar regências, relações e fatores relevantes. Vincular os resultados aos dados de origem.
+5. **Plano editorial.** Selecionar e ordenar os temas e seus destaques com regras determinísticas. Evitar repetições entre a síntese e as leituras detalhadas.
+6. **Conteúdo.** Selecionar um texto próprio para cada combinação válida no contrato suportado. Registrar cada lacuna e bloquear a geração final quando faltar um texto obrigatório. A composição pode ser usada em prévias de desenvolvimento.
+7. **Renderização.** Compilar localmente com LuaLaTeX, em pasta isolada, com as passagens necessárias para estabilizar as referências.
+8. **PDF.** Entregar o relatório e manter o SHA-256, as versões e o diagnóstico no registro interno.
+9. **Controle de qualidade.** Conferir a correspondência entre entrada, interpretação, roda e tabelas, além da integridade do PDF, dos links e da diagramação.
+
+A prioridade atual é completar e validar a biblioteca de textos próprios para as combinações válidas do motor. A revisão de apresentação e layout começa depois dessa etapa. O produto permanece em desenvolvimento e ainda não está liberado para venda.
+
 ## Estado atual
 
-O demonstrativo integrado tem leitura temática, sumário, links, roda TikZ e tabelas de posições e cúspides. Os textos e os dados estão fixos no fonte do demonstrativo. Faltam ingestão dos quatro blocos, seleção determinística da biblioteca, linhas e grade de aspectos, painel de velocidades, rastreabilidade, verificação de reprodutibilidade e revisão para uso comercial.
+O motor já lê os quatro blocos, seleciona textos, gera a roda e as tabelas e registra o SHA-256 no log local. O modo de verificação estrita pode ser ativado com `NATAL_EXIGIR_TEXTOS_PROPRIOS=1`. A cobertura integral da biblioteca e a tabela de referência de velocidades continuam pendentes.
 
 Preço, canal, prazo de entrega, janela de reemissão e verificação de autoria e licenças continuam pendentes. Insumos e relatórios que identificam clientes são tratados localmente.
