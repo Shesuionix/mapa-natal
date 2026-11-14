@@ -1,0 +1,61 @@
+Sun in Aquarius 3°21', in 10th House
+Moon in Capricorn 11°51', in 9th House
+Mercury in Capricorn 9°55', in 9th House
+Venus in Sagittarius 18°18', in 8th House
+Mars in Sagittarius 20°05', in 9th House
+Jupiter in Gemini 22°13', Retrograde, in 3rd House
+Saturn in Leo 7°05', Retrograde, in 4th House
+Uranus in Virgo 26°54', Retrograde, in 6th House
+Neptune in Scorpio 17°04', in 7th House
+Pluto in Pisces 1°55', in 11th House
+North Node in Taurus 2°03', Retrograde, in 1st House
+Lilith in Taurus 17°54', in 1st House
+Chiron in Scorpio 23°19', in 8th House
+Fortune in Pisces 27°33', in 12th House
+Vertex in Libra 0°00', in 6th House
+ASC in Aries 19°03'
+MC in Capricorn 16°12'
+
+1st House in Aries 19°03'
+2nd House in Taurus 20°02'
+3rd House in Gemini 18°35'
+4th House in Cancer 16°12'
+5th House in Leo 15°06'
+6th House in Virgo 16°30'
+7th House in Libra 19°03'
+8th House in Scorpio 20°02'
+9th House in Sagittarius 18°35'
+10th House in Capricorn 16°12'
+11th House in Aquarius 15°06'
+12th House in Pisces 16°30'
+
+Sun Opposition Saturn (Orb: 3°44', Applying)
+Sun Square North Node (Orb: 1°18', Separating)
+Sun Sextile Fortune (Orb: 5°48', Applying)
+Sun Trine Vertex (Orb: 3°21', Separating)
+Moon Conjunction Mercury (Orb: 1°56', Separating)
+Moon Sextile Neptune (Orb: 5°13', Applying)
+Venus Conjunction Mars (Orb: 1°47', Applying)
+Venus Opposition Jupiter (Orb: 3°55', Applying)
+Venus Trine ASC (Orb: 0°45', Separating)
+Venus Sextile DSC (Orb: 0°45', Separating)
+Mars Opposition Jupiter (Orb: 2°08', Applying)
+Mars Trine ASC (Orb: 1°02', Applying)
+Mars Sextile DSC (Orb: 1°02', Applying)
+Jupiter Square Uranus (Orb: 4°41', Separating)
+Jupiter Square Fortune (Orb: 5°20', Separating)
+Saturn Square North Node (Orb: 5°02', Applying)
+Uranus Sextile Chiron (Orb: 3°35', Applying)
+Uranus Opposition Fortune (Orb: 0°39', Separating)
+Uranus Conjunction Vertex (Orb: 3°06', Separating)
+Neptune Opposition Lilith (Orb: 0°50', Separating)
+Neptune Sextile MC (Orb: 0°52', Applying)
+Neptune Trine IC (Orb: 0°52', Applying)
+Pluto Sextile North Node (Orb: 0°08', Applying)
+Lilith Opposition Chiron (Orb: 5°25', Applying)
+Lilith Trine MC (Orb: 1°42', Applying)
+Lilith Sextile IC (Orb: 1°42', Applying)
+Chiron Trine Fortune (Orb: 4°14', Separating)
+Fortune Opposition Vertex (Orb: 2°27', Applying)
+
+Sun: 1°01'01'' (Direct, cca 1.0318x avg speed)
