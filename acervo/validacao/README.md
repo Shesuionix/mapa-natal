@@ -31,3 +31,5 @@ O [lote de Sol nas casas 6 e 7](sol-casas-6-e-7/) reúne 24 casos de seleção s
 O [lote de Sol nas casas 8 e 9](sol-casas-8-e-9/) completa as 144 combinações solares. Os 24 casos selecionaram as leituras esperadas, e os 15 mapas da auditoria preservaram a seleção em modo estrito.
 
 O [lote de Lua nas casas 1 e 2](lua-casas-1-e-2/) reúne 24 testes de seleção lunar. Os 15 mapas da auditoria preservaram a seleção em modo estrito.
+
+O [lote de Lua nas casas 3 e 4](lua-casas-3-e-4/) reúne 24 testes de seleção lunar. Os 15 mapas da auditoria preservaram a seleção em modo estrito.
