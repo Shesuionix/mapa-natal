@@ -35,6 +35,8 @@ Entrada → Validação → Modelo normalizado → Análise → Plano editorial 
 
 A prioridade atual é completar e validar a biblioteca de textos próprios para as combinações válidas do motor. A revisão de apresentação e layout começa depois dessa etapa. O produto permanece em desenvolvimento e ainda não está liberado para venda.
 
+O plano da etapa 6 registra as regras de cobertura, as decisões pendentes do perfil de produção e o cronograma de referência. O inventário ampliado de 247 entradas identificou 10.710 chaves sem texto no conjunto auditado. [Plano da etapa 6](plano-etapa-6.md)
+
 ## Estado atual
 
 O motor já lê os quatro blocos, seleciona textos, gera a roda e as tabelas e registra o SHA-256 no log local. O modo de verificação estrita pode ser ativado com `NATAL_EXIGIR_TEXTOS_PROPRIOS=1`. A cobertura integral da biblioteca e a tabela de referência de velocidades continuam pendentes.
