@@ -39,3 +39,5 @@ O [lote de Lua nas casas 5 e 6](lua-casas-5-e-6/) reúne 24 testes de seleção 
 O [lote de Lua nas casas 7 e 8](lua-casas-7-e-8/) reúne 24 testes de seleção lunar. Os 15 mapas da auditoria preservaram a seleção em modo estrito.
 
 O [lote de Lua nas casas 9 e 10](lua-casas-9-e-10/) reúne 24 testes de seleção lunar. Os 15 mapas da auditoria preservaram a seleção em modo estrito.
+
+O [lote de Lua nas casas 11 e 12](lua-casas-11-e-12/) completa as 144 combinações lunares. As 24 seleções do lote foram conferidas, e os 15 mapas da auditoria preservaram a seleção em modo estrito.

@@ -1,0 +1,59 @@
+Sun in Aquarius 3°21', in 12th House
+Moon in Capricorn 11°51', in 11th House
+Mercury in Capricorn 9°55', in 11th House
+Venus in Sagittarius 18°18', in 10th House
+Mars in Sagittarius 20°05', in 11th House
+Jupiter in Gemini 22°13', Retrograde, in 5th House
+Saturn in Leo 7°05', Retrograde, in 6th House
+Uranus in Virgo 26°54', Retrograde, in 8th House
+Neptune in Scorpio 17°04', in 9th House
+Pluto in Pisces 1°55', in 1st House
+North Node in Taurus 2°03', Retrograde, in 3rd House
+Lilith in Taurus 17°54', in 3rd House
+Chiron in Scorpio 23°19', in 10th House
+Fortune in Capricorn 23°37', in 12th House
+Vertex in Libra 0°00', in 8th House
+ASC in Aquarius 15°06'
+MC in Scorpio 20°02'
+
+1st House in Aquarius 15°06'
+2nd House in Pisces 16°30'
+3rd House in Aries 19°03'
+4th House in Taurus 20°02'
+5th House in Gemini 18°35'
+6th House in Cancer 16°12'
+7th House in Leo 15°06'
+8th House in Virgo 16°30'
+9th House in Libra 19°03'
+10th House in Scorpio 20°02'
+11th House in Sagittarius 18°35'
+12th House in Capricorn 16°12'
+
+Sun Opposition Saturn (Orb: 3°44', Applying)
+Sun Square North Node (Orb: 1°18', Separating)
+Sun Trine Vertex (Orb: 3°21', Separating)
+Moon Conjunction Mercury (Orb: 1°56', Separating)
+Moon Sextile Neptune (Orb: 5°13', Applying)
+Venus Conjunction Mars (Orb: 1°47', Applying)
+Venus Opposition Jupiter (Orb: 3°55', Applying)
+Mars Opposition Jupiter (Orb: 2°08', Applying)
+Jupiter Square Uranus (Orb: 4°41', Separating)
+Saturn Square North Node (Orb: 5°02', Applying)
+Uranus Sextile Chiron (Orb: 3°35', Applying)
+Uranus Trine Fortune (Orb: 3°17', Applying)
+Uranus Conjunction Vertex (Orb: 3°06', Separating)
+Neptune Opposition Lilith (Orb: 0°50', Separating)
+Neptune Square ASC (Orb: 1°58', Applying)
+Neptune Square DSC (Orb: 1°58', Applying)
+Neptune Conjunction MC (Orb: 2°58', Separating)
+Neptune Opposition IC (Orb: 2°58', Separating)
+Pluto Sextile North Node (Orb: 0°08', Applying)
+Lilith Opposition Chiron (Orb: 5°25', Applying)
+Lilith Trine Fortune (Orb: 5°43', Separating)
+Lilith Square ASC (Orb: 2°48', Applying)
+Lilith Square DSC (Orb: 2°48', Applying)
+Lilith Opposition MC (Orb: 2°08', Separating)
+Lilith Conjunction IC (Orb: 2°08', Separating)
+Chiron Sextile Fortune (Orb: 0°18', Separating)
+
+Sun: 1°01'01'' (Direct, cca 1.0318x avg speed)
