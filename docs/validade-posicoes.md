@@ -19,7 +19,7 @@ No caso 06, o acervo registra instante e unidade do delta como desconhecidos. O 
 
 ## Resultado
 
-Das 4.320 chaves da grade sem estado estacionário, **576 são excluídas** pelas regras de retrogradação. A auditoria encontrou uma configuração reproduzível para **3.684 chaves**, incluindo as 246 que já têm texto. Restam **3.438 textos a escrever para as chaves demonstradas**. As outras **60 chaves** são Vertex nas casas 1, 2, 3, 11 e 12, em todos os signos. Permanecem em aberto até a confirmação do sistema de casas, da convenção de Vertex e do tratamento de latitudes da fonte de produção. A falta de exemplo na busca não prova impossibilidade. A grade foi gerada com velocidades afastadas de zero. O lote contextual conta as posições explicitamente estacionárias à parte e já confirmou a chave de Netuno em Escorpião na casa 5, com texto próprio.
+Das 4.320 chaves da grade sem estado estacionário, **576 são excluídas** pelas regras de retrogradação. A auditoria encontrou uma configuração reproduzível para **3.684 chaves**, incluindo as 268 que já têm texto. Restam **3.416 textos a escrever para as chaves demonstradas**. As outras **60 chaves** são Vertex nas casas 1, 2, 3, 11 e 12, em todos os signos. Permanecem em aberto até a confirmação do sistema de casas, da convenção de Vertex e do tratamento de latitudes da fonte de produção. A falta de exemplo na busca não prova impossibilidade. A grade foi gerada com velocidades afastadas de zero. O lote contextual conta as posições explicitamente estacionárias à parte e já confirmou a chave de Netuno em Escorpião na casa 5, com texto próprio.
 
 O primeiro lote fora dos mapas de referência acrescentou os 24 textos de Sol nas casas 10 e 12, um por signo e casa. As 24 chaves constam do TSV de evidências. As combinações de Sol nessas duas casas têm cobertura integral na biblioteca.
 
@@ -30,6 +30,8 @@ O mapa sintético de Sol em Virgem na casa 10 acrescentou 13 textos de posiçõe
 O mapa sintético de Sol em Câncer na casa 12 acrescentou 12 textos de posições, incluindo Lua, Mercúrio e Júpiter em Câncer na casa 12. Sol, Marte e Urano selecionaram textos já cadastrados.
 
 O mapa sintético de Sol em Áries na casa 10 acrescentou 14 textos de posições. O Sol selecionou um texto já cadastrado. A biblioteca cobre 53 das 144 posições solares demonstradas.
+
+O lote de Sol nas casas 3 e 4 acrescentou 22 textos e completou os 12 signos em cada uma. Capricórnio na casa 3 e Áries na casa 4 já tinham texto. A seleção solar foi conferida nas 24 entradas reproduzidas a partir do TSV de evidências. Com o lote, a biblioteca cobre 75 das 144 posições solares demonstradas. [Entradas e seleção conferida](../acervo/validacao/sol-casas-3-e-4/)
 
 As 84 ocorrências demonstradas de Vertex cobrem as casas 4 a 10 nos 12 signos. As casas 4 a 9 têm 64 exemplos em Placidus e 8 em Campanus. A casa 10 tem 12 exemplos de fronteira em Placidus. Neles, o Vertex fica imediatamente antes do MC e ambos são exportados no mesmo minuto, seja por truncamento ou arredondamento. O intervalo adotado pelo leitor inclui a cúspide de início e, nesse caso, admite o Vertex na casa 10. Uma fonte que atribua a casa antes de arredondar pode exportar a casa 9 para a mesma geometria. A auditoria mantém as duas possibilidades documentadas. [Implementação de casas e Vertex](https://github.com/aloistr/swisseph/blob/master/swehouse.c)
 

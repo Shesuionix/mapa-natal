@@ -21,3 +21,5 @@ Os 15 arquivos de entrada passaram em modo estrito com textos próprios para tod
 | Sol em Virgem, casa 10 | [Entrada](../../ferramentas/mapas-validacao/sol-virgo-casa-10.txt) | [PDF](relatorios/mapa-sintetico-sol-virgem.pdf) · [Log](relatorios/mapa-sintetico-sol-virgem.log) | 33 |
 
 Os PDFs foram compilados em etapas distintas do projeto. O teste de seleção usa a biblioteca com 1.110 textos próprios. O [inventário](inventario-cobertura-editorial.txt) inclui as 179 combinações de casas e os 660 aspectos observados, além das posições demonstradas que aguardam texto. Os casos 01, 05, 06 e 07 usam as cópias de comparação documentadas no [registro de descartes](../descartados/).
+
+O [lote de Sol nas casas 3 e 4](sol-casas-3-e-4/) registra 24 testes de seleção solar e a regressão dos 15 mapas em modo estrito após a ampliação da biblioteca.
