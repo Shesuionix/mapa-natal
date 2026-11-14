@@ -469,6 +469,18 @@ local position_library = {
   ["Chiron|Aquarius|2|true"] = 478,
   ["Chiron|Aquarius|3|false"] = 479,
   ["Chiron|Aquarius|3|true"] = 480,
+  ["Chiron|Aquarius|4|false"] = 481,
+  ["Chiron|Aquarius|4|true"] = 482,
+  ["Chiron|Aquarius|5|false"] = 483,
+  ["Chiron|Aquarius|5|true"] = 484,
+  ["Chiron|Aquarius|6|false"] = 485,
+  ["Chiron|Aquarius|6|true"] = 486,
+  ["Chiron|Aquarius|7|false"] = 487,
+  ["Chiron|Aquarius|7|true"] = 488,
+  ["Chiron|Aquarius|8|false"] = 489,
+  ["Chiron|Aquarius|8|true"] = 490,
+  ["Chiron|Aquarius|9|false"] = 491,
+  ["Chiron|Aquarius|9|true"] = 492,
 }
 
 local axis_pairs = {
