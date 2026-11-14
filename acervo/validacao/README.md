@@ -27,3 +27,5 @@ O [lote de Sol nas casas 3 e 4](sol-casas-3-e-4/) registra 24 testes de seleçã
 O [lote de Sol nas casas 2 e 5](sol-casas-2-e-5/) acrescenta 24 casos de seleção solar. Os 15 mapas da auditoria voltaram a passar em modo estrito com as mesmas leituras.
 
 O [lote de Sol nas casas 6 e 7](sol-casas-6-e-7/) reúne 24 casos de seleção solar. Os 15 mapas da auditoria preservaram as leituras em modo estrito.
+
+O [lote de Sol nas casas 8 e 9](sol-casas-8-e-9/) completa as 144 combinações solares. Os 24 casos selecionaram as leituras esperadas, e os 15 mapas da auditoria preservaram a seleção em modo estrito.

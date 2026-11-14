@@ -1,0 +1,58 @@
+Sun in Pisces 0°40', in 9th House
+Moon in Capricorn 7°40', in 7th House
+Mercury in Aquarius 20°01', in 9th House
+Venus in Capricorn 19°43', in 8th House
+Mars in Capricorn 9°19', in 7th House
+Jupiter in Gemini 21°23', in 1st House
+Saturn in Leo 4°59', Retrograde, in 2nd House
+Uranus in Virgo 26°06', Retrograde, in 4th House
+Neptune in Scorpio 17°14', Retrograde, in 6th House
+Pluto in Pisces 2°38', in 9th House
+North Node in Taurus 0°37', Retrograde, in 11th House
+Lilith in Taurus 20°53', in 12th House
+Chiron in Scorpio 24°45', in 6th House
+Fortune in Aries 22°26', in 11th House
+Vertex in Libra 0°00', in 4th House
+ASC in Gemini 15°26'
+MC in Pisces 12°51'
+
+1st House in Gemini 15°26'
+2nd House in Cancer 13°03'
+3rd House in Leo 11°43'
+4th House in Virgo 12°51'
+5th House in Libra 15°25'
+6th House in Scorpio 16°40'
+7th House in Sagittarius 15°26'
+8th House in Capricorn 13°03'
+9th House in Aquarius 11°43'
+10th House in Pisces 12°51'
+11th House in Aries 15°25'
+12th House in Taurus 16°40'
+
+Sun Conjunction Pluto (Orb: 1°58', Applying)
+Sun Sextile North Node (Orb: 0°03', Separating)
+Sun Square Chiron (Orb: 5°55', Separating)
+Moon Conjunction Mars (Orb: 1°39', Applying)
+Moon Sextile Pluto (Orb: 5°02', Separating)
+Mercury Trine Jupiter (Orb: 1°22', Applying)
+Mercury Square Neptune (Orb: 2°47', Separating)
+Mercury Square Lilith (Orb: 0°52', Applying)
+Mercury Square Chiron (Orb: 4°44', Applying)
+Mercury Sextile Fortune (Orb: 2°25', Separating)
+Venus Sextile Neptune (Orb: 2°29', Separating)
+Venus Trine Lilith (Orb: 1°10', Applying)
+Venus Sextile Chiron (Orb: 5°02', Applying)
+Venus Square Fortune (Orb: 2°43', Separating)
+Jupiter Square Uranus (Orb: 4°43', Applying)
+Jupiter Sextile Fortune (Orb: 1°03', Separating)
+Saturn Square North Node (Orb: 4°22', Applying)
+Saturn Sextile Vertex (Orb: 4°59', Applying)
+Uranus Trine Lilith (Orb: 5°13', Applying)
+Uranus Sextile Chiron (Orb: 1°21', Applying)
+Uranus Conjunction Vertex (Orb: 3°54', Separating)
+Neptune Opposition Lilith (Orb: 3°39', Separating)
+Pluto Sextile North Node (Orb: 2°01', Separating)
+Lilith Opposition Chiron (Orb: 3°52', Applying)
+Chiron Sextile Vertex (Orb: 5°15', Applying)
+
+Sun: 1°00'26'' (Direct, cca 1.0219x avg speed)

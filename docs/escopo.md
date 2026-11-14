@@ -39,7 +39,7 @@ A prioridade atual é completar e validar a biblioteca de textos próprios para 
 
 O motor já lê os quatro blocos, seleciona textos, gera a roda e as tabelas e registra o SHA-256 no log local. O modo de verificação estrita pode ser ativado com `NATAL_EXIGIR_TEXTOS_PROPRIOS=1`. A cobertura integral da biblioteca e a tabela de referência de velocidades continuam pendentes.
 
-A auditoria demonstrou 3.684 combinações de posições sem marca estacionária. Destas, 315 têm texto próprio. A biblioteca tem 1.179 textos próprios e cobre o Sol nos 12 signos nas casas 1 a 7 e 10 a 12. Os 11 mapas de referência e os quatro mapas sintéticos passam em modo estrito, com cobertura das 179 chaves de casas e 660 de aspectos observadas. Os limites de seleção de orbe e as convenções de movimento e dos pontos na fonte seguem em aberto. [Validade de posições](validade-posicoes.md) · [Validade de casas e aspectos](validade-casas-aspectos.md)
+A auditoria demonstrou 3.684 combinações de posições sem marca estacionária. Destas, 337 têm texto próprio. A biblioteca tem 1.201 textos próprios e cobre as 144 combinações do Sol nos 12 signos e nas 12 casas. Os 11 mapas de referência e os quatro mapas sintéticos passam em modo estrito, com cobertura das 179 chaves de casas e 660 de aspectos observadas. Os limites de seleção de orbe e as convenções de movimento e dos pontos na fonte seguem em aberto. [Validade de posições](validade-posicoes.md) · [Validade de casas e aspectos](validade-casas-aspectos.md)
 
 Os relatórios e logs dos mapas auditados, as versões de trabalho e as entradas descartadas estão no [acervo](../acervo/).
 
