@@ -505,6 +505,18 @@ local position_library = {
   ["Chiron|Aries|9|false"] = 514,
   ["Chiron|Aries|9|true"] = 515,
   ["Chiron|Cancer|10|false"] = 516,
+  ["Chiron|Cancer|10|true"] = 517,
+  ["Chiron|Cancer|11|false"] = 518,
+  ["Chiron|Cancer|11|true"] = 519,
+  ["Chiron|Cancer|12|false"] = 520,
+  ["Chiron|Cancer|12|true"] = 521,
+  ["Chiron|Cancer|1|false"] = 522,
+  ["Chiron|Cancer|1|true"] = 523,
+  ["Chiron|Cancer|2|false"] = 524,
+  ["Chiron|Cancer|2|true"] = 525,
+  ["Chiron|Cancer|3|false"] = 526,
+  ["Chiron|Cancer|3|true"] = 527,
+  ["Chiron|Cancer|4|false"] = 528,
 }
 
 local axis_pairs = {
