@@ -1,0 +1,1 @@
+teste-01: a linha original 51 foi excluída SOMENTE da cópia de comparação: Fortune Sextile Vertex (Orb: 2°38’, Separating). Não corresponde à geometria das posições enviadas. Os seis arquivos originais permanecem em originais/. Nenhum orbe ou posição foi corrigido.

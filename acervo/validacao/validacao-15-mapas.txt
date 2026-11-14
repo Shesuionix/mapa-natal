@@ -1,0 +1,45 @@
+mapa-editorial-v1.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 58 proprios, 0 compostos 3de0049750d251d86e533c73b9aee53bf038371576dd28246b8e834cea8effbe
+
+mapa-b.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 45 proprios, 0 compostos c89dcf69c8bc3f87c527dcdaa085d36ccf71478e2a13d9b46b97b0c56236ecb5
+
+mapa-c.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 48 proprios, 0 compostos 9bef30d688961ece5bc6f82c7497f7f57f9c193c42f4309ed5b2f47b7145ea3f
+
+mapa-d.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 51 proprios, 0 compostos 9dc357cbdc6fc5975d713af9a2e05f073fd37332d62b213201401cb203fde735
+
+teste-01.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 55 proprios, 0 compostos 1e157dd3b5e0f58c32c2914a95871d8a10f378375a6e9c7d70b9a7c4aed92999
+
+teste-02.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 54 proprios, 0 compostos a03ce585b1ea8f848e2108b73c5c463b5634a3e7193219f8dd89bf8144ffac72
+
+teste-03.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 52 proprios, 0 compostos 795379ce9cb0748ea68d426afee0c20822e7cd282866935bc680702f3d2dee32
+
+teste-04.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 46 proprios, 0 compostos c47634ecd601354a0e12304425d12db8bcd0950b71c8bb1bc8375d74d53f664a
+
+teste-05.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 59 proprios, 0 compostos e5a29aa5bd9da451967fe6e647aa99730eecb059f2b58e5040c773a928ba2497
+
+teste-06.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 40 proprios, 0 compostos 1217ef28ab05bcdcd40f5fd3ea67cf72df44b0fc3b836c2512603108c5fc3b16
+
+teste-07.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 44 proprios, 0 compostos 004579a3f12cf106ad4ddc02d8c5ccf6d3a692f18214dfd48db674d2bcb6b1ac
+
+sol-aquarius-casa-12.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 29 proprios, 0 compostos 0f6c58c2e3458c1eae6e3fe18dac7d4d9570d8d4451148692ff6c486aacc90c0
+
+sol-aries-casa-10.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 34 proprios, 0 compostos 5faa4d3a127c7a74f961c47759ab71f6334793f36e9ff0a907b025e81d141fcd
+
+sol-cancer-casa-12.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 35 proprios, 0 compostos b27b27a78e71f1307b27d2362085c1725dab2d8d039a813a3aa88a0a4955730b
+
+sol-virgo-casa-10.txt
+[Cobertura] posicoes: 15 proprios, 0 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 12 proprios, 0 compostos [Cobertura] aspectos: 33 proprios, 0 compostos 524f987f0681aa39e410ea94f05436275dd20f3c1062f1f08f61225f5d9b504c
+

@@ -1,0 +1,60 @@
+teste-01-original-geometria.txt
+Código de saída: 1
+Geometria incompatível. Total de orbes divergentes: 1. Consulte o log.
+
+teste-05-original-geometria.txt
+Código de saída: 1
+Geometria incompatível. Total de orbes divergentes: 1. Consulte o log.
+
+teste-06-original-geometria.txt
+Código de saída: 1
+Geometria incompatível. Total de orbes divergentes: 1. Consulte o log.
+
+teste-07-original-geometria.txt
+Código de saída: 1
+Geometria incompatível. Total de orbes divergentes: 1. Consulte o log.
+
+negativo-casa.txt
+Código de saída: 1
+[Cobertura] posicoes: 14 proprios, 1 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 8 proprios, 4 compostos [Cobertura] aspectos: 45 proprios, 13 compostos Cobertura editorial incompleta: 18 leituras sem texto próprio. Consulte o log.
+
+negativo-orbe-unico.txt
+Código de saída: 1
+Geometria incompatível. Total de orbes divergentes: 1. Consulte o log.
+
+negativo-orbe.txt
+Código de saída: 1
+Geometria incompatível. Total de orbes divergentes: 3. Consulte o log.
+
+mapa-invalido.txt
+Código de saída: 1
+C:\Users\Samuel J. Neves\Documents\Codex\2026-11-11\le\work\mapa-invalido.txt:1: signo, grau ou minuto inválido
+
+Fortune.txt
+Código de saída: 1
+C:\Users\Samuel J. Neves\Documents\Codex\2026-11-11\le\work\natal-validade-negativos\Fortune.txt:14: marcador Retrograde inválido para Fortune (ponto calculado sem marcador de movimento)
+
+Lilith.txt
+Código de saída: 1
+[Cobertura] posicoes: 14 proprios, 1 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 11 proprios, 1 compostos [Cobertura] aspectos: 52 proprios, 6 compostos Cobertura editorial incompleta: 8 leituras sem texto próprio. Consulte o log.
+
+Mercury.txt
+Código de saída: 1
+[Cobertura] posicoes: 14 proprios, 1 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 8 proprios, 4 compostos [Cobertura] aspectos: 52 proprios, 6 compostos Cobertura editorial incompleta: 11 leituras sem texto próprio. Consulte o log.
+
+Moon.txt
+Código de saída: 1
+C:\Users\Samuel J. Neves\Documents\Codex\2026-11-11\le\work\natal-validade-negativos\Moon.txt:2: marcador Retrograde inválido para Moon (longitude geocêntrica direta)
+
+North-Node.txt
+Código de saída: 1
+[Cobertura] posicoes: 14 proprios, 1 compostos [Cobertura] eixos: 2 proprios, 0 compostos [Cobertura] casas: 11 proprios, 1 compostos [Cobertura] aspectos: 53 proprios, 5 compostos Cobertura editorial incompleta: 7 leituras sem texto próprio. Consulte o log.
+
+Sun.txt
+Código de saída: 1
+C:\Users\Samuel J. Neves\Documents\Codex\2026-11-11\le\work\natal-validade-negativos\Sun.txt:1: marcador Retrograde inválido para Sun (longitude geocêntrica direta)
+
+Vertex.txt
+Código de saída: 1
+C:\Users\Samuel J. Neves\Documents\Codex\2026-11-11\le\work\natal-validade-negativos\Vertex.txt:15: marcador Retrograde inválido para Vertex (ponto geométrico sem marcador de movimento)
+

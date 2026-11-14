@@ -1,0 +1,4 @@
+case_id=teste-05
+display_name=Test Chart 05
+house_system=unknown
+case_kind=operator-input

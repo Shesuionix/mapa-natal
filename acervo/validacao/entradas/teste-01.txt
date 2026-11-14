@@ -1,0 +1,100 @@
+Sun in Capricorn 24°55’, in 1st House
+Moon in Virgo 15°40’, in 9th House
+Mercury in Capricorn 11°27’, Retrograde, in 12th House
+Venus in Aquarius 0°46’, Retrograde, in 1st House
+Mars in Sagittarius 19°48’, in 11th House
+Jupiter in Cancer 3°22’, Retrograde, in 6th House
+Saturn in Capricorn 17°17’, in 12th House
+Uranus in Capricorn 6°36’, in 12th House
+Neptune in Capricorn 12°33’, in 12th House
+Pluto in Scorpio 17°25’, in 10th House
+North Node in Aquarius 17°42’, Retrograde, in 2nd House
+Lilith in Scorpio 8°00’, in 10th House
+Chiron in Cancer 12°52’, Retrograde, in 6th House
+Fortune in Gemini 2°38’, in 5th House
+Vertex in Taurus 25°14’, in 5th House
+ASC in Capricorn 23°23’
+MC in Libra 16°42’
+
+1st House in Capricorn 23°23’
+2nd House in Aquarius 17°36’
+3rd House in Pisces 15°04’
+4th House in Aries 16°42’
+5th House in Taurus 20°32’
+6th House in Gemini 23°12’
+7th House in Cancer 23°23’
+8th House in Leo 17°36’
+9th House in Virgo 15°04’
+10th House in Libra 16°42’
+11th House in Scorpio 20°32’
+12th House in Sagittarius 23°12’
+
+Sun Trine Moon (Orb: 9°15’, Applying)
+Sun Conjunction Venus (Orb: 5°50’, Applying)
+Sun Conjunction Saturn (Orb: 7°37’, Separating)
+Moon Trine Mercury (Orb: 4°13’, Separating)
+Moon Square Mars (Orb: 4°07’, Applying)
+Moon Trine Saturn (Orb: 1°37’, Applying)
+Moon Trine Uranus (Orb: 9°04’, Separating)
+Moon Trine Neptune (Orb: 3°06’, Separating)
+Moon Sextile Pluto (Orb: 1°44’, Applying)
+Mercury Conjunction Saturn (Orb: 5°50’, Separating)
+Mercury Conjunction Uranus (Orb: 4°50’, Applying)
+Mercury Conjunction Neptune (Orb: 1°06’, Separating)
+Jupiter Opposition Uranus (Orb: 3°13’, Separating)
+Saturn Conjunction Neptune (Orb: 4°44’, Separating)
+Saturn Sextile Pluto (Orb: 0°07’, Applying)
+Uranus Conjunction Neptune (Orb: 5°57’, Applying)
+Ascendant Conjunction Sun (Orb: 1°32’, Applying)
+Ascendant Trine Moon (Orb: 7°42’, Separating)
+Ascendant Conjunction Saturn (Orb: 6°05’, Separating)
+DSC Opposition Sun (Orb: 1°32’, Applying)
+DSC Opposition Saturn (Orb: 6°05’, Separating)
+DSC Trine Pluto (Orb: 5°58’, Separating)
+MC Square Sun (Orb: 8°13’, Applying)
+MC Square Mercury (Orb: 5°15’, Separating)
+MC Sextile Mars (Orb: 3°05’, Applying)
+MC Square Saturn (Orb: 0°35’, Applying)
+MC Square Neptune (Orb: 4°09’, Separating)
+MC Trine Node (Orb: 0°59’, Applying)
+MC Square Chiron (Orb: 3°50’, Separating)
+IC Square Sun (Orb: 8°13’, Applying)
+IC Square Mercury (Orb: 5°15’, Separating)
+IC Trine Mars (Orb: 3°05’, Applying)
+IC Square Saturn (Orb: 0°35’, Applying)
+IC Square Neptune (Orb: 4°09’, Separating)
+IC Sextile Node (Orb: 0°59’, Applying)
+IC Square Chiron (Orb: 3°50’, Separating)
+North Node Sextile Mars (Orb: 2°06’, Separating)
+North Node Square Pluto (Orb: 0°16’, Applying)
+Lilith Sextile Mercury (Orb: 3°26’, Applying)
+Lilith Trine Jupiter (Orb: 4°37’, Separating)
+Lilith Sextile Uranus (Orb: 1°24’, Separating)
+Lilith Trine Chiron (Orb: 4°51’, Applying)
+Chiron Sextile Moon (Orb: 2°48’, Separating)
+Chiron Opposition Mercury (Orb: 1°25’, Separating)
+Chiron Opposition Saturn (Orb: 4°25’, Separating)
+Chiron Opposition Uranus (Orb: 6°15’, Applying)
+Chiron Opposition Neptune (Orb: 0°18’, Applying)
+Chiron Trine Pluto (Orb: 4°33’, Separating)
+Fortune Trine Sun (Orb: 7°42’, Separating)
+Fortune Trine Venus (Orb: 1°52’, Separating)
+Vertex Trine Sun (Orb: 0°18’, Separating)
+Vertex Trine Moon (Orb: 9°33’, Separating)
+Vertex Trine Venus (Orb: 5°31’, Applying)
+Vertex Trine Ascendant (Orb: 1°50’, Separating)
+Vertex Sextile DSC (Orb: 1°50’, Separating)
+
+Sun: 1°01’05’’ (Average, cca 1.03x avg speed)
+Moon: 12°32’03’’ (Average, cca 0.95x avg speed)
+Mercury: -0°44’37’’ (Retrograde, cca 0.54x avg speed)
+Venus: -0°35’31’’ (Retrograde, cca 0.49x avg speed)
+Mars: 0°42’42’’ (Fast, cca 1.36x avg speed)
+Jupiter: -0°07’03’’ (Retrograde, cca 1.42x avg speed)
+Saturn: 0°07’04’’ (Fast, cca 3.51x avg speed)
+Uranus: 0°03’28’’ (Fast, cca 4.93x avg speed)
+Neptune: 0°02’13’’ (Fast, cca 5.77x avg speed)
+Pluto: 0°01’13’’ (Fast, cca 4.96x avg speed)
+North Node: -0°03’10’’ (Retrograde, cca 1x avg speed)
+Lilith: 0°06’43’’ (Average, cca 1.01x avg speed)
+Chiron: -0°04’00’’ (Retrograde, cca 9.27x avg speed)

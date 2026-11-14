@@ -1,0 +1,1 @@
+teste-05: a linha original 53 foi excluída SOMENTE da cópia de comparação: Fortune Trine Vertex (Orb: 2°28’, Separating). Não corresponde à geometria das posições enviadas. Os seis arquivos originais permanecem em originais/. Nenhum orbe ou posição foi corrigido.

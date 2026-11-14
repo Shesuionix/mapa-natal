@@ -1,0 +1,5 @@
+association=confirmed
+case_id=teste-05
+instant=unknown
+time_unit=unknown
+near_zero_arcseconds=0

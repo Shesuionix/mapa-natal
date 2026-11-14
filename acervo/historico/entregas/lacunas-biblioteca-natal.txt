@@ -1,0 +1,430 @@
+MAPA NATAL — INVENTÁRIO DE LACUNAS DA BIBLIOTECA
+
+Grade editorial por chaves do motor. Os totais são combinatórios. Algumas chaves não ocorrem em mapas reais. Nas casas e nos aspectos, a presença de uma chave básica não garante cobertura para outros contextos.
+Lacunas enumeradas: 4275 posições, 18 eixos, 108 chaves básicas de casa e 797 chaves básicas de aspecto.
+
+POSIÇÕES — casas ausentes por corpo, signo e marca de retrogradação
+
+Sem R indica ausência da marca no arquivo. R indica retrogradação.
+
+Sol
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Lua
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Mercúrio
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 3, 5, 6, 7, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Vênus
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Marte
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Júpiter
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 4, 5, 6, 7, 8, 9, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Saturno
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 2, 3, 4, 5, 6, 7, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Urano
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 5, 6, 7, 8, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Netuno
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 4, 5, 6, 7, 8, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Plutão
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 2, 3, 4, 5, 6, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Nodo Norte
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 2, 3, 4, 5, 6, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12
+
+Lilith
+  Áries — sem R: 1, 2, 3, 4, 5, 7, 8, 9, 10, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Quíron
+  Áries — sem R: 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 3, 4, 5, 6, 7, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Fortuna
+  Áries — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Vertex
+  Áries — sem R: 1, 2, 3, 4, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Touro — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Gêmeos — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Câncer — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Leão — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Virgem — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Libra — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Escorpião — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Sagitário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Capricórnio — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Aquário — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  Peixes — sem R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 | R: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+EIXOS — pares orientados de signos opostos
+
+Ascendente–Descendente
+  Áries – Libra
+  Touro – Escorpião
+  Câncer – Capricórnio
+  Leão – Aquário
+  Virgem – Peixes
+  Sagitário – Gêmeos
+  Capricórnio – Câncer
+  Aquário – Leão
+  Peixes – Virgem
+
+Meio do Céu–Fundo do Céu
+  Áries – Libra
+  Touro – Escorpião
+  Gêmeos – Sagitário
+  Virgem – Peixes
+  Libra – Áries
+  Escorpião – Touro
+  Sagitário – Gêmeos
+  Capricórnio – Câncer
+  Aquário – Leão
+
+CASAS — signos de cúspide sem texto em nenhuma configuração
+  Casa 1 — Áries, Touro, Câncer, Leão, Virgem, Sagitário, Capricórnio, Aquário, Peixes
+  Casa 2 — Áries, Touro, Gêmeos, Leão, Virgem, Libra, Capricórnio, Aquário, Peixes
+  Casa 3 — Áries, Touro, Gêmeos, Câncer, Virgem, Libra, Escorpião, Aquário, Peixes
+  Casa 4 — Áries, Touro, Gêmeos, Câncer, Leão, Libra, Escorpião, Sagitário, Peixes
+  Casa 5 — Áries, Touro, Gêmeos, Câncer, Leão, Virgem, Escorpião, Sagitário, Capricórnio
+  Casa 6 — Touro, Gêmeos, Câncer, Leão, Virgem, Libra, Sagitário, Capricórnio, Aquário
+  Casa 7 — Gêmeos, Câncer, Leão, Virgem, Libra, Escorpião, Capricórnio, Aquário, Peixes
+  Casa 8 — Áries, Câncer, Leão, Virgem, Libra, Escorpião, Sagitário, Aquário, Peixes
+  Casa 9 — Áries, Touro, Leão, Virgem, Libra, Escorpião, Sagitário, Capricórnio, Peixes
+  Casa 10 — Áries, Touro, Gêmeos, Virgem, Libra, Escorpião, Sagitário, Capricórnio, Aquário
+  Casa 11 — Touro, Gêmeos, Câncer, Libra, Escorpião, Sagitário, Capricórnio, Aquário, Peixes
+  Casa 12 — Áries, Gêmeos, Câncer, Leão, Escorpião, Sagitário, Capricórnio, Aquário, Peixes
+
+ASPECTOS — tipos sem texto para cada par na grade formal
+A grade usa 19 corpos, pontos e ângulos e cinco tipos de aspecto. A geometria pode impedir alguns tipos, especialmente entre os próprios ângulos.
+  Sol e Lua — conjunção, sextil, trígono, oposição
+  Sol e Mercúrio — conjunção, sextil, quadratura, trígono, oposição
+  Sol e Vênus — sextil, quadratura, trígono, oposição
+  Sol e Marte — conjunção, quadratura, trígono, oposição
+  Sol e Júpiter — conjunção, sextil, quadratura, trígono, oposição
+  Sol e Saturno — conjunção, sextil, quadratura, oposição
+  Sol e Urano — conjunção, sextil, trígono, oposição
+  Sol e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Sol e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Sol e Nodo Norte — conjunção, quadratura, trígono, oposição
+  Sol e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Sol e Quíron — conjunção, sextil, trígono, oposição
+  Sol e Fortuna — sextil, quadratura, trígono, oposição
+  Sol e Vertex — conjunção, sextil, trígono, oposição
+  Sol e Ascendente — conjunção, sextil, trígono, oposição
+  Sol e Descendente — conjunção, sextil, trígono, oposição
+  Sol e Meio do Céu — conjunção, sextil, quadratura, trígono
+  Sol e Fundo do Céu — sextil, quadratura, trígono, oposição
+  Lua e Mercúrio — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Vênus — conjunção, sextil, trígono, oposição
+  Lua e Marte — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Júpiter — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Saturno — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Urano — sextil, quadratura, trígono, oposição
+  Lua e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Lua e Quíron — conjunção, sextil, quadratura, trígono
+  Lua e Fortuna — conjunção, sextil, trígono, oposição
+  Lua e Vertex — conjunção, sextil, quadratura, trígono
+  Lua e Ascendente — sextil, quadratura, trígono, oposição
+  Lua e Descendente — conjunção, sextil, quadratura, trígono
+  Lua e Meio do Céu — conjunção, sextil, trígono, oposição
+  Lua e Fundo do Céu — conjunção, sextil, trígono, oposição
+  Mercúrio e Vênus — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Marte — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Júpiter — conjunção, sextil, trígono, oposição
+  Mercúrio e Saturno — conjunção, sextil, trígono, oposição
+  Mercúrio e Urano — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Netuno — conjunção, quadratura, trígono, oposição
+  Mercúrio e Plutão — conjunção, sextil, quadratura, oposição
+  Mercúrio e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Lilith — conjunção, sextil, quadratura, trígono
+  Mercúrio e Quíron — conjunção, quadratura, trígono, oposição
+  Mercúrio e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Mercúrio e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Marte — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Júpiter — conjunção, quadratura, trígono, oposição
+  Vênus e Saturno — conjunção, sextil, quadratura, oposição
+  Vênus e Urano — conjunção, sextil, trígono, oposição
+  Vênus e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Quíron — conjunção, sextil, trígono, oposição
+  Vênus e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Vertex — conjunção, sextil, trígono, oposição
+  Vênus e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Vênus e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Júpiter — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Saturno — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Urano — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Nodo Norte — sextil, quadratura, trígono, oposição
+  Marte e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Quíron — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Marte e Meio do Céu — conjunção, sextil, quadratura, oposição
+  Marte e Fundo do Céu — conjunção, quadratura, trígono, oposição
+  Júpiter e Saturno — conjunção, sextil, quadratura, trígono
+  Júpiter e Urano — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Lilith — conjunção, sextil, trígono, oposição
+  Júpiter e Quíron — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Júpiter e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Urano — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Lilith — conjunção, sextil, trígono, oposição
+  Saturno e Quíron — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Saturno e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Netuno — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Plutão — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Quíron — conjunção, sextil, quadratura, trígono
+  Urano e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Vertex — conjunção, sextil, quadratura, trígono
+  Urano e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Urano e Meio do Céu — conjunção, sextil, trígono, oposição
+  Urano e Fundo do Céu — conjunção, sextil, trígono, oposição
+  Netuno e Plutão — conjunção, quadratura, trígono, oposição
+  Netuno e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Netuno e Lilith — conjunção, sextil, quadratura, oposição
+  Netuno e Quíron — conjunção, sextil, quadratura, oposição
+  Netuno e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Netuno e Vertex — conjunção, sextil, quadratura, oposição
+  Netuno e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Netuno e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Netuno e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Netuno e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Nodo Norte — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Quíron — conjunção, sextil, quadratura, trígono
+  Plutão e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Plutão e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Nodo Norte e Lilith — conjunção, sextil, quadratura, trígono, oposição
+  Nodo Norte e Quíron — conjunção, sextil, quadratura, trígono, oposição
+  Nodo Norte e Fortuna — conjunção, quadratura, trígono, oposição
+  Nodo Norte e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Nodo Norte e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Nodo Norte e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Nodo Norte e Meio do Céu — conjunção, sextil, quadratura, oposição
+  Nodo Norte e Fundo do Céu — conjunção, quadratura, trígono, oposição
+  Lilith e Quíron — conjunção, sextil, quadratura, oposição
+  Lilith e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Lilith e Vertex — conjunção, sextil, quadratura, oposição
+  Lilith e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Lilith e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Lilith e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Lilith e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Quíron e Fortuna — conjunção, sextil, quadratura, trígono, oposição
+  Quíron e Vertex — sextil, quadratura, trígono, oposição
+  Quíron e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Quíron e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Quíron e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Quíron e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Fortuna e Vertex — conjunção, sextil, quadratura, trígono, oposição
+  Fortuna e Ascendente — conjunção, sextil, trígono, oposição
+  Fortuna e Descendente — conjunção, sextil, trígono, oposição
+  Fortuna e Meio do Céu — conjunção, sextil, quadratura, trígono
+  Fortuna e Fundo do Céu — sextil, quadratura, trígono, oposição
+  Vertex e Ascendente — conjunção, sextil, quadratura, trígono, oposição
+  Vertex e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Vertex e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Vertex e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Ascendente e Descendente — conjunção, sextil, quadratura, trígono, oposição
+  Ascendente e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Ascendente e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Descendente e Meio do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Descendente e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
+  Meio do Céu e Fundo do Céu — conjunção, sextil, quadratura, trígono, oposição
