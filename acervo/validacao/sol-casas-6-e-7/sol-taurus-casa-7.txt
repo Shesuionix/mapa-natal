@@ -1,0 +1,79 @@
+Sun in Taurus 0°08', in 7th House
+Moon in Pisces 20°45', in 6th House
+Mercury in Aries 26°10', Retrograde, in 7th House
+Venus in Aries 1°57', in 7th House
+Mars in Aquarius 22°58', in 5th House
+Jupiter in Gemini 27°23', in 9th House
+Saturn in Leo 3°33', in 11th House
+Uranus in Virgo 23°41', Retrograde, in 12th House
+Neptune in Scorpio 16°18', Retrograde, in 2nd House
+Pluto in Pisces 4°06', in 6th House
+North Node in Aries 27°27', Retrograde, in 7th House
+Lilith in Taurus 27°33', in 8th House
+Chiron in Scorpio 23°25', Retrograde, in 2nd House
+Fortune in Leo 18°48', in 11th House
+Vertex in Aries 0°00', in 7th House
+ASC in Virgo 28°11'
+MC in Gemini 28°28'
+
+1st House in Virgo 28°11'
+2nd House in Scorpio 0°26'
+3rd House in Sagittarius 0°30'
+4th House in Sagittarius 28°28'
+5th House in Capricorn 26°19'
+6th House in Aquarius 26°05'
+7th House in Pisces 28°11'
+8th House in Taurus 0°26'
+9th House in Gemini 0°30'
+10th House in Gemini 28°28'
+11th House in Cancer 26°19'
+12th House in Leo 26°05'
+
+Sun Conjunction Mercury (Orb: 3°58', Separating)
+Sun Sextile Jupiter (Orb: 2°45', Separating)
+Sun Square Saturn (Orb: 3°25', Applying)
+Sun Sextile Pluto (Orb: 3°58', Applying)
+Sun Conjunction North Node (Orb: 2°41', Separating)
+Sun Sextile MC (Orb: 1°40', Applying)
+Sun Trine IC (Orb: 1°40', Applying)
+Moon Opposition Uranus (Orb: 2°56', Applying)
+Moon Trine Neptune (Orb: 4°27', Separating)
+Moon Trine Chiron (Orb: 2°40', Applying)
+Mercury Sextile Mars (Orb: 3°12', Applying)
+Mercury Sextile Jupiter (Orb: 1°13', Separating)
+Mercury Conjunction North Node (Orb: 1°17', Separating)
+Mercury Sextile MC (Orb: 2°18', Separating)
+Mercury Trine IC (Orb: 2°18', Separating)
+Venus Square Jupiter (Orb: 4°34', Separating)
+Venus Trine Saturn (Orb: 1°36', Applying)
+Venus Sextile Lilith (Orb: 4°24', Separating)
+Venus Conjunction Vertex (Orb: 1°57', Separating)
+Mars Trine Jupiter (Orb: 4°25', Applying)
+Mars Sextile North Node (Orb: 4°29', Applying)
+Mars Square Lilith (Orb: 4°35', Applying)
+Mars Square Chiron (Orb: 0°27', Applying)
+Mars Opposition Fortune (Orb: 4°10', Applying)
+Jupiter Square Uranus (Orb: 3°42', Separating)
+Jupiter Sextile North Node (Orb: 0°04', Applying)
+Jupiter Square Vertex (Orb: 2°37', Applying)
+Jupiter Square ASC (Orb: 0°48', Separating)
+Jupiter Square DSC (Orb: 0°48', Separating)
+Jupiter Conjunction MC (Orb: 1°05', Separating)
+Jupiter Opposition IC (Orb: 1°05', Separating)
+Saturn Trine Vertex (Orb: 3°33', Separating)
+Uranus Trine Lilith (Orb: 3°52', Separating)
+Uranus Sextile Chiron (Orb: 0°16', Separating)
+Neptune Square Fortune (Orb: 2°30', Separating)
+North Node Sextile MC (Orb: 1°01', Separating)
+North Node Trine IC (Orb: 1°01', Separating)
+Lilith Opposition Chiron (Orb: 4°08', Separating)
+Lilith Sextile Vertex (Orb: 2°27', Applying)
+Lilith Trine ASC (Orb: 0°38', Separating)
+Lilith Sextile DSC (Orb: 0°38', Separating)
+Chiron Square Fortune (Orb: 4°37', Applying)
+Vertex Opposition ASC (Orb: 1°49', Applying)
+Vertex Conjunction DSC (Orb: 1°49', Applying)
+Vertex Square MC (Orb: 1°32', Applying)
+Vertex Square IC (Orb: 1°32', Applying)
+
+Sun: 0°58'29'' (Direct, cca 0.9889x avg speed)

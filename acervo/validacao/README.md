@@ -25,3 +25,5 @@ Os PDFs foram compilados em etapas distintas do projeto. O teste de seleção us
 O [lote de Sol nas casas 3 e 4](sol-casas-3-e-4/) registra 24 testes de seleção solar e a regressão dos 15 mapas em modo estrito após a ampliação da biblioteca.
 
 O [lote de Sol nas casas 2 e 5](sol-casas-2-e-5/) acrescenta 24 casos de seleção solar. Os 15 mapas da auditoria voltaram a passar em modo estrito com as mesmas leituras.
+
+O [lote de Sol nas casas 6 e 7](sol-casas-6-e-7/) reúne 24 casos de seleção solar. Os 15 mapas da auditoria preservaram as leituras em modo estrito.
