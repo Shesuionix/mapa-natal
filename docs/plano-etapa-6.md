@@ -1,5 +1,7 @@
 # Plano de execução da etapa 6
 
+A [fila de redação](geracao-editorial/) registra as 20.873 combinações demonstradas que ainda precisam de texto próprio e as instruções para o modelo de redação. A contagem histórica abaixo pertence à auditoria anterior.
+
 A etapa 6 prepara e valida um texto próprio para cada combinação válida no contrato de produção. O motor seleciona as leituras de forma determinística, com rastreabilidade para a posição, a casa ou o aspecto que sustenta cada texto. A composição serve às prévias de desenvolvimento. A revisão de apresentação e layout começa após o fechamento editorial.
 
 ## Linha de base
