@@ -457,6 +457,18 @@ local position_library = {
   ["Chiron|Capricorn|2|false"] = 43,
   ["Fortune|Virgo|10|false"] = 44,
   ["Vertex|Aries|5|false"] = 45,
+  ["Chiron|Aquarius|10|false"] = 469,
+  ["Chiron|Aquarius|10|true"] = 470,
+  ["Chiron|Aquarius|11|false"] = 471,
+  ["Chiron|Aquarius|11|true"] = 472,
+  ["Chiron|Aquarius|12|false"] = 473,
+  ["Chiron|Aquarius|12|true"] = 474,
+  ["Chiron|Aquarius|1|false"] = 475,
+  ["Chiron|Aquarius|1|true"] = 476,
+  ["Chiron|Aquarius|2|false"] = 477,
+  ["Chiron|Aquarius|2|true"] = 478,
+  ["Chiron|Aquarius|3|false"] = 479,
+  ["Chiron|Aquarius|3|true"] = 480,
 }
 
 local axis_pairs = {
