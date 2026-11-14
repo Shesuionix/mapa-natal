@@ -1,0 +1,60 @@
+Sun in Aquarius 3°21', in 6th House
+Moon in Capricorn 11°51', in 5th House
+Mercury in Capricorn 9°55', in 5th House
+Venus in Sagittarius 18°18', in 4th House
+Mars in Sagittarius 20°05', in 5th House
+Jupiter in Gemini 22°13', Retrograde, in 11th House
+Saturn in Leo 7°05', Retrograde, in 12th House
+Uranus in Virgo 26°54', Retrograde, in 2nd House
+Neptune in Scorpio 17°04', in 3rd House
+Pluto in Pisces 1°55', in 7th House
+North Node in Taurus 2°03', Retrograde, in 9th House
+Lilith in Taurus 17°54', in 9th House
+Chiron in Scorpio 23°19', in 4th House
+Fortune in Virgo 6°36', in 1st House
+Vertex in Aries 0°00', in 8th House
+ASC in Leo 15°06'
+MC in Taurus 20°02'
+
+1st House in Leo 15°06'
+2nd House in Virgo 16°30'
+3rd House in Libra 19°03'
+4th House in Scorpio 20°02'
+5th House in Sagittarius 18°35'
+6th House in Capricorn 16°12'
+7th House in Aquarius 15°06'
+8th House in Pisces 16°30'
+9th House in Aries 19°03'
+10th House in Taurus 20°02'
+11th House in Gemini 18°35'
+12th House in Cancer 16°12'
+
+Sun Opposition Saturn (Orb: 3°44', Applying)
+Sun Square North Node (Orb: 1°18', Separating)
+Sun Sextile Vertex (Orb: 3°21', Separating)
+Moon Conjunction Mercury (Orb: 1°56', Separating)
+Moon Sextile Neptune (Orb: 5°13', Applying)
+Moon Trine Fortune (Orb: 5°15', Applying)
+Mercury Trine Fortune (Orb: 3°19', Applying)
+Venus Conjunction Mars (Orb: 1°47', Applying)
+Venus Opposition Jupiter (Orb: 3°55', Applying)
+Mars Opposition Jupiter (Orb: 2°08', Applying)
+Jupiter Square Uranus (Orb: 4°41', Separating)
+Saturn Square North Node (Orb: 5°02', Applying)
+Uranus Sextile Chiron (Orb: 3°35', Applying)
+Uranus Opposition Vertex (Orb: 3°06', Separating)
+Neptune Opposition Lilith (Orb: 0°50', Separating)
+Neptune Square ASC (Orb: 1°58', Applying)
+Neptune Square DSC (Orb: 1°58', Applying)
+Neptune Opposition MC (Orb: 2°58', Separating)
+Neptune Conjunction IC (Orb: 2°58', Separating)
+Pluto Sextile North Node (Orb: 0°08', Applying)
+Pluto Opposition Fortune (Orb: 4°41', Separating)
+North Node Trine Fortune (Orb: 4°33', Separating)
+Lilith Opposition Chiron (Orb: 5°25', Applying)
+Lilith Square ASC (Orb: 2°48', Applying)
+Lilith Square DSC (Orb: 2°48', Applying)
+Lilith Conjunction MC (Orb: 2°08', Separating)
+Lilith Opposition IC (Orb: 2°08', Separating)
+
+Sun: 1°01'01'' (Direct, cca 1.0318x avg speed)
