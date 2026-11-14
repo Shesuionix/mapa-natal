@@ -181,7 +181,7 @@ def chart_for_validation(jd, lat, lon, system):
     return cusps, planets, locations
 
 
-def validation_input(jd, lat, lon, system, expected_sun):
+def validation_input(jd, lat, lon, system, expected_position):
     cusps, planets, locations = chart_for_validation(jd, lat, lon, system)
     _, _, before = chart_for_validation(jd - 1 / 1440, lat, lon, system)
     _, _, after = chart_for_validation(jd + 1 / 1440, lat, lon, system)
@@ -197,8 +197,8 @@ def validation_input(jd, lat, lon, system, expected_sun):
         value = minutes[name]
         house = next(index + 1 for index, cusp in enumerate(cusp_minutes)
                      if (value - cusp) % 21600 < (cusp_minutes[(index + 1) % 12] - cusp) % 21600)
-        if name == "Sun" and (name, SIGNS[value // 1800], house, str(speed < 0).lower()) != expected_sun:
-            raise ValueError(f"Posição solar divergente: {expected_sun}")
+        if name == expected_position[0] and (name, SIGNS[value // 1800], house, str(speed < 0).lower()) != expected_position:
+            raise ValueError(f"Posição de referência divergente: {expected_position}")
         marker = ", Retrograde" if speed < 0 else ""
         suffix = HOUSE_SUFFIXES.get(house, "th")
         positions.append(f"{name} in {location(value)}{marker}, in {house}{suffix} House")
