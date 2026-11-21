@@ -21168,3 +21168,291 @@ posicoes	Vertex|Gemini|6|false	2451545.0;-66;-123;C
 posicoes	Vertex|Gemini|7|false	2451545.0;45;-154;C
 posicoes	Vertex|Sagittarius|6|false	2451545.0;44;70;C
 posicoes	Vertex|Sagittarius|7|false	2451545.0;-66;38;C
+estacionarias	Lilith|Aquarius|10|stationary	2380551.8395039365;0;-174;P
+estacionarias	Lilith|Aquarius|11|stationary	2380551.8395039365;0;-180;P
+estacionarias	Lilith|Aquarius|12|stationary	2380551.8395039365;0;126;P
+estacionarias	Lilith|Aquarius|1|stationary	2380551.8395039365;0;96;P
+estacionarias	Lilith|Aquarius|2|stationary	2380551.8395039365;0;66;P
+estacionarias	Lilith|Aquarius|3|stationary	2380551.8395039365;0;36;P
+estacionarias	Lilith|Aquarius|4|stationary	2380551.8395039365;0;6;P
+estacionarias	Lilith|Aquarius|5|stationary	2380551.8395039365;0;-24;P
+estacionarias	Lilith|Aquarius|6|stationary	2380551.8395039365;0;-54;P
+estacionarias	Lilith|Aquarius|7|stationary	2380551.8395039365;0;-84;P
+estacionarias	Lilith|Aquarius|8|stationary	2380551.8395039365;0;-114;P
+estacionarias	Lilith|Aquarius|9|stationary	2380551.8395039365;0;-144;P
+estacionarias	Lilith|Aries|10|stationary	2378571.9530480355;0;18;P
+estacionarias	Lilith|Aries|11|stationary	2378571.9530480355;0;-12;P
+estacionarias	Lilith|Aries|12|stationary	2378571.9530480355;0;-42;P
+estacionarias	Lilith|Aries|1|stationary	2378571.9530480355;0;-72;P
+estacionarias	Lilith|Aries|2|stationary	2378571.9530480355;0;-102;P
+estacionarias	Lilith|Aries|3|stationary	2378571.9530480355;0;-132;P
+estacionarias	Lilith|Aries|4|stationary	2378571.9530480355;0;-162;P
+estacionarias	Lilith|Aries|5|stationary	2378571.9530480355;0;-180;P
+estacionarias	Lilith|Aries|6|stationary	2378571.9530480355;0;138;P
+estacionarias	Lilith|Aries|7|stationary	2378571.9530480355;0;108;P
+estacionarias	Lilith|Aries|8|stationary	2378571.9530480355;0;78;P
+estacionarias	Lilith|Aries|9|stationary	2378571.9530480355;0;48;P
+estacionarias	Lilith|Cancer|10|stationary	2378676.623465523;0;100;P
+estacionarias	Lilith|Cancer|11|stationary	2378676.623465523;0;70;P
+estacionarias	Lilith|Cancer|12|stationary	2378676.623465523;0;40;P
+estacionarias	Lilith|Cancer|1|stationary	2378676.623465523;0;10;P
+estacionarias	Lilith|Cancer|2|stationary	2378676.623465523;0;-20;P
+estacionarias	Lilith|Cancer|3|stationary	2378676.623465523;0;-50;P
+estacionarias	Lilith|Cancer|4|stationary	2378676.623465523;0;-80;P
+estacionarias	Lilith|Cancer|5|stationary	2378676.623465523;0;-110;P
+estacionarias	Lilith|Cancer|6|stationary	2378676.623465523;0;-140;P
+estacionarias	Lilith|Cancer|7|stationary	2378676.623465523;0;-170;P
+estacionarias	Lilith|Cancer|8|stationary	2378676.623465523;0;-180;P
+estacionarias	Lilith|Cancer|9|stationary	2378676.623465523;0;130;P
+estacionarias	Lilith|Capricorn|10|stationary	2380330.371416107;0;-172;P
+estacionarias	Lilith|Capricorn|11|stationary	2380330.371416107;0;-180;P
+estacionarias	Lilith|Capricorn|12|stationary	2380330.371416107;0;128;P
+estacionarias	Lilith|Capricorn|1|stationary	2380330.371416107;0;98;P
+estacionarias	Lilith|Capricorn|2|stationary	2380330.371416107;0;68;P
+estacionarias	Lilith|Capricorn|3|stationary	2380330.371416107;0;38;P
+estacionarias	Lilith|Capricorn|4|stationary	2380330.371416107;0;8;P
+estacionarias	Lilith|Capricorn|5|stationary	2380330.371416107;0;-22;P
+estacionarias	Lilith|Capricorn|6|stationary	2380330.371416107;0;-52;P
+estacionarias	Lilith|Capricorn|7|stationary	2380330.371416107;0;-82;P
+estacionarias	Lilith|Capricorn|8|stationary	2380330.371416107;0;-112;P
+estacionarias	Lilith|Capricorn|9|stationary	2380330.371416107;0;-142;P
+estacionarias	Lilith|Gemini|10|stationary	2378515.068541199;0;78;P
+estacionarias	Lilith|Gemini|11|stationary	2378515.068541199;0;48;P
+estacionarias	Lilith|Gemini|12|stationary	2378515.068541199;0;18;P
+estacionarias	Lilith|Gemini|1|stationary	2378515.068541199;0;-12;P
+estacionarias	Lilith|Gemini|2|stationary	2378515.068541199;0;-42;P
+estacionarias	Lilith|Gemini|3|stationary	2378515.068541199;0;-72;P
+estacionarias	Lilith|Gemini|4|stationary	2378515.068541199;0;-102;P
+estacionarias	Lilith|Gemini|5|stationary	2378515.068541199;0;-132;P
+estacionarias	Lilith|Gemini|6|stationary	2378515.068541199;0;-162;P
+estacionarias	Lilith|Gemini|7|stationary	2378515.068541199;0;-180;P
+estacionarias	Lilith|Gemini|8|stationary	2378515.068541199;0;138;P
+estacionarias	Lilith|Gemini|9|stationary	2378515.068541199;0;108;P
+estacionarias	Lilith|Leo|10|stationary	2379060.2838352844;0;-118;P
+estacionarias	Lilith|Leo|11|stationary	2379060.2838352844;0;-148;P
+estacionarias	Lilith|Leo|12|stationary	2379060.2838352844;0;-178;P
+estacionarias	Lilith|Leo|1|stationary	2379060.2838352844;0;-180;P
+estacionarias	Lilith|Leo|2|stationary	2379060.2838352844;0;122;P
+estacionarias	Lilith|Leo|3|stationary	2379060.2838352844;0;92;P
+estacionarias	Lilith|Leo|4|stationary	2379060.2838352844;0;62;P
+estacionarias	Lilith|Leo|5|stationary	2379060.2838352844;0;32;P
+estacionarias	Lilith|Leo|6|stationary	2379060.2838352844;0;2;P
+estacionarias	Lilith|Leo|7|stationary	2379060.2838352844;0;-28;P
+estacionarias	Lilith|Leo|8|stationary	2379060.2838352844;0;-58;P
+estacionarias	Lilith|Leo|9|stationary	2379060.2838352844;0;-88;P
+estacionarias	Lilith|Libra|10|stationary	2379503.285525088;0;-140;P
+estacionarias	Lilith|Libra|11|stationary	2379503.285525088;0;-170;P
+estacionarias	Lilith|Libra|12|stationary	2379503.285525088;0;-180;P
+estacionarias	Lilith|Libra|1|stationary	2379503.285525088;0;130;P
+estacionarias	Lilith|Libra|2|stationary	2379503.285525088;0;100;P
+estacionarias	Lilith|Libra|3|stationary	2379503.285525088;0;70;P
+estacionarias	Lilith|Libra|4|stationary	2379503.285525088;0;40;P
+estacionarias	Lilith|Libra|5|stationary	2379503.285525088;0;10;P
+estacionarias	Lilith|Libra|6|stationary	2379503.285525088;0;-20;P
+estacionarias	Lilith|Libra|7|stationary	2379503.285525088;0;-50;P
+estacionarias	Lilith|Libra|8|stationary	2379503.285525088;0;-80;P
+estacionarias	Lilith|Libra|9|stationary	2379503.285525088;0;-110;P
+estacionarias	Lilith|Pisces|10|stationary	2380935.5088522593;0;-34;P
+estacionarias	Lilith|Pisces|11|stationary	2380935.5088522593;0;-64;P
+estacionarias	Lilith|Pisces|12|stationary	2380935.5088522593;0;-94;P
+estacionarias	Lilith|Pisces|1|stationary	2380935.5088522593;0;-124;P
+estacionarias	Lilith|Pisces|2|stationary	2380935.5088522593;0;-154;P
+estacionarias	Lilith|Pisces|3|stationary	2380935.5088522593;0;-180;P
+estacionarias	Lilith|Pisces|4|stationary	2380935.5088522593;0;146;P
+estacionarias	Lilith|Pisces|5|stationary	2380935.5088522593;0;116;P
+estacionarias	Lilith|Pisces|6|stationary	2380935.5088522593;0;86;P
+estacionarias	Lilith|Pisces|7|stationary	2380935.5088522593;0;56;P
+estacionarias	Lilith|Pisces|8|stationary	2380935.5088522593;0;26;P
+estacionarias	Lilith|Pisces|9|stationary	2380935.5088522593;0;-4;P
+estacionarias	Lilith|Sagittarius|10|stationary	2380108.913227043;0;-180;P
+estacionarias	Lilith|Sagittarius|11|stationary	2380108.913227043;0;150;P
+estacionarias	Lilith|Sagittarius|12|stationary	2380108.913227043;0;120;P
+estacionarias	Lilith|Sagittarius|1|stationary	2380108.913227043;0;90;P
+estacionarias	Lilith|Sagittarius|2|stationary	2380108.913227043;0;60;P
+estacionarias	Lilith|Sagittarius|3|stationary	2380108.913227043;0;30;P
+estacionarias	Lilith|Sagittarius|4|stationary	2380108.913227043;0;0;P
+estacionarias	Lilith|Sagittarius|5|stationary	2380108.913227043;0;-30;P
+estacionarias	Lilith|Sagittarius|6|stationary	2380108.913227043;0;-60;P
+estacionarias	Lilith|Sagittarius|7|stationary	2380108.913227043;0;-90;P
+estacionarias	Lilith|Sagittarius|8|stationary	2380108.913227043;0;-120;P
+estacionarias	Lilith|Sagittarius|9|stationary	2380108.913227043;0;-150;P
+estacionarias	Lilith|Scorpio|10|stationary	2379887.012509779;0;-28;P
+estacionarias	Lilith|Scorpio|11|stationary	2379887.012509779;0;-58;P
+estacionarias	Lilith|Scorpio|12|stationary	2379887.012509779;0;-88;P
+estacionarias	Lilith|Scorpio|1|stationary	2379887.012509779;0;-118;P
+estacionarias	Lilith|Scorpio|2|stationary	2379887.012509779;0;-148;P
+estacionarias	Lilith|Scorpio|3|stationary	2379887.012509779;0;-178;P
+estacionarias	Lilith|Scorpio|4|stationary	2379887.012509779;0;-180;P
+estacionarias	Lilith|Scorpio|5|stationary	2379887.012509779;0;122;P
+estacionarias	Lilith|Scorpio|6|stationary	2379887.012509779;0;92;P
+estacionarias	Lilith|Scorpio|7|stationary	2379887.012509779;0;62;P
+estacionarias	Lilith|Scorpio|8|stationary	2379887.012509779;0;32;P
+estacionarias	Lilith|Scorpio|9|stationary	2379887.012509779;0;2;P
+estacionarias	Lilith|Taurus|10|stationary	2378505.7163612917;0;-180;P
+estacionarias	Lilith|Taurus|11|stationary	2378505.7163612917;0;150;P
+estacionarias	Lilith|Taurus|12|stationary	2378505.7163612917;0;120;P
+estacionarias	Lilith|Taurus|1|stationary	2378505.7163612917;0;90;P
+estacionarias	Lilith|Taurus|2|stationary	2378505.7163612917;0;60;P
+estacionarias	Lilith|Taurus|3|stationary	2378505.7163612917;0;30;P
+estacionarias	Lilith|Taurus|4|stationary	2378505.7163612917;0;0;P
+estacionarias	Lilith|Taurus|5|stationary	2378505.7163612917;0;-30;P
+estacionarias	Lilith|Taurus|6|stationary	2378505.7163612917;0;-60;P
+estacionarias	Lilith|Taurus|7|stationary	2378505.7163612917;0;-90;P
+estacionarias	Lilith|Taurus|8|stationary	2378505.7163612917;0;-120;P
+estacionarias	Lilith|Taurus|9|stationary	2378505.7163612917;0;-150;P
+estacionarias	Lilith|Virgo|10|stationary	2379282.073683955;0;130;P
+estacionarias	Lilith|Virgo|11|stationary	2379282.073683955;0;100;P
+estacionarias	Lilith|Virgo|12|stationary	2379282.073683955;0;70;P
+estacionarias	Lilith|Virgo|1|stationary	2379282.073683955;0;40;P
+estacionarias	Lilith|Virgo|2|stationary	2379282.073683955;0;10;P
+estacionarias	Lilith|Virgo|3|stationary	2379282.073683955;0;-20;P
+estacionarias	Lilith|Virgo|4|stationary	2379282.073683955;0;-50;P
+estacionarias	Lilith|Virgo|5|stationary	2379282.073683955;0;-80;P
+estacionarias	Lilith|Virgo|6|stationary	2379282.073683955;0;-110;P
+estacionarias	Lilith|Virgo|7|stationary	2379282.073683955;0;-140;P
+estacionarias	Lilith|Virgo|8|stationary	2379282.073683955;0;-170;P
+estacionarias	Lilith|Virgo|9|stationary	2379282.073683955;0;-180;P
+estacionarias	North Node|Aquarius|10|stationary	2379709.1907567643;0;-162;P
+estacionarias	North Node|Aquarius|11|stationary	2379709.1907567643;0;-180;P
+estacionarias	North Node|Aquarius|12|stationary	2379709.1907567643;0;138;P
+estacionarias	North Node|Aquarius|1|stationary	2379709.1907567643;0;108;P
+estacionarias	North Node|Aquarius|2|stationary	2379709.1907567643;0;78;P
+estacionarias	North Node|Aquarius|3|stationary	2379709.1907567643;0;48;P
+estacionarias	North Node|Aquarius|4|stationary	2379709.1907567643;0;18;P
+estacionarias	North Node|Aquarius|5|stationary	2379709.1907567643;0;-12;P
+estacionarias	North Node|Aquarius|6|stationary	2379709.1907567643;0;-42;P
+estacionarias	North Node|Aquarius|7|stationary	2379709.1907567643;0;-72;P
+estacionarias	North Node|Aquarius|8|stationary	2379709.1907567643;0;-102;P
+estacionarias	North Node|Aquarius|9|stationary	2379709.1907567643;0;-132;P
+estacionarias	North Node|Aries|10|stationary	2378541.157156352;0;-22;P
+estacionarias	North Node|Aries|11|stationary	2378541.157156352;0;-52;P
+estacionarias	North Node|Aries|12|stationary	2378541.157156352;0;-82;P
+estacionarias	North Node|Aries|1|stationary	2378541.157156352;0;-112;P
+estacionarias	North Node|Aries|2|stationary	2378541.157156352;0;-142;P
+estacionarias	North Node|Aries|3|stationary	2378541.157156352;0;-172;P
+estacionarias	North Node|Aries|4|stationary	2378541.157156352;0;-180;P
+estacionarias	North Node|Aries|5|stationary	2378541.157156352;0;128;P
+estacionarias	North Node|Aries|6|stationary	2378541.157156352;0;98;P
+estacionarias	North Node|Aries|7|stationary	2378541.157156352;0;68;P
+estacionarias	North Node|Aries|8|stationary	2378541.157156352;0;38;P
+estacionarias	North Node|Aries|9|stationary	2378541.157156352;0;8;P
+estacionarias	North Node|Cancer|10|stationary	2383681.573978004;0;-104;P
+estacionarias	North Node|Cancer|11|stationary	2383681.573978004;0;-134;P
+estacionarias	North Node|Cancer|12|stationary	2383681.573978004;0;-164;P
+estacionarias	North Node|Cancer|1|stationary	2383681.573978004;0;-180;P
+estacionarias	North Node|Cancer|2|stationary	2383681.573978004;0;136;P
+estacionarias	North Node|Cancer|3|stationary	2383681.573978004;0;106;P
+estacionarias	North Node|Cancer|4|stationary	2383681.573978004;0;76;P
+estacionarias	North Node|Cancer|5|stationary	2383681.573978004;0;46;P
+estacionarias	North Node|Cancer|6|stationary	2383681.573978004;0;16;P
+estacionarias	North Node|Cancer|7|stationary	2383681.573978004;0;-14;P
+estacionarias	North Node|Cancer|8|stationary	2383681.573978004;0;-44;P
+estacionarias	North Node|Cancer|9|stationary	2383681.573978004;0;-74;P
+estacionarias	North Node|Capricorn|10|stationary	2380269.534818097;0;-150;P
+estacionarias	North Node|Capricorn|11|stationary	2380269.534818097;0;-180;P
+estacionarias	North Node|Capricorn|12|stationary	2380269.534818097;0;150;P
+estacionarias	North Node|Capricorn|1|stationary	2380269.534818097;0;120;P
+estacionarias	North Node|Capricorn|2|stationary	2380269.534818097;0;90;P
+estacionarias	North Node|Capricorn|3|stationary	2380269.534818097;0;60;P
+estacionarias	North Node|Capricorn|4|stationary	2380269.534818097;0;30;P
+estacionarias	North Node|Capricorn|5|stationary	2380269.534818097;0;0;P
+estacionarias	North Node|Capricorn|6|stationary	2380269.534818097;0;-30;P
+estacionarias	North Node|Capricorn|7|stationary	2380269.534818097;0;-60;P
+estacionarias	North Node|Capricorn|8|stationary	2380269.534818097;0;-90;P
+estacionarias	North Node|Capricorn|9|stationary	2380269.534818097;0;-120;P
+estacionarias	North Node|Gemini|10|stationary	2384255.193664605;0;-180;P
+estacionarias	North Node|Gemini|11|stationary	2384255.193664605;0;122;P
+estacionarias	North Node|Gemini|12|stationary	2384255.193664605;0;92;P
+estacionarias	North Node|Gemini|1|stationary	2384255.193664605;0;62;P
+estacionarias	North Node|Gemini|2|stationary	2384255.193664605;0;32;P
+estacionarias	North Node|Gemini|3|stationary	2384255.193664605;0;2;P
+estacionarias	North Node|Gemini|4|stationary	2384255.193664605;0;-28;P
+estacionarias	North Node|Gemini|5|stationary	2384255.193664605;0;-58;P
+estacionarias	North Node|Gemini|6|stationary	2384255.193664605;0;-88;P
+estacionarias	North Node|Gemini|7|stationary	2384255.193664605;0;-118;P
+estacionarias	North Node|Gemini|8|stationary	2384255.193664605;0;-148;P
+estacionarias	North Node|Gemini|9|stationary	2384255.193664605;0;-178;P
+estacionarias	North Node|Leo|10|stationary	2383071.5775579205;0;-180;P
+estacionarias	North Node|Leo|11|stationary	2383071.5775579205;0;134;P
+estacionarias	North Node|Leo|12|stationary	2383071.5775579205;0;104;P
+estacionarias	North Node|Leo|1|stationary	2383071.5775579205;0;74;P
+estacionarias	North Node|Leo|2|stationary	2383071.5775579205;0;44;P
+estacionarias	North Node|Leo|3|stationary	2383071.5775579205;0;14;P
+estacionarias	North Node|Leo|4|stationary	2383071.5775579205;0;-16;P
+estacionarias	North Node|Leo|5|stationary	2383071.5775579205;0;-46;P
+estacionarias	North Node|Leo|6|stationary	2383071.5775579205;0;-76;P
+estacionarias	North Node|Leo|7|stationary	2383071.5775579205;0;-106;P
+estacionarias	North Node|Leo|8|stationary	2383071.5775579205;0;-136;P
+estacionarias	North Node|Leo|9|stationary	2383071.5775579205;0;-166;P
+estacionarias	North Node|Libra|10|stationary	2381996.6583512565;0;-180;P
+estacionarias	North Node|Libra|11|stationary	2381996.6583512565;0;140;P
+estacionarias	North Node|Libra|12|stationary	2381996.6583512565;0;110;P
+estacionarias	North Node|Libra|1|stationary	2381996.6583512565;0;80;P
+estacionarias	North Node|Libra|2|stationary	2381996.6583512565;0;50;P
+estacionarias	North Node|Libra|3|stationary	2381996.6583512565;0;20;P
+estacionarias	North Node|Libra|4|stationary	2381996.6583512565;0;-10;P
+estacionarias	North Node|Libra|5|stationary	2381996.6583512565;0;-40;P
+estacionarias	North Node|Libra|6|stationary	2381996.6583512565;0;-70;P
+estacionarias	North Node|Libra|7|stationary	2381996.6583512565;0;-100;P
+estacionarias	North Node|Libra|8|stationary	2381996.6583512565;0;-130;P
+estacionarias	North Node|Libra|9|stationary	2381996.6583512565;0;-160;P
+estacionarias	North Node|Pisces|10|stationary	2379112.9245173754;0;-170;P
+estacionarias	North Node|Pisces|11|stationary	2379112.9245173754;0;-180;P
+estacionarias	North Node|Pisces|12|stationary	2379112.9245173754;0;130;P
+estacionarias	North Node|Pisces|1|stationary	2379112.9245173754;0;100;P
+estacionarias	North Node|Pisces|2|stationary	2379112.9245173754;0;70;P
+estacionarias	North Node|Pisces|3|stationary	2379112.9245173754;0;40;P
+estacionarias	North Node|Pisces|4|stationary	2379112.9245173754;0;10;P
+estacionarias	North Node|Pisces|5|stationary	2379112.9245173754;0;-20;P
+estacionarias	North Node|Pisces|6|stationary	2379112.9245173754;0;-50;P
+estacionarias	North Node|Pisces|7|stationary	2379112.9245173754;0;-80;P
+estacionarias	North Node|Pisces|8|stationary	2379112.9245173754;0;-110;P
+estacionarias	North Node|Pisces|9|stationary	2379112.9245173754;0;-140;P
+estacionarias	North Node|Sagittarius|10|stationary	2380799.84133339;0;-92;P
+estacionarias	North Node|Sagittarius|11|stationary	2380799.84133339;0;-122;P
+estacionarias	North Node|Sagittarius|12|stationary	2380799.84133339;0;-152;P
+estacionarias	North Node|Sagittarius|1|stationary	2380799.84133339;0;-180;P
+estacionarias	North Node|Sagittarius|2|stationary	2380799.84133339;0;148;P
+estacionarias	North Node|Sagittarius|3|stationary	2380799.84133339;0;118;P
+estacionarias	North Node|Sagittarius|4|stationary	2380799.84133339;0;88;P
+estacionarias	North Node|Sagittarius|5|stationary	2380799.84133339;0;58;P
+estacionarias	North Node|Sagittarius|6|stationary	2380799.84133339;0;28;P
+estacionarias	North Node|Sagittarius|7|stationary	2380799.84133339;0;-2;P
+estacionarias	North Node|Sagittarius|8|stationary	2380799.84133339;0;-32;P
+estacionarias	North Node|Sagittarius|9|stationary	2380799.84133339;0;-62;P
+estacionarias	North Node|Scorpio|10|stationary	2381422.3682436096;0;-180;P
+estacionarias	North Node|Scorpio|11|stationary	2381422.3682436096;0;122;P
+estacionarias	North Node|Scorpio|12|stationary	2381422.3682436096;0;92;P
+estacionarias	North Node|Scorpio|1|stationary	2381422.3682436096;0;62;P
+estacionarias	North Node|Scorpio|2|stationary	2381422.3682436096;0;32;P
+estacionarias	North Node|Scorpio|3|stationary	2381422.3682436096;0;2;P
+estacionarias	North Node|Scorpio|4|stationary	2381422.3682436096;0;-28;P
+estacionarias	North Node|Scorpio|5|stationary	2381422.3682436096;0;-58;P
+estacionarias	North Node|Scorpio|6|stationary	2381422.3682436096;0;-88;P
+estacionarias	North Node|Scorpio|7|stationary	2381422.3682436096;0;-118;P
+estacionarias	North Node|Scorpio|8|stationary	2381422.3682436096;0;-148;P
+estacionarias	North Node|Scorpio|9|stationary	2381422.3682436096;0;-178;P
+estacionarias	North Node|Taurus|10|stationary	2378498.448407173;0;-80;P
+estacionarias	North Node|Taurus|11|stationary	2378498.448407173;0;-110;P
+estacionarias	North Node|Taurus|12|stationary	2378498.448407173;0;-140;P
+estacionarias	North Node|Taurus|1|stationary	2378498.448407173;0;-170;P
+estacionarias	North Node|Taurus|2|stationary	2378498.448407173;0;-180;P
+estacionarias	North Node|Taurus|3|stationary	2378498.448407173;0;130;P
+estacionarias	North Node|Taurus|4|stationary	2378498.448407173;0;100;P
+estacionarias	North Node|Taurus|5|stationary	2378498.448407173;0;70;P
+estacionarias	North Node|Taurus|6|stationary	2378498.448407173;0;40;P
+estacionarias	North Node|Taurus|7|stationary	2378498.448407173;0;10;P
+estacionarias	North Node|Taurus|8|stationary	2378498.448407173;0;-20;P
+estacionarias	North Node|Taurus|9|stationary	2378498.448407173;0;-50;P
+estacionarias	North Node|Virgo|10|stationary	2382528.0516776033;0;-164;P
+estacionarias	North Node|Virgo|11|stationary	2382528.0516776033;0;-180;P
+estacionarias	North Node|Virgo|12|stationary	2382528.0516776033;0;136;P
+estacionarias	North Node|Virgo|1|stationary	2382528.0516776033;0;106;P
+estacionarias	North Node|Virgo|2|stationary	2382528.0516776033;0;76;P
+estacionarias	North Node|Virgo|3|stationary	2382528.0516776033;0;46;P
+estacionarias	North Node|Virgo|4|stationary	2382528.0516776033;0;16;P
+estacionarias	North Node|Virgo|5|stationary	2382528.0516776033;0;-14;P
+estacionarias	North Node|Virgo|6|stationary	2382528.0516776033;0;-44;P
+estacionarias	North Node|Virgo|7|stationary	2382528.0516776033;0;-74;P
+estacionarias	North Node|Virgo|8|stationary	2382528.0516776033;0;-104;P
+estacionarias	North Node|Virgo|9|stationary	2382528.0516776033;0;-134;P

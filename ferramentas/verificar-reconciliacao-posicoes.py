@@ -11,6 +11,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('efemerides', type=Path)
     parser.add_argument('--deps', type=Path, help='Diretorio opcional do modulo swisseph')
+    parser.add_argument('--arquivo', type=Path, help='TSV de proveniencia alternativo')
     args = parser.parse_args()
     if args.deps:
         sys.path.insert(0, str(args.deps.resolve()))
@@ -23,7 +24,7 @@ def main():
     for filename, digest in generator.EPHEMERIS_FILES.items():
         assert hashlib.sha256((args.efemerides/filename).read_bytes()).hexdigest() == digest, filename
     swe.set_ephe_path(str(args.efemerides.resolve()))
-    path = repo/'docs/geracao-editorial/reconciliacao-296-posicoes.tsv'
+    path = args.arquivo or repo/'docs/geracao-editorial/reconciliacao-296-posicoes.tsv'
     with path.open(encoding='utf-8', newline='') as stream:
         rows = list(csv.DictReader(stream, delimiter='\t'))
     for row in rows:
@@ -41,8 +42,17 @@ def main():
         cusp_minutes = [round(c*60) % 21600 for c in cusps]
         actual_house = next(i+1 for i, c in enumerate(cusp_minutes)
                             if (arc-c) % 21600 < (cusp_minutes[(i+1) % 12]-c) % 21600)
-        actual = f'{body}|{generator.SIGNS[arc//1800]}|{actual_house}|{str(speed < 0).lower()}'
-        assert actual == row['chave'] == row['chave_recalculada'], (row['chave'], actual)
+        if motion == 'stationary':
+            before = generator.longitude_and_speed(jd-.02, bodies[0])[1]
+            after = generator.longitude_and_speed(jd+.02, bodies[0])[1]
+            assert abs(speed) < 1e-6 and before*after < 0, row['chave']
+            actual_motion = 'stationary'
+        else:
+            actual_motion = str(speed < 0).lower()
+        actual = f'{body}|{generator.SIGNS[arc//1800]}|{actual_house}|{actual_motion}'
+        assert actual == row['chave'], (row['chave'], actual)
+        if 'chave_recalculada' in row:
+            assert actual == row['chave_recalculada']
     print(f'{len(rows)} evidencias recalculadas e conferidas')
 
 
