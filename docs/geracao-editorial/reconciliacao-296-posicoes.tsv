@@ -1,0 +1,297 @@
+chave	variante	evidencia	chave_recalculada	longitude_graus	velocidade_graus_dia	casa_sem_arredondar
+Lilith|Aquarius|10|true	osculante	2380552.0;0;135;P	Lilith|Aquarius|10|true	301.3398266501869	-0.22952144500461413	10
+Lilith|Aquarius|11|true	osculante	2380552.0;0;105;P	Lilith|Aquarius|11|true	301.3398266501869	-0.22952144500461413	11
+Lilith|Aquarius|12|true	osculante	2380552.0;0;75;P	Lilith|Aquarius|12|true	301.3398266501869	-0.22952144500461413	12
+Lilith|Aquarius|1|true	osculante	2380552.0;0;45;P	Lilith|Aquarius|1|true	301.3398266501869	-0.22952144500461413	1
+Lilith|Aquarius|2|true	osculante	2380552.0;0;15;P	Lilith|Aquarius|2|true	301.3398266501869	-0.22952144500461413	2
+Lilith|Aquarius|3|true	osculante	2380552.0;0;-15;P	Lilith|Aquarius|3|true	301.3398266501869	-0.22952144500461413	3
+Lilith|Aquarius|4|true	osculante	2380552.0;0;-45;P	Lilith|Aquarius|4|true	301.3398266501869	-0.22952144500461413	4
+Lilith|Aquarius|5|true	osculante	2380552.0;0;-75;P	Lilith|Aquarius|5|true	301.3398266501869	-0.22952144500461413	5
+Lilith|Aquarius|6|true	osculante	2380552.0;0;-105;P	Lilith|Aquarius|6|true	301.3398266501869	-0.22952144500461413	6
+Lilith|Aquarius|7|true	osculante	2380552.0;0;-135;P	Lilith|Aquarius|7|true	301.3398266501869	-0.22952144500461413	7
+Lilith|Aquarius|8|true	osculante	2380552.0;0;-165;P	Lilith|Aquarius|8|true	301.3398266501869	-0.22952144500461413	8
+Lilith|Aquarius|9|true	osculante	2380552.0;0;-180;P	Lilith|Aquarius|9|true	301.3398266501869	-0.22952144500461413	9
+Lilith|Aries|10|true	osculante	2378569.0;0;15;P	Lilith|Aries|10|true	29.493232157421623	-1.4088869567958984	10
+Lilith|Aries|11|true	osculante	2378569.0;0;-15;P	Lilith|Aries|11|true	29.493232157421623	-1.4088869567958984	11
+Lilith|Aries|12|true	osculante	2378569.0;0;-45;P	Lilith|Aries|12|true	29.493232157421623	-1.4088869567958984	12
+Lilith|Aries|1|true	osculante	2378569.0;0;-75;P	Lilith|Aries|1|true	29.493232157421623	-1.4088869567958984	1
+Lilith|Aries|2|true	osculante	2378569.0;0;-105;P	Lilith|Aries|2|true	29.493232157421623	-1.4088869567958984	2
+Lilith|Aries|3|true	osculante	2378569.0;0;-135;P	Lilith|Aries|3|true	29.493232157421623	-1.4088869567958984	3
+Lilith|Aries|4|true	osculante	2378569.0;0;-165;P	Lilith|Aries|4|true	29.493232157421623	-1.4088869567958984	4
+Lilith|Aries|5|true	osculante	2378569.0;0;-180;P	Lilith|Aries|5|true	29.493232157421623	-1.4088869567958984	5
+Lilith|Aries|6|true	osculante	2378569.0;0;135;P	Lilith|Aries|6|true	29.493232157421623	-1.4088869567958984	6
+Lilith|Aries|7|true	osculante	2378569.0;0;105;P	Lilith|Aries|7|true	29.493232157421623	-1.4088869567958984	7
+Lilith|Aries|8|true	osculante	2378569.0;0;75;P	Lilith|Aries|8|true	29.493232157421623	-1.4088869567958984	8
+Lilith|Aries|9|true	osculante	2378569.0;0;45;P	Lilith|Aries|9|true	29.493232157421623	-1.4088869567958984	9
+Lilith|Cancer|10|true	osculante	2378677.0;0;-30;P	Lilith|Cancer|10|true	90.5500142555154	-0.48424639507530226	10
+Lilith|Cancer|11|true	osculante	2378677.0;0;-60;P	Lilith|Cancer|11|true	90.5500142555154	-0.48424639507530226	11
+Lilith|Cancer|12|true	osculante	2378677.0;0;-90;P	Lilith|Cancer|12|true	90.5500142555154	-0.48424639507530226	12
+Lilith|Cancer|1|true	osculante	2378677.0;0;-120;P	Lilith|Cancer|1|true	90.5500142555154	-0.48424639507530226	1
+Lilith|Cancer|2|true	osculante	2378677.0;0;-150;P	Lilith|Cancer|2|true	90.5500142555154	-0.48424639507530226	2
+Lilith|Cancer|3|true	osculante	2378677.0;0;-180;P	Lilith|Cancer|3|true	90.5500142555154	-0.48424639507530226	3
+Lilith|Cancer|4|true	osculante	2378677.0;0;150;P	Lilith|Cancer|4|true	90.5500142555154	-0.48424639507530226	4
+Lilith|Cancer|5|true	osculante	2378677.0;0;120;P	Lilith|Cancer|5|true	90.5500142555154	-0.48424639507530226	5
+Lilith|Cancer|6|true	osculante	2378677.0;0;90;P	Lilith|Cancer|6|true	90.5500142555154	-0.48424639507530226	6
+Lilith|Cancer|7|true	osculante	2378677.0;0;60;P	Lilith|Cancer|7|true	90.5500142555154	-0.48424639507530226	7
+Lilith|Cancer|8|true	osculante	2378677.0;0;30;P	Lilith|Cancer|8|true	90.5500142555154	-0.48424639507530226	8
+Lilith|Cancer|9|true	osculante	2378677.0;0;0;P	Lilith|Cancer|9|true	90.5500142555154	-0.48424639507530226	9
+Lilith|Capricorn|10|true	osculante	2380331.0;0;-30;P	Lilith|Capricorn|10|true	278.346193447861	-0.8999641401559346	10
+Lilith|Capricorn|11|true	osculante	2380331.0;0;-60;P	Lilith|Capricorn|11|true	278.346193447861	-0.8999641401559346	11
+Lilith|Capricorn|12|true	osculante	2380331.0;0;-90;P	Lilith|Capricorn|12|true	278.346193447861	-0.8999641401559346	12
+Lilith|Capricorn|1|true	osculante	2380331.0;0;-120;P	Lilith|Capricorn|1|true	278.346193447861	-0.8999641401559346	1
+Lilith|Capricorn|2|true	osculante	2380331.0;0;-150;P	Lilith|Capricorn|2|true	278.346193447861	-0.8999641401559346	2
+Lilith|Capricorn|3|true	osculante	2380331.0;0;-180;P	Lilith|Capricorn|3|true	278.346193447861	-0.8999641401559346	3
+Lilith|Capricorn|4|true	osculante	2380331.0;0;150;P	Lilith|Capricorn|4|true	278.346193447861	-0.8999641401559346	4
+Lilith|Capricorn|5|true	osculante	2380331.0;0;120;P	Lilith|Capricorn|5|true	278.346193447861	-0.8999641401559346	5
+Lilith|Capricorn|6|true	osculante	2380331.0;0;90;P	Lilith|Capricorn|6|true	278.346193447861	-0.8999641401559346	6
+Lilith|Capricorn|7|true	osculante	2380331.0;0;60;P	Lilith|Capricorn|7|true	278.346193447861	-0.8999641401559346	7
+Lilith|Capricorn|8|true	osculante	2380331.0;0;30;P	Lilith|Capricorn|8|true	278.346193447861	-0.8999641401559346	8
+Lilith|Capricorn|9|true	osculante	2380331.0;0;0;P	Lilith|Capricorn|9|true	278.346193447861	-0.8999641401559346	9
+Lilith|Gemini|10|true	osculante	2378516.0;0;105;P	Lilith|Gemini|10|true	71.2819768625993	-0.44966773674091753	10
+Lilith|Gemini|11|true	osculante	2378516.0;0;75;P	Lilith|Gemini|11|true	71.2819768625993	-0.44966773674091753	11
+Lilith|Gemini|12|true	osculante	2378516.0;0;45;P	Lilith|Gemini|12|true	71.2819768625993	-0.44966773674091753	12
+Lilith|Gemini|1|true	osculante	2378516.0;0;15;P	Lilith|Gemini|1|true	71.2819768625993	-0.44966773674091753	1
+Lilith|Gemini|2|true	osculante	2378516.0;0;-15;P	Lilith|Gemini|2|true	71.2819768625993	-0.44966773674091753	2
+Lilith|Gemini|3|true	osculante	2378516.0;0;-45;P	Lilith|Gemini|3|true	71.2819768625993	-0.44966773674091753	3
+Lilith|Gemini|4|true	osculante	2378516.0;0;-75;P	Lilith|Gemini|4|true	71.2819768625993	-0.44966773674091753	4
+Lilith|Gemini|5|true	osculante	2378516.0;0;-105;P	Lilith|Gemini|5|true	71.2819768625993	-0.44966773674091753	5
+Lilith|Gemini|6|true	osculante	2378516.0;0;-135;P	Lilith|Gemini|6|true	71.2819768625993	-0.44966773674091753	6
+Lilith|Gemini|7|true	osculante	2378516.0;0;-165;P	Lilith|Gemini|7|true	71.2819768625993	-0.44966773674091753	7
+Lilith|Gemini|8|true	osculante	2378516.0;0;-180;P	Lilith|Gemini|8|true	71.2819768625993	-0.44966773674091753	8
+Lilith|Gemini|9|true	osculante	2378516.0;0;135;P	Lilith|Gemini|9|true	71.2819768625993	-0.44966773674091753	9
+Lilith|Leo|10|true	osculante	2379061.0;0;-15;P	Lilith|Leo|10|true	125.81581389833026	-0.7798490915041026	10
+Lilith|Leo|11|true	osculante	2379061.0;0;-45;P	Lilith|Leo|11|true	125.81581389833026	-0.7798490915041026	11
+Lilith|Leo|12|true	osculante	2379061.0;0;-75;P	Lilith|Leo|12|true	125.81581389833026	-0.7798490915041026	12
+Lilith|Leo|1|true	osculante	2379061.0;0;-105;P	Lilith|Leo|1|true	125.81581389833026	-0.7798490915041026	1
+Lilith|Leo|2|true	osculante	2379061.0;0;-135;P	Lilith|Leo|2|true	125.81581389833026	-0.7798490915041026	2
+Lilith|Leo|3|true	osculante	2379061.0;0;-165;P	Lilith|Leo|3|true	125.81581389833026	-0.7798490915041026	3
+Lilith|Leo|4|true	osculante	2379061.0;0;-180;P	Lilith|Leo|4|true	125.81581389833026	-0.7798490915041026	4
+Lilith|Leo|5|true	osculante	2379061.0;0;135;P	Lilith|Leo|5|true	125.81581389833026	-0.7798490915041026	5
+Lilith|Leo|6|true	osculante	2379061.0;0;105;P	Lilith|Leo|6|true	125.81581389833026	-0.7798490915041026	6
+Lilith|Leo|7|true	osculante	2379061.0;0;75;P	Lilith|Leo|7|true	125.81581389833026	-0.7798490915041026	7
+Lilith|Leo|8|true	osculante	2379061.0;0;45;P	Lilith|Leo|8|true	125.81581389833026	-0.7798490915041026	8
+Lilith|Leo|9|true	osculante	2379061.0;0;15;P	Lilith|Leo|9|true	125.81581389833026	-0.7798490915041026	9
+Lilith|Libra|10|true	osculante	2379504.0;0;-30;P	Lilith|Libra|10|true	183.53948993007623	-0.9428041184036108	10
+Lilith|Libra|11|true	osculante	2379504.0;0;-60;P	Lilith|Libra|11|true	183.53948993007623	-0.9428041184036108	11
+Lilith|Libra|12|true	osculante	2379504.0;0;-90;P	Lilith|Libra|12|true	183.53948993007623	-0.9428041184036108	12
+Lilith|Libra|1|true	osculante	2379504.0;0;-120;P	Lilith|Libra|1|true	183.53948993007623	-0.9428041184036108	1
+Lilith|Libra|2|true	osculante	2379504.0;0;-150;P	Lilith|Libra|2|true	183.53948993007623	-0.9428041184036108	2
+Lilith|Libra|3|true	osculante	2379504.0;0;-180;P	Lilith|Libra|3|true	183.53948993007623	-0.9428041184036108	3
+Lilith|Libra|4|true	osculante	2379504.0;0;150;P	Lilith|Libra|4|true	183.53948993007623	-0.9428041184036108	4
+Lilith|Libra|5|true	osculante	2379504.0;0;120;P	Lilith|Libra|5|true	183.53948993007623	-0.9428041184036108	5
+Lilith|Libra|6|true	osculante	2379504.0;0;90;P	Lilith|Libra|6|true	183.53948993007623	-0.9428041184036108	6
+Lilith|Libra|7|true	osculante	2379504.0;0;60;P	Lilith|Libra|7|true	183.53948993007623	-0.9428041184036108	7
+Lilith|Libra|8|true	osculante	2379504.0;0;30;P	Lilith|Libra|8|true	183.53948993007623	-0.9428041184036108	8
+Lilith|Libra|9|true	osculante	2379504.0;0;0;P	Lilith|Libra|9|true	183.53948993007623	-0.9428041184036108	9
+Lilith|Pisces|10|true	osculante	2380936.0;0;150;P	Lilith|Pisces|10|true	340.8596868848585	-0.625844528039244	10
+Lilith|Pisces|11|true	osculante	2380936.0;0;120;P	Lilith|Pisces|11|true	340.8596868848585	-0.625844528039244	11
+Lilith|Pisces|12|true	osculante	2380936.0;0;90;P	Lilith|Pisces|12|true	340.8596868848585	-0.625844528039244	12
+Lilith|Pisces|1|true	osculante	2380936.0;0;60;P	Lilith|Pisces|1|true	340.8596868848585	-0.625844528039244	1
+Lilith|Pisces|2|true	osculante	2380936.0;0;30;P	Lilith|Pisces|2|true	340.8596868848585	-0.625844528039244	2
+Lilith|Pisces|3|true	osculante	2380936.0;0;0;P	Lilith|Pisces|3|true	340.8596868848585	-0.625844528039244	3
+Lilith|Pisces|4|true	osculante	2380936.0;0;-30;P	Lilith|Pisces|4|true	340.8596868848585	-0.625844528039244	4
+Lilith|Pisces|5|true	osculante	2380936.0;0;-60;P	Lilith|Pisces|5|true	340.8596868848585	-0.625844528039244	5
+Lilith|Pisces|6|true	osculante	2380936.0;0;-90;P	Lilith|Pisces|6|true	340.8596868848585	-0.625844528039244	6
+Lilith|Pisces|7|true	osculante	2380936.0;0;-120;P	Lilith|Pisces|7|true	340.8596868848585	-0.625844528039244	7
+Lilith|Pisces|8|true	osculante	2380936.0;0;-150;P	Lilith|Pisces|8|true	340.8596868848585	-0.625844528039244	8
+Lilith|Pisces|9|true	osculante	2380936.0;0;-180;P	Lilith|Pisces|9|true	340.8596868848585	-0.625844528039244	9
+Lilith|Sagittarius|10|true	osculante	2380109.0;0;150;P	Lilith|Sagittarius|10|true	248.6056928766902	-0.11122970388307386	10
+Lilith|Sagittarius|11|true	osculante	2380109.0;0;120;P	Lilith|Sagittarius|11|true	248.6056928766902	-0.11122970388307386	11
+Lilith|Sagittarius|12|true	osculante	2380109.0;0;90;P	Lilith|Sagittarius|12|true	248.6056928766902	-0.11122970388307386	12
+Lilith|Sagittarius|1|true	osculante	2380109.0;0;60;P	Lilith|Sagittarius|1|true	248.6056928766902	-0.11122970388307386	1
+Lilith|Sagittarius|2|true	osculante	2380109.0;0;30;P	Lilith|Sagittarius|2|true	248.6056928766902	-0.11122970388307386	2
+Lilith|Sagittarius|3|true	osculante	2380109.0;0;0;P	Lilith|Sagittarius|3|true	248.6056928766902	-0.11122970388307386	3
+Lilith|Sagittarius|4|true	osculante	2380109.0;0;-30;P	Lilith|Sagittarius|4|true	248.6056928766902	-0.11122970388307386	4
+Lilith|Sagittarius|5|true	osculante	2380109.0;0;-60;P	Lilith|Sagittarius|5|true	248.6056928766902	-0.11122970388307386	5
+Lilith|Sagittarius|6|true	osculante	2380109.0;0;-90;P	Lilith|Sagittarius|6|true	248.6056928766902	-0.11122970388307386	6
+Lilith|Sagittarius|7|true	osculante	2380109.0;0;-120;P	Lilith|Sagittarius|7|true	248.6056928766902	-0.11122970388307386	7
+Lilith|Sagittarius|8|true	osculante	2380109.0;0;-150;P	Lilith|Sagittarius|8|true	248.6056928766902	-0.11122970388307386	8
+Lilith|Sagittarius|9|true	osculante	2380109.0;0;-180;P	Lilith|Sagittarius|9|true	248.6056928766902	-0.11122970388307386	9
+Lilith|Scorpio|10|true	osculante	2379888.0;0;-15;P	Lilith|Scorpio|10|true	219.21664879792837	-1.121557366615189	10
+Lilith|Scorpio|11|true	osculante	2379888.0;0;-45;P	Lilith|Scorpio|11|true	219.21664879792837	-1.121557366615189	11
+Lilith|Scorpio|12|true	osculante	2379888.0;0;-75;P	Lilith|Scorpio|12|true	219.21664879792837	-1.121557366615189	12
+Lilith|Scorpio|1|true	osculante	2379888.0;0;-105;P	Lilith|Scorpio|1|true	219.21664879792837	-1.121557366615189	1
+Lilith|Scorpio|2|true	osculante	2379888.0;0;-135;P	Lilith|Scorpio|2|true	219.21664879792837	-1.121557366615189	2
+Lilith|Scorpio|3|true	osculante	2379888.0;0;-165;P	Lilith|Scorpio|3|true	219.21664879792837	-1.121557366615189	3
+Lilith|Scorpio|4|true	osculante	2379888.0;0;-180;P	Lilith|Scorpio|4|true	219.21664879792837	-1.121557366615189	4
+Lilith|Scorpio|5|true	osculante	2379888.0;0;135;P	Lilith|Scorpio|5|true	219.21664879792837	-1.121557366615189	5
+Lilith|Scorpio|6|true	osculante	2379888.0;0;105;P	Lilith|Scorpio|6|true	219.21664879792837	-1.121557366615189	6
+Lilith|Scorpio|7|true	osculante	2379888.0;0;75;P	Lilith|Scorpio|7|true	219.21664879792837	-1.121557366615189	7
+Lilith|Scorpio|8|true	osculante	2379888.0;0;45;P	Lilith|Scorpio|8|true	219.21664879792837	-1.121557366615189	8
+Lilith|Scorpio|9|true	osculante	2379888.0;0;15;P	Lilith|Scorpio|9|true	219.21664879792837	-1.121557366615189	9
+Lilith|Taurus|10|true	osculante	2378497.0;0;105;P	Lilith|Taurus|10|true	45.870142982885696	-2.0497585570150183	10
+Lilith|Taurus|11|true	osculante	2378497.0;0;75;P	Lilith|Taurus|11|true	45.870142982885696	-2.0497585570150183	11
+Lilith|Taurus|12|true	osculante	2378497.0;0;45;P	Lilith|Taurus|12|true	45.870142982885696	-2.0497585570150183	12
+Lilith|Taurus|1|true	osculante	2378497.0;0;15;P	Lilith|Taurus|1|true	45.870142982885696	-2.0497585570150183	1
+Lilith|Taurus|2|true	osculante	2378497.0;0;-15;P	Lilith|Taurus|2|true	45.870142982885696	-2.0497585570150183	2
+Lilith|Taurus|3|true	osculante	2378497.0;0;-45;P	Lilith|Taurus|3|true	45.870142982885696	-2.0497585570150183	3
+Lilith|Taurus|4|true	osculante	2378497.0;0;-75;P	Lilith|Taurus|4|true	45.870142982885696	-2.0497585570150183	4
+Lilith|Taurus|5|true	osculante	2378497.0;0;-105;P	Lilith|Taurus|5|true	45.870142982885696	-2.0497585570150183	5
+Lilith|Taurus|6|true	osculante	2378497.0;0;-135;P	Lilith|Taurus|6|true	45.870142982885696	-2.0497585570150183	6
+Lilith|Taurus|7|true	osculante	2378497.0;0;-165;P	Lilith|Taurus|7|true	45.870142982885696	-2.0497585570150183	7
+Lilith|Taurus|8|true	osculante	2378497.0;0;-180;P	Lilith|Taurus|8|true	45.870142982885696	-2.0497585570150183	8
+Lilith|Taurus|9|true	osculante	2378497.0;0;135;P	Lilith|Taurus|9|true	45.870142982885696	-2.0497585570150183	9
+Lilith|Virgo|10|true	osculante	2379283.0;0;-180;P	Lilith|Virgo|10|true	157.02617006233913	-1.1669398551844294	10
+Lilith|Virgo|11|true	osculante	2379283.0;0;135;P	Lilith|Virgo|11|true	157.02617006233913	-1.1669398551844294	11
+Lilith|Virgo|12|true	osculante	2379283.0;0;105;P	Lilith|Virgo|12|true	157.02617006233913	-1.1669398551844294	12
+Lilith|Virgo|1|true	osculante	2379283.0;0;75;P	Lilith|Virgo|1|true	157.02617006233913	-1.1669398551844294	1
+Lilith|Virgo|2|true	osculante	2379283.0;0;45;P	Lilith|Virgo|2|true	157.02617006233913	-1.1669398551844294	2
+Lilith|Virgo|3|true	osculante	2379283.0;0;15;P	Lilith|Virgo|3|true	157.02617006233913	-1.1669398551844294	3
+Lilith|Virgo|4|true	osculante	2379283.0;0;-15;P	Lilith|Virgo|4|true	157.02617006233913	-1.1669398551844294	4
+Lilith|Virgo|5|true	osculante	2379283.0;0;-45;P	Lilith|Virgo|5|true	157.02617006233913	-1.1669398551844294	5
+Lilith|Virgo|6|true	osculante	2379283.0;0;-75;P	Lilith|Virgo|6|true	157.02617006233913	-1.1669398551844294	6
+Lilith|Virgo|7|true	osculante	2379283.0;0;-105;P	Lilith|Virgo|7|true	157.02617006233913	-1.1669398551844294	7
+Lilith|Virgo|8|true	osculante	2379283.0;0;-135;P	Lilith|Virgo|8|true	157.02617006233913	-1.1669398551844294	8
+Lilith|Virgo|9|true	osculante	2379283.0;0;-165;P	Lilith|Virgo|9|true	157.02617006233913	-1.1669398551844294	9
+North Node|Aquarius|10|false	verdadeiro	2379710.0;0;-90;P	North Node|Aquarius|10|false	329.95311188917935	0.0076396390856212	10
+North Node|Aquarius|11|false	verdadeiro	2379710.0;0;-120;P	North Node|Aquarius|11|false	329.95311188917935	0.0076396390856212	11
+North Node|Aquarius|12|false	verdadeiro	2379710.0;0;-150;P	North Node|Aquarius|12|false	329.95311188917935	0.0076396390856212	12
+North Node|Aquarius|1|false	verdadeiro	2379710.0;0;-180;P	North Node|Aquarius|1|false	329.95311188917935	0.0076396390856212	1
+North Node|Aquarius|2|false	verdadeiro	2379710.0;0;150;P	North Node|Aquarius|2|false	329.95311188917935	0.0076396390856212	2
+North Node|Aquarius|3|false	verdadeiro	2379710.0;0;120;P	North Node|Aquarius|3|false	329.95311188917935	0.0076396390856212	3
+North Node|Aquarius|4|false	verdadeiro	2379710.0;0;90;P	North Node|Aquarius|4|false	329.95311188917935	0.0076396390856212	4
+North Node|Aquarius|5|false	verdadeiro	2379710.0;0;60;P	North Node|Aquarius|5|false	329.95311188917935	0.0076396390856212	5
+North Node|Aquarius|6|false	verdadeiro	2379710.0;0;30;P	North Node|Aquarius|6|false	329.95311188917935	0.0076396390856212	6
+North Node|Aquarius|7|false	verdadeiro	2379710.0;0;0;P	North Node|Aquarius|7|false	329.95311188917935	0.0076396390856212	7
+North Node|Aquarius|8|false	verdadeiro	2379710.0;0;-30;P	North Node|Aquarius|8|false	329.95311188917935	0.0076396390856212	8
+North Node|Aquarius|9|false	verdadeiro	2379710.0;0;-60;P	North Node|Aquarius|9|false	329.95311188917935	0.0076396390856212	9
+North Node|Aries|10|false	verdadeiro	2378542.0;0;45;P	North Node|Aries|10|false	29.56606735377468	0.010328972082100516	10
+North Node|Aries|11|false	verdadeiro	2378542.0;0;15;P	North Node|Aries|11|false	29.56606735377468	0.010328972082100516	11
+North Node|Aries|12|false	verdadeiro	2378542.0;0;-15;P	North Node|Aries|12|false	29.56606735377468	0.010328972082100516	12
+North Node|Aries|1|false	verdadeiro	2378542.0;0;-45;P	North Node|Aries|1|false	29.56606735377468	0.010328972082100516	1
+North Node|Aries|2|false	verdadeiro	2378542.0;0;-75;P	North Node|Aries|2|false	29.56606735377468	0.010328972082100516	2
+North Node|Aries|3|false	verdadeiro	2378542.0;0;-105;P	North Node|Aries|3|false	29.56606735377468	0.010328972082100516	3
+North Node|Aries|4|false	verdadeiro	2378542.0;0;-135;P	North Node|Aries|4|false	29.56606735377468	0.010328972082100516	4
+North Node|Aries|5|false	verdadeiro	2378542.0;0;-165;P	North Node|Aries|5|false	29.56606735377468	0.010328972082100516	5
+North Node|Aries|6|false	verdadeiro	2378542.0;0;-180;P	North Node|Aries|6|false	29.56606735377468	0.010328972082100516	6
+North Node|Aries|7|false	verdadeiro	2378542.0;0;135;P	North Node|Aries|7|false	29.56606735377468	0.010328972082100516	7
+North Node|Aries|8|false	verdadeiro	2378542.0;0;105;P	North Node|Aries|8|false	29.56606735377468	0.010328972082100516	8
+North Node|Aries|9|false	verdadeiro	2378542.0;0;75;P	North Node|Aries|9|false	29.56606735377468	0.010328972082100516	9
+North Node|Cancer|10|false	verdadeiro	2383682.0;0;105;P	North Node|Cancer|10|false	119.7723093227406	0.00854267670564333	10
+North Node|Cancer|11|false	verdadeiro	2383682.0;0;75;P	North Node|Cancer|11|false	119.7723093227406	0.00854267670564333	11
+North Node|Cancer|12|false	verdadeiro	2383682.0;0;45;P	North Node|Cancer|12|false	119.7723093227406	0.00854267670564333	12
+North Node|Cancer|1|false	verdadeiro	2383682.0;0;15;P	North Node|Cancer|1|false	119.7723093227406	0.00854267670564333	1
+North Node|Cancer|2|false	verdadeiro	2383682.0;0;-15;P	North Node|Cancer|2|false	119.7723093227406	0.00854267670564333	2
+North Node|Cancer|3|false	verdadeiro	2383682.0;0;-45;P	North Node|Cancer|3|false	119.7723093227406	0.00854267670564333	3
+North Node|Cancer|4|false	verdadeiro	2383682.0;0;-75;P	North Node|Cancer|4|false	119.7723093227406	0.00854267670564333	4
+North Node|Cancer|5|false	verdadeiro	2383682.0;0;-105;P	North Node|Cancer|5|false	119.7723093227406	0.00854267670564333	5
+North Node|Cancer|6|false	verdadeiro	2383682.0;0;-135;P	North Node|Cancer|6|false	119.7723093227406	0.00854267670564333	6
+North Node|Cancer|7|false	verdadeiro	2383682.0;0;-165;P	North Node|Cancer|7|false	119.7723093227406	0.00854267670564333	7
+North Node|Cancer|8|false	verdadeiro	2383682.0;0;-180;P	North Node|Cancer|8|false	119.7723093227406	0.00854267670564333	8
+North Node|Cancer|9|false	verdadeiro	2383682.0;0;135;P	North Node|Cancer|9|false	119.7723093227406	0.00854267670564333	9
+North Node|Capricorn|10|false	verdadeiro	2380270.0;0;45;P	North Node|Capricorn|10|false	298.33238788451325	0.005143367249754009	10
+North Node|Capricorn|11|false	verdadeiro	2380270.0;0;15;P	North Node|Capricorn|11|false	298.33238788451325	0.005143367249754009	11
+North Node|Capricorn|12|false	verdadeiro	2380270.0;0;-15;P	North Node|Capricorn|12|false	298.33238788451325	0.005143367249754009	12
+North Node|Capricorn|1|false	verdadeiro	2380270.0;0;-45;P	North Node|Capricorn|1|false	298.33238788451325	0.005143367249754009	1
+North Node|Capricorn|2|false	verdadeiro	2380270.0;0;-75;P	North Node|Capricorn|2|false	298.33238788451325	0.005143367249754009	2
+North Node|Capricorn|3|false	verdadeiro	2380270.0;0;-105;P	North Node|Capricorn|3|false	298.33238788451325	0.005143367249754009	3
+North Node|Capricorn|4|false	verdadeiro	2380270.0;0;-135;P	North Node|Capricorn|4|false	298.33238788451325	0.005143367249754009	4
+North Node|Capricorn|5|false	verdadeiro	2380270.0;0;-165;P	North Node|Capricorn|5|false	298.33238788451325	0.005143367249754009	5
+North Node|Capricorn|6|false	verdadeiro	2380270.0;0;-180;P	North Node|Capricorn|6|false	298.33238788451325	0.005143367249754009	6
+North Node|Capricorn|7|false	verdadeiro	2380270.0;0;135;P	North Node|Capricorn|7|false	298.33238788451325	0.005143367249754009	7
+North Node|Capricorn|8|false	verdadeiro	2380270.0;0;105;P	North Node|Capricorn|8|false	298.33238788451325	0.005143367249754009	8
+North Node|Capricorn|9|false	verdadeiro	2380270.0;0;75;P	North Node|Capricorn|9|false	298.33238788451325	0.005143367249754009	9
+North Node|Gemini|10|false	verdadeiro	2384256.0;0;-135;P	North Node|Gemini|10|false	87.69773603751752	0.005262677397029028	10
+North Node|Gemini|11|false	verdadeiro	2384256.0;0;-165;P	North Node|Gemini|11|false	87.69773603751752	0.005262677397029028	11
+North Node|Gemini|12|false	verdadeiro	2384256.0;0;-180;P	North Node|Gemini|12|false	87.69773603751752	0.005262677397029028	12
+North Node|Gemini|1|false	verdadeiro	2384256.0;0;135;P	North Node|Gemini|1|false	87.69773603751752	0.005262677397029028	1
+North Node|Gemini|2|false	verdadeiro	2384256.0;0;105;P	North Node|Gemini|2|false	87.69773603751752	0.005262677397029028	2
+North Node|Gemini|3|false	verdadeiro	2384256.0;0;75;P	North Node|Gemini|3|false	87.69773603751752	0.005262677397029028	3
+North Node|Gemini|4|false	verdadeiro	2384256.0;0;45;P	North Node|Gemini|4|false	87.69773603751752	0.005262677397029028	4
+North Node|Gemini|5|false	verdadeiro	2384256.0;0;15;P	North Node|Gemini|5|false	87.69773603751752	0.005262677397029028	5
+North Node|Gemini|6|false	verdadeiro	2384256.0;0;-15;P	North Node|Gemini|6|false	87.69773603751752	0.005262677397029028	6
+North Node|Gemini|7|false	verdadeiro	2384256.0;0;-45;P	North Node|Gemini|7|false	87.69773603751752	0.005262677397029028	7
+North Node|Gemini|8|false	verdadeiro	2384256.0;0;-75;P	North Node|Gemini|8|false	87.69773603751752	0.005262677397029028	8
+North Node|Gemini|9|false	verdadeiro	2384256.0;0;-105;P	North Node|Gemini|9|false	87.69773603751752	0.005262677397029028	9
+North Node|Leo|10|false	verdadeiro	2383072.0;0;15;P	North Node|Leo|10|false	149.52771353417327	0.009301549167060504	10
+North Node|Leo|11|false	verdadeiro	2383072.0;0;-15;P	North Node|Leo|11|false	149.52771353417327	0.009301549167060504	11
+North Node|Leo|12|false	verdadeiro	2383072.0;0;-45;P	North Node|Leo|12|false	149.52771353417327	0.009301549167060504	12
+North Node|Leo|1|false	verdadeiro	2383072.0;0;-75;P	North Node|Leo|1|false	149.52771353417327	0.009301549167060504	1
+North Node|Leo|2|false	verdadeiro	2383072.0;0;-105;P	North Node|Leo|2|false	149.52771353417327	0.009301549167060504	2
+North Node|Leo|3|false	verdadeiro	2383072.0;0;-135;P	North Node|Leo|3|false	149.52771353417327	0.009301549167060504	3
+North Node|Leo|4|false	verdadeiro	2383072.0;0;-165;P	North Node|Leo|4|false	149.52771353417327	0.009301549167060504	4
+North Node|Leo|5|false	verdadeiro	2383072.0;0;-180;P	North Node|Leo|5|false	149.52771353417327	0.009301549167060504	5
+North Node|Leo|6|false	verdadeiro	2383072.0;0;135;P	North Node|Leo|6|false	149.52771353417327	0.009301549167060504	6
+North Node|Leo|7|false	verdadeiro	2383072.0;0;105;P	North Node|Leo|7|false	149.52771353417327	0.009301549167060504	7
+North Node|Leo|8|false	verdadeiro	2383072.0;0;75;P	North Node|Leo|8|false	149.52771353417327	0.009301549167060504	8
+North Node|Leo|9|false	verdadeiro	2383072.0;0;45;P	North Node|Leo|9|false	149.52771353417327	0.009301549167060504	9
+North Node|Libra|10|false	verdadeiro	2381997.0;0;45;P	North Node|Libra|10|false	207.45043031776305	0.0023280596014757225	10
+North Node|Libra|11|false	verdadeiro	2381997.0;0;15;P	North Node|Libra|11|false	207.45043031776305	0.0023280596014757225	11
+North Node|Libra|12|false	verdadeiro	2381997.0;0;-15;P	North Node|Libra|12|false	207.45043031776305	0.0023280596014757225	12
+North Node|Libra|1|false	verdadeiro	2381997.0;0;-45;P	North Node|Libra|1|false	207.45043031776305	0.0023280596014757225	1
+North Node|Libra|2|false	verdadeiro	2381997.0;0;-75;P	North Node|Libra|2|false	207.45043031776305	0.0023280596014757225	2
+North Node|Libra|3|false	verdadeiro	2381997.0;0;-105;P	North Node|Libra|3|false	207.45043031776305	0.0023280596014757225	3
+North Node|Libra|4|false	verdadeiro	2381997.0;0;-135;P	North Node|Libra|4|false	207.45043031776305	0.0023280596014757225	4
+North Node|Libra|5|false	verdadeiro	2381997.0;0;-165;P	North Node|Libra|5|false	207.45043031776305	0.0023280596014757225	5
+North Node|Libra|6|false	verdadeiro	2381997.0;0;-180;P	North Node|Libra|6|false	207.45043031776305	0.0023280596014757225	6
+North Node|Libra|7|false	verdadeiro	2381997.0;0;135;P	North Node|Libra|7|false	207.45043031776305	0.0023280596014757225	7
+North Node|Libra|8|false	verdadeiro	2381997.0;0;105;P	North Node|Libra|8|false	207.45043031776305	0.0023280596014757225	8
+North Node|Libra|9|false	verdadeiro	2381997.0;0;75;P	North Node|Libra|9|false	207.45043031776305	0.0023280596014757225	9
+North Node|Pisces|10|false	verdadeiro	2379113.0;0;-180;P	North Node|Pisces|10|false	359.89963469247607	0.0008619543879691996	10
+North Node|Pisces|11|false	verdadeiro	2379113.0;0;135;P	North Node|Pisces|11|false	359.89963469247607	0.0008619543879691996	11
+North Node|Pisces|12|false	verdadeiro	2379113.0;0;105;P	North Node|Pisces|12|false	359.89963469247607	0.0008619543879691996	12
+North Node|Pisces|1|false	verdadeiro	2379113.0;0;75;P	North Node|Pisces|1|false	359.89963469247607	0.0008619543879691996	1
+North Node|Pisces|2|false	verdadeiro	2379113.0;0;45;P	North Node|Pisces|2|false	359.89963469247607	0.0008619543879691996	2
+North Node|Pisces|3|false	verdadeiro	2379113.0;0;15;P	North Node|Pisces|3|false	359.89963469247607	0.0008619543879691996	3
+North Node|Pisces|4|false	verdadeiro	2379113.0;0;-15;P	North Node|Pisces|4|false	359.89963469247607	0.0008619543879691996	4
+North Node|Pisces|5|false	verdadeiro	2379113.0;0;-45;P	North Node|Pisces|5|false	359.89963469247607	0.0008619543879691996	5
+North Node|Pisces|6|false	verdadeiro	2379113.0;0;-75;P	North Node|Pisces|6|false	359.89963469247607	0.0008619543879691996	6
+North Node|Pisces|7|false	verdadeiro	2379113.0;0;-105;P	North Node|Pisces|7|false	359.89963469247607	0.0008619543879691996	7
+North Node|Pisces|8|false	verdadeiro	2379113.0;0;-135;P	North Node|Pisces|8|false	359.89963469247607	0.0008619543879691996	8
+North Node|Pisces|9|false	verdadeiro	2379113.0;0;-165;P	North Node|Pisces|9|false	359.89963469247607	0.0008619543879691996	9
+North Node|Sagittarius|10|false	verdadeiro	2380800.0;0;-150;P	North Node|Sagittarius|10|false	269.7263011603689	0.003402036149280288	10
+North Node|Sagittarius|11|false	verdadeiro	2380800.0;0;-180;P	North Node|Sagittarius|11|false	269.7263011603689	0.003402036149280288	11
+North Node|Sagittarius|12|false	verdadeiro	2380800.0;0;150;P	North Node|Sagittarius|12|false	269.7263011603689	0.003402036149280288	12
+North Node|Sagittarius|1|false	verdadeiro	2380800.0;0;120;P	North Node|Sagittarius|1|false	269.7263011603689	0.003402036149280288	1
+North Node|Sagittarius|2|false	verdadeiro	2380800.0;0;90;P	North Node|Sagittarius|2|false	269.7263011603689	0.003402036149280288	2
+North Node|Sagittarius|3|false	verdadeiro	2380800.0;0;60;P	North Node|Sagittarius|3|false	269.7263011603689	0.003402036149280288	3
+North Node|Sagittarius|4|false	verdadeiro	2380800.0;0;30;P	North Node|Sagittarius|4|false	269.7263011603689	0.003402036149280288	4
+North Node|Sagittarius|5|false	verdadeiro	2380800.0;0;0;P	North Node|Sagittarius|5|false	269.7263011603689	0.003402036149280288	5
+North Node|Sagittarius|6|false	verdadeiro	2380800.0;0;-30;P	North Node|Sagittarius|6|false	269.7263011603689	0.003402036149280288	6
+North Node|Sagittarius|7|false	verdadeiro	2380800.0;0;-60;P	North Node|Sagittarius|7|false	269.7263011603689	0.003402036149280288	7
+North Node|Sagittarius|8|false	verdadeiro	2380800.0;0;-90;P	North Node|Sagittarius|8|false	269.7263011603689	0.003402036149280288	8
+North Node|Sagittarius|9|false	verdadeiro	2380800.0;0;-120;P	North Node|Sagittarius|9|false	269.7263011603689	0.003402036149280288	9
+North Node|Scorpio|10|false	verdadeiro	2381423.0;0;-75;P	North Node|Scorpio|10|false	239.57340860321142	0.013439425442594737	10
+North Node|Scorpio|11|false	verdadeiro	2381423.0;0;-105;P	North Node|Scorpio|11|false	239.57340860321142	0.013439425442594737	11
+North Node|Scorpio|12|false	verdadeiro	2381423.0;0;-135;P	North Node|Scorpio|12|false	239.57340860321142	0.013439425442594737	12
+North Node|Scorpio|1|false	verdadeiro	2381423.0;0;-165;P	North Node|Scorpio|1|false	239.57340860321142	0.013439425442594737	1
+North Node|Scorpio|2|false	verdadeiro	2381423.0;0;-180;P	North Node|Scorpio|2|false	239.57340860321142	0.013439425442594737	2
+North Node|Scorpio|3|false	verdadeiro	2381423.0;0;135;P	North Node|Scorpio|3|false	239.57340860321142	0.013439425442594737	3
+North Node|Scorpio|4|false	verdadeiro	2381423.0;0;105;P	North Node|Scorpio|4|false	239.57340860321142	0.013439425442594737	4
+North Node|Scorpio|5|false	verdadeiro	2381423.0;0;75;P	North Node|Scorpio|5|false	239.57340860321142	0.013439425442594737	5
+North Node|Scorpio|6|false	verdadeiro	2381423.0;0;45;P	North Node|Scorpio|6|false	239.57340860321142	0.013439425442594737	6
+North Node|Scorpio|7|false	verdadeiro	2381423.0;0;15;P	North Node|Scorpio|7|false	239.57340860321142	0.013439425442594737	7
+North Node|Scorpio|8|false	verdadeiro	2381423.0;0;-15;P	North Node|Scorpio|8|false	239.57340860321142	0.013439425442594737	8
+North Node|Scorpio|9|false	verdadeiro	2381423.0;0;-45;P	North Node|Scorpio|9|false	239.57340860321142	0.013439425442594737	9
+North Node|Taurus|10|false	verdadeiro	2378499.0;0;90;P	North Node|Taurus|10|false	34.13874084704227	0.00663077474289366	10
+North Node|Taurus|11|false	verdadeiro	2378499.0;0;60;P	North Node|Taurus|11|false	34.13874084704227	0.00663077474289366	11
+North Node|Taurus|12|false	verdadeiro	2378499.0;0;30;P	North Node|Taurus|12|false	34.13874084704227	0.00663077474289366	12
+North Node|Taurus|1|false	verdadeiro	2378499.0;0;0;P	North Node|Taurus|1|false	34.13874084704227	0.00663077474289366	1
+North Node|Taurus|2|false	verdadeiro	2378499.0;0;-30;P	North Node|Taurus|2|false	34.13874084704227	0.00663077474289366	2
+North Node|Taurus|3|false	verdadeiro	2378499.0;0;-60;P	North Node|Taurus|3|false	34.13874084704227	0.00663077474289366	3
+North Node|Taurus|4|false	verdadeiro	2378499.0;0;-90;P	North Node|Taurus|4|false	34.13874084704227	0.00663077474289366	4
+North Node|Taurus|5|false	verdadeiro	2378499.0;0;-120;P	North Node|Taurus|5|false	34.13874084704227	0.00663077474289366	5
+North Node|Taurus|6|false	verdadeiro	2378499.0;0;-150;P	North Node|Taurus|6|false	34.13874084704227	0.00663077474289366	6
+North Node|Taurus|7|false	verdadeiro	2378499.0;0;-180;P	North Node|Taurus|7|false	34.13874084704227	0.00663077474289366	7
+North Node|Taurus|8|false	verdadeiro	2378499.0;0;150;P	North Node|Taurus|8|false	34.13874084704227	0.00663077474289366	8
+North Node|Taurus|9|false	verdadeiro	2378499.0;0;120;P	North Node|Taurus|9|false	34.13874084704227	0.00663077474289366	9
+North Node|Virgo|10|false	verdadeiro	2382529.0;0;-135;P	North Node|Virgo|10|false	178.28542103644529	0.012124537424400119	10
+North Node|Virgo|11|false	verdadeiro	2382529.0;0;-165;P	North Node|Virgo|11|false	178.28542103644529	0.012124537424400119	11
+North Node|Virgo|12|false	verdadeiro	2382529.0;0;-180;P	North Node|Virgo|12|false	178.28542103644529	0.012124537424400119	12
+North Node|Virgo|1|false	verdadeiro	2382529.0;0;135;P	North Node|Virgo|1|false	178.28542103644529	0.012124537424400119	1
+North Node|Virgo|2|false	verdadeiro	2382529.0;0;105;P	North Node|Virgo|2|false	178.28542103644529	0.012124537424400119	2
+North Node|Virgo|3|false	verdadeiro	2382529.0;0;75;P	North Node|Virgo|3|false	178.28542103644529	0.012124537424400119	3
+North Node|Virgo|4|false	verdadeiro	2382529.0;0;45;P	North Node|Virgo|4|false	178.28542103644529	0.012124537424400119	4
+North Node|Virgo|5|false	verdadeiro	2382529.0;0;15;P	North Node|Virgo|5|false	178.28542103644529	0.012124537424400119	5
+North Node|Virgo|6|false	verdadeiro	2382529.0;0;-15;P	North Node|Virgo|6|false	178.28542103644529	0.012124537424400119	6
+North Node|Virgo|7|false	verdadeiro	2382529.0;0;-45;P	North Node|Virgo|7|false	178.28542103644529	0.012124537424400119	7
+North Node|Virgo|8|false	verdadeiro	2382529.0;0;-75;P	North Node|Virgo|8|false	178.28542103644529	0.012124537424400119	8
+North Node|Virgo|9|false	verdadeiro	2382529.0;0;-105;P	North Node|Virgo|9|false	178.28542103644529	0.012124537424400119	9
+Vertex|Cancer|6|false	primeira-vertical	2451545.0;-66;-89;C	Vertex|Cancer|6|false	90.3013494743417	0	6
+Vertex|Cancer|7|false	primeira-vertical	2451545.0;44;-91;C	Vertex|Cancer|7|false	119.69990464027245	0	7
+Vertex|Capricorn|6|false	primeira-vertical	2451545.0;44;134;C	Vertex|Capricorn|6|false	299.92909599345165	0	6
+Vertex|Capricorn|7|false	primeira-vertical	2451545.0;-66;69;C	Vertex|Capricorn|7|false	270.53700613608754	0	7
+Vertex|Gemini|6|false	primeira-vertical	2451545.0;-66;-123;C	Vertex|Gemini|6|false	60.20521794887979	0	6
+Vertex|Gemini|7|false	primeira-vertical	2451545.0;45;-154;C	Vertex|Gemini|7|false	60.20890000522796	0	7
+Vertex|Sagittarius|6|false	primeira-vertical	2451545.0;44;70;C	Vertex|Sagittarius|6|false	240.23451193233316	0	6
+Vertex|Sagittarius|7|false	primeira-vertical	2451545.0;-66;38;C	Vertex|Sagittarius|7|false	240.04303441996348	0	7

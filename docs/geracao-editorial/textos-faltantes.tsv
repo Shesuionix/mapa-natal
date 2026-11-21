@@ -20872,3 +20872,299 @@ casas	9|Virgo|ocupantes=Vertex|Libra|9|false|regente=Mercury|posicao=Mercury|Tau
 casas	9|Virgo|ocupantes=Vertex|Libra|9|false|regente=Mercury|posicao=Mercury|Taurus|4|false|aspecto=Mercury|Sextile|Pluto:Mercury|Taurus|4|false:Pluto|Pisces|2|false	sol-casas-3-e-4/sol-gemini-casa-4.txt [aspectos=Mercury|Sextile|Pluto]
 casas	9|Virgo|ocupantes=Vertex|Libra|9|false|regente=Mercury|posicao=Mercury|Taurus|4|false|aspecto=Mercury|Square|Saturn:Mercury|Taurus|4|false:Saturn|Leo|7|false	sol-casas-3-e-4/sol-gemini-casa-4.txt
 casas	9|Virgo|ocupantes=Vertex|Libra|9|false|regente=Mercury|posicao=Mercury|Taurus|4|false|aspecto=nenhum	sol-casas-3-e-4/sol-gemini-casa-4.txt [aspectos=nenhum]
+posicoes	Lilith|Aquarius|10|true	2380552.0;0;135;P
+posicoes	Lilith|Aquarius|11|true	2380552.0;0;105;P
+posicoes	Lilith|Aquarius|12|true	2380552.0;0;75;P
+posicoes	Lilith|Aquarius|1|true	2380552.0;0;45;P
+posicoes	Lilith|Aquarius|2|true	2380552.0;0;15;P
+posicoes	Lilith|Aquarius|3|true	2380552.0;0;-15;P
+posicoes	Lilith|Aquarius|4|true	2380552.0;0;-45;P
+posicoes	Lilith|Aquarius|5|true	2380552.0;0;-75;P
+posicoes	Lilith|Aquarius|6|true	2380552.0;0;-105;P
+posicoes	Lilith|Aquarius|7|true	2380552.0;0;-135;P
+posicoes	Lilith|Aquarius|8|true	2380552.0;0;-165;P
+posicoes	Lilith|Aquarius|9|true	2380552.0;0;-180;P
+posicoes	Lilith|Aries|10|true	2378569.0;0;15;P
+posicoes	Lilith|Aries|11|true	2378569.0;0;-15;P
+posicoes	Lilith|Aries|12|true	2378569.0;0;-45;P
+posicoes	Lilith|Aries|1|true	2378569.0;0;-75;P
+posicoes	Lilith|Aries|2|true	2378569.0;0;-105;P
+posicoes	Lilith|Aries|3|true	2378569.0;0;-135;P
+posicoes	Lilith|Aries|4|true	2378569.0;0;-165;P
+posicoes	Lilith|Aries|5|true	2378569.0;0;-180;P
+posicoes	Lilith|Aries|6|true	2378569.0;0;135;P
+posicoes	Lilith|Aries|7|true	2378569.0;0;105;P
+posicoes	Lilith|Aries|8|true	2378569.0;0;75;P
+posicoes	Lilith|Aries|9|true	2378569.0;0;45;P
+posicoes	Lilith|Cancer|10|true	2378677.0;0;-30;P
+posicoes	Lilith|Cancer|11|true	2378677.0;0;-60;P
+posicoes	Lilith|Cancer|12|true	2378677.0;0;-90;P
+posicoes	Lilith|Cancer|1|true	2378677.0;0;-120;P
+posicoes	Lilith|Cancer|2|true	2378677.0;0;-150;P
+posicoes	Lilith|Cancer|3|true	2378677.0;0;-180;P
+posicoes	Lilith|Cancer|4|true	2378677.0;0;150;P
+posicoes	Lilith|Cancer|5|true	2378677.0;0;120;P
+posicoes	Lilith|Cancer|6|true	2378677.0;0;90;P
+posicoes	Lilith|Cancer|7|true	2378677.0;0;60;P
+posicoes	Lilith|Cancer|8|true	2378677.0;0;30;P
+posicoes	Lilith|Cancer|9|true	2378677.0;0;0;P
+posicoes	Lilith|Capricorn|10|true	2380331.0;0;-30;P
+posicoes	Lilith|Capricorn|11|true	2380331.0;0;-60;P
+posicoes	Lilith|Capricorn|12|true	2380331.0;0;-90;P
+posicoes	Lilith|Capricorn|1|true	2380331.0;0;-120;P
+posicoes	Lilith|Capricorn|2|true	2380331.0;0;-150;P
+posicoes	Lilith|Capricorn|3|true	2380331.0;0;-180;P
+posicoes	Lilith|Capricorn|4|true	2380331.0;0;150;P
+posicoes	Lilith|Capricorn|5|true	2380331.0;0;120;P
+posicoes	Lilith|Capricorn|6|true	2380331.0;0;90;P
+posicoes	Lilith|Capricorn|7|true	2380331.0;0;60;P
+posicoes	Lilith|Capricorn|8|true	2380331.0;0;30;P
+posicoes	Lilith|Capricorn|9|true	2380331.0;0;0;P
+posicoes	Lilith|Gemini|10|true	2378516.0;0;105;P
+posicoes	Lilith|Gemini|11|true	2378516.0;0;75;P
+posicoes	Lilith|Gemini|12|true	2378516.0;0;45;P
+posicoes	Lilith|Gemini|1|true	2378516.0;0;15;P
+posicoes	Lilith|Gemini|2|true	2378516.0;0;-15;P
+posicoes	Lilith|Gemini|3|true	2378516.0;0;-45;P
+posicoes	Lilith|Gemini|4|true	2378516.0;0;-75;P
+posicoes	Lilith|Gemini|5|true	2378516.0;0;-105;P
+posicoes	Lilith|Gemini|6|true	2378516.0;0;-135;P
+posicoes	Lilith|Gemini|7|true	2378516.0;0;-165;P
+posicoes	Lilith|Gemini|8|true	2378516.0;0;-180;P
+posicoes	Lilith|Gemini|9|true	2378516.0;0;135;P
+posicoes	Lilith|Leo|10|true	2379061.0;0;-15;P
+posicoes	Lilith|Leo|11|true	2379061.0;0;-45;P
+posicoes	Lilith|Leo|12|true	2379061.0;0;-75;P
+posicoes	Lilith|Leo|1|true	2379061.0;0;-105;P
+posicoes	Lilith|Leo|2|true	2379061.0;0;-135;P
+posicoes	Lilith|Leo|3|true	2379061.0;0;-165;P
+posicoes	Lilith|Leo|4|true	2379061.0;0;-180;P
+posicoes	Lilith|Leo|5|true	2379061.0;0;135;P
+posicoes	Lilith|Leo|6|true	2379061.0;0;105;P
+posicoes	Lilith|Leo|7|true	2379061.0;0;75;P
+posicoes	Lilith|Leo|8|true	2379061.0;0;45;P
+posicoes	Lilith|Leo|9|true	2379061.0;0;15;P
+posicoes	Lilith|Libra|10|true	2379504.0;0;-30;P
+posicoes	Lilith|Libra|11|true	2379504.0;0;-60;P
+posicoes	Lilith|Libra|12|true	2379504.0;0;-90;P
+posicoes	Lilith|Libra|1|true	2379504.0;0;-120;P
+posicoes	Lilith|Libra|2|true	2379504.0;0;-150;P
+posicoes	Lilith|Libra|3|true	2379504.0;0;-180;P
+posicoes	Lilith|Libra|4|true	2379504.0;0;150;P
+posicoes	Lilith|Libra|5|true	2379504.0;0;120;P
+posicoes	Lilith|Libra|6|true	2379504.0;0;90;P
+posicoes	Lilith|Libra|7|true	2379504.0;0;60;P
+posicoes	Lilith|Libra|8|true	2379504.0;0;30;P
+posicoes	Lilith|Libra|9|true	2379504.0;0;0;P
+posicoes	Lilith|Pisces|10|true	2380936.0;0;150;P
+posicoes	Lilith|Pisces|11|true	2380936.0;0;120;P
+posicoes	Lilith|Pisces|12|true	2380936.0;0;90;P
+posicoes	Lilith|Pisces|1|true	2380936.0;0;60;P
+posicoes	Lilith|Pisces|2|true	2380936.0;0;30;P
+posicoes	Lilith|Pisces|3|true	2380936.0;0;0;P
+posicoes	Lilith|Pisces|4|true	2380936.0;0;-30;P
+posicoes	Lilith|Pisces|5|true	2380936.0;0;-60;P
+posicoes	Lilith|Pisces|6|true	2380936.0;0;-90;P
+posicoes	Lilith|Pisces|7|true	2380936.0;0;-120;P
+posicoes	Lilith|Pisces|8|true	2380936.0;0;-150;P
+posicoes	Lilith|Pisces|9|true	2380936.0;0;-180;P
+posicoes	Lilith|Sagittarius|10|true	2380109.0;0;150;P
+posicoes	Lilith|Sagittarius|11|true	2380109.0;0;120;P
+posicoes	Lilith|Sagittarius|12|true	2380109.0;0;90;P
+posicoes	Lilith|Sagittarius|1|true	2380109.0;0;60;P
+posicoes	Lilith|Sagittarius|2|true	2380109.0;0;30;P
+posicoes	Lilith|Sagittarius|3|true	2380109.0;0;0;P
+posicoes	Lilith|Sagittarius|4|true	2380109.0;0;-30;P
+posicoes	Lilith|Sagittarius|5|true	2380109.0;0;-60;P
+posicoes	Lilith|Sagittarius|6|true	2380109.0;0;-90;P
+posicoes	Lilith|Sagittarius|7|true	2380109.0;0;-120;P
+posicoes	Lilith|Sagittarius|8|true	2380109.0;0;-150;P
+posicoes	Lilith|Sagittarius|9|true	2380109.0;0;-180;P
+posicoes	Lilith|Scorpio|10|true	2379888.0;0;-15;P
+posicoes	Lilith|Scorpio|11|true	2379888.0;0;-45;P
+posicoes	Lilith|Scorpio|12|true	2379888.0;0;-75;P
+posicoes	Lilith|Scorpio|1|true	2379888.0;0;-105;P
+posicoes	Lilith|Scorpio|2|true	2379888.0;0;-135;P
+posicoes	Lilith|Scorpio|3|true	2379888.0;0;-165;P
+posicoes	Lilith|Scorpio|4|true	2379888.0;0;-180;P
+posicoes	Lilith|Scorpio|5|true	2379888.0;0;135;P
+posicoes	Lilith|Scorpio|6|true	2379888.0;0;105;P
+posicoes	Lilith|Scorpio|7|true	2379888.0;0;75;P
+posicoes	Lilith|Scorpio|8|true	2379888.0;0;45;P
+posicoes	Lilith|Scorpio|9|true	2379888.0;0;15;P
+posicoes	Lilith|Taurus|10|true	2378497.0;0;105;P
+posicoes	Lilith|Taurus|11|true	2378497.0;0;75;P
+posicoes	Lilith|Taurus|12|true	2378497.0;0;45;P
+posicoes	Lilith|Taurus|1|true	2378497.0;0;15;P
+posicoes	Lilith|Taurus|2|true	2378497.0;0;-15;P
+posicoes	Lilith|Taurus|3|true	2378497.0;0;-45;P
+posicoes	Lilith|Taurus|4|true	2378497.0;0;-75;P
+posicoes	Lilith|Taurus|5|true	2378497.0;0;-105;P
+posicoes	Lilith|Taurus|6|true	2378497.0;0;-135;P
+posicoes	Lilith|Taurus|7|true	2378497.0;0;-165;P
+posicoes	Lilith|Taurus|8|true	2378497.0;0;-180;P
+posicoes	Lilith|Taurus|9|true	2378497.0;0;135;P
+posicoes	Lilith|Virgo|10|true	2379283.0;0;-180;P
+posicoes	Lilith|Virgo|11|true	2379283.0;0;135;P
+posicoes	Lilith|Virgo|12|true	2379283.0;0;105;P
+posicoes	Lilith|Virgo|1|true	2379283.0;0;75;P
+posicoes	Lilith|Virgo|2|true	2379283.0;0;45;P
+posicoes	Lilith|Virgo|3|true	2379283.0;0;15;P
+posicoes	Lilith|Virgo|4|true	2379283.0;0;-15;P
+posicoes	Lilith|Virgo|5|true	2379283.0;0;-45;P
+posicoes	Lilith|Virgo|6|true	2379283.0;0;-75;P
+posicoes	Lilith|Virgo|7|true	2379283.0;0;-105;P
+posicoes	Lilith|Virgo|8|true	2379283.0;0;-135;P
+posicoes	Lilith|Virgo|9|true	2379283.0;0;-165;P
+posicoes	North Node|Aquarius|10|false	2379710.0;0;-90;P
+posicoes	North Node|Aquarius|11|false	2379710.0;0;-120;P
+posicoes	North Node|Aquarius|12|false	2379710.0;0;-150;P
+posicoes	North Node|Aquarius|1|false	2379710.0;0;-180;P
+posicoes	North Node|Aquarius|2|false	2379710.0;0;150;P
+posicoes	North Node|Aquarius|3|false	2379710.0;0;120;P
+posicoes	North Node|Aquarius|4|false	2379710.0;0;90;P
+posicoes	North Node|Aquarius|5|false	2379710.0;0;60;P
+posicoes	North Node|Aquarius|6|false	2379710.0;0;30;P
+posicoes	North Node|Aquarius|7|false	2379710.0;0;0;P
+posicoes	North Node|Aquarius|8|false	2379710.0;0;-30;P
+posicoes	North Node|Aquarius|9|false	2379710.0;0;-60;P
+posicoes	North Node|Aries|10|false	2378542.0;0;45;P
+posicoes	North Node|Aries|11|false	2378542.0;0;15;P
+posicoes	North Node|Aries|12|false	2378542.0;0;-15;P
+posicoes	North Node|Aries|1|false	2378542.0;0;-45;P
+posicoes	North Node|Aries|2|false	2378542.0;0;-75;P
+posicoes	North Node|Aries|3|false	2378542.0;0;-105;P
+posicoes	North Node|Aries|4|false	2378542.0;0;-135;P
+posicoes	North Node|Aries|5|false	2378542.0;0;-165;P
+posicoes	North Node|Aries|6|false	2378542.0;0;-180;P
+posicoes	North Node|Aries|7|false	2378542.0;0;135;P
+posicoes	North Node|Aries|8|false	2378542.0;0;105;P
+posicoes	North Node|Aries|9|false	2378542.0;0;75;P
+posicoes	North Node|Cancer|10|false	2383682.0;0;105;P
+posicoes	North Node|Cancer|11|false	2383682.0;0;75;P
+posicoes	North Node|Cancer|12|false	2383682.0;0;45;P
+posicoes	North Node|Cancer|1|false	2383682.0;0;15;P
+posicoes	North Node|Cancer|2|false	2383682.0;0;-15;P
+posicoes	North Node|Cancer|3|false	2383682.0;0;-45;P
+posicoes	North Node|Cancer|4|false	2383682.0;0;-75;P
+posicoes	North Node|Cancer|5|false	2383682.0;0;-105;P
+posicoes	North Node|Cancer|6|false	2383682.0;0;-135;P
+posicoes	North Node|Cancer|7|false	2383682.0;0;-165;P
+posicoes	North Node|Cancer|8|false	2383682.0;0;-180;P
+posicoes	North Node|Cancer|9|false	2383682.0;0;135;P
+posicoes	North Node|Capricorn|10|false	2380270.0;0;45;P
+posicoes	North Node|Capricorn|11|false	2380270.0;0;15;P
+posicoes	North Node|Capricorn|12|false	2380270.0;0;-15;P
+posicoes	North Node|Capricorn|1|false	2380270.0;0;-45;P
+posicoes	North Node|Capricorn|2|false	2380270.0;0;-75;P
+posicoes	North Node|Capricorn|3|false	2380270.0;0;-105;P
+posicoes	North Node|Capricorn|4|false	2380270.0;0;-135;P
+posicoes	North Node|Capricorn|5|false	2380270.0;0;-165;P
+posicoes	North Node|Capricorn|6|false	2380270.0;0;-180;P
+posicoes	North Node|Capricorn|7|false	2380270.0;0;135;P
+posicoes	North Node|Capricorn|8|false	2380270.0;0;105;P
+posicoes	North Node|Capricorn|9|false	2380270.0;0;75;P
+posicoes	North Node|Gemini|10|false	2384256.0;0;-135;P
+posicoes	North Node|Gemini|11|false	2384256.0;0;-165;P
+posicoes	North Node|Gemini|12|false	2384256.0;0;-180;P
+posicoes	North Node|Gemini|1|false	2384256.0;0;135;P
+posicoes	North Node|Gemini|2|false	2384256.0;0;105;P
+posicoes	North Node|Gemini|3|false	2384256.0;0;75;P
+posicoes	North Node|Gemini|4|false	2384256.0;0;45;P
+posicoes	North Node|Gemini|5|false	2384256.0;0;15;P
+posicoes	North Node|Gemini|6|false	2384256.0;0;-15;P
+posicoes	North Node|Gemini|7|false	2384256.0;0;-45;P
+posicoes	North Node|Gemini|8|false	2384256.0;0;-75;P
+posicoes	North Node|Gemini|9|false	2384256.0;0;-105;P
+posicoes	North Node|Leo|10|false	2383072.0;0;15;P
+posicoes	North Node|Leo|11|false	2383072.0;0;-15;P
+posicoes	North Node|Leo|12|false	2383072.0;0;-45;P
+posicoes	North Node|Leo|1|false	2383072.0;0;-75;P
+posicoes	North Node|Leo|2|false	2383072.0;0;-105;P
+posicoes	North Node|Leo|3|false	2383072.0;0;-135;P
+posicoes	North Node|Leo|4|false	2383072.0;0;-165;P
+posicoes	North Node|Leo|5|false	2383072.0;0;-180;P
+posicoes	North Node|Leo|6|false	2383072.0;0;135;P
+posicoes	North Node|Leo|7|false	2383072.0;0;105;P
+posicoes	North Node|Leo|8|false	2383072.0;0;75;P
+posicoes	North Node|Leo|9|false	2383072.0;0;45;P
+posicoes	North Node|Libra|10|false	2381997.0;0;45;P
+posicoes	North Node|Libra|11|false	2381997.0;0;15;P
+posicoes	North Node|Libra|12|false	2381997.0;0;-15;P
+posicoes	North Node|Libra|1|false	2381997.0;0;-45;P
+posicoes	North Node|Libra|2|false	2381997.0;0;-75;P
+posicoes	North Node|Libra|3|false	2381997.0;0;-105;P
+posicoes	North Node|Libra|4|false	2381997.0;0;-135;P
+posicoes	North Node|Libra|5|false	2381997.0;0;-165;P
+posicoes	North Node|Libra|6|false	2381997.0;0;-180;P
+posicoes	North Node|Libra|7|false	2381997.0;0;135;P
+posicoes	North Node|Libra|8|false	2381997.0;0;105;P
+posicoes	North Node|Libra|9|false	2381997.0;0;75;P
+posicoes	North Node|Pisces|10|false	2379113.0;0;-180;P
+posicoes	North Node|Pisces|11|false	2379113.0;0;135;P
+posicoes	North Node|Pisces|12|false	2379113.0;0;105;P
+posicoes	North Node|Pisces|1|false	2379113.0;0;75;P
+posicoes	North Node|Pisces|2|false	2379113.0;0;45;P
+posicoes	North Node|Pisces|3|false	2379113.0;0;15;P
+posicoes	North Node|Pisces|4|false	2379113.0;0;-15;P
+posicoes	North Node|Pisces|5|false	2379113.0;0;-45;P
+posicoes	North Node|Pisces|6|false	2379113.0;0;-75;P
+posicoes	North Node|Pisces|7|false	2379113.0;0;-105;P
+posicoes	North Node|Pisces|8|false	2379113.0;0;-135;P
+posicoes	North Node|Pisces|9|false	2379113.0;0;-165;P
+posicoes	North Node|Sagittarius|10|false	2380800.0;0;-150;P
+posicoes	North Node|Sagittarius|11|false	2380800.0;0;-180;P
+posicoes	North Node|Sagittarius|12|false	2380800.0;0;150;P
+posicoes	North Node|Sagittarius|1|false	2380800.0;0;120;P
+posicoes	North Node|Sagittarius|2|false	2380800.0;0;90;P
+posicoes	North Node|Sagittarius|3|false	2380800.0;0;60;P
+posicoes	North Node|Sagittarius|4|false	2380800.0;0;30;P
+posicoes	North Node|Sagittarius|5|false	2380800.0;0;0;P
+posicoes	North Node|Sagittarius|6|false	2380800.0;0;-30;P
+posicoes	North Node|Sagittarius|7|false	2380800.0;0;-60;P
+posicoes	North Node|Sagittarius|8|false	2380800.0;0;-90;P
+posicoes	North Node|Sagittarius|9|false	2380800.0;0;-120;P
+posicoes	North Node|Scorpio|10|false	2381423.0;0;-75;P
+posicoes	North Node|Scorpio|11|false	2381423.0;0;-105;P
+posicoes	North Node|Scorpio|12|false	2381423.0;0;-135;P
+posicoes	North Node|Scorpio|1|false	2381423.0;0;-165;P
+posicoes	North Node|Scorpio|2|false	2381423.0;0;-180;P
+posicoes	North Node|Scorpio|3|false	2381423.0;0;135;P
+posicoes	North Node|Scorpio|4|false	2381423.0;0;105;P
+posicoes	North Node|Scorpio|5|false	2381423.0;0;75;P
+posicoes	North Node|Scorpio|6|false	2381423.0;0;45;P
+posicoes	North Node|Scorpio|7|false	2381423.0;0;15;P
+posicoes	North Node|Scorpio|8|false	2381423.0;0;-15;P
+posicoes	North Node|Scorpio|9|false	2381423.0;0;-45;P
+posicoes	North Node|Taurus|10|false	2378499.0;0;90;P
+posicoes	North Node|Taurus|11|false	2378499.0;0;60;P
+posicoes	North Node|Taurus|12|false	2378499.0;0;30;P
+posicoes	North Node|Taurus|1|false	2378499.0;0;0;P
+posicoes	North Node|Taurus|2|false	2378499.0;0;-30;P
+posicoes	North Node|Taurus|3|false	2378499.0;0;-60;P
+posicoes	North Node|Taurus|4|false	2378499.0;0;-90;P
+posicoes	North Node|Taurus|5|false	2378499.0;0;-120;P
+posicoes	North Node|Taurus|6|false	2378499.0;0;-150;P
+posicoes	North Node|Taurus|7|false	2378499.0;0;-180;P
+posicoes	North Node|Taurus|8|false	2378499.0;0;150;P
+posicoes	North Node|Taurus|9|false	2378499.0;0;120;P
+posicoes	North Node|Virgo|10|false	2382529.0;0;-135;P
+posicoes	North Node|Virgo|11|false	2382529.0;0;-165;P
+posicoes	North Node|Virgo|12|false	2382529.0;0;-180;P
+posicoes	North Node|Virgo|1|false	2382529.0;0;135;P
+posicoes	North Node|Virgo|2|false	2382529.0;0;105;P
+posicoes	North Node|Virgo|3|false	2382529.0;0;75;P
+posicoes	North Node|Virgo|4|false	2382529.0;0;45;P
+posicoes	North Node|Virgo|5|false	2382529.0;0;15;P
+posicoes	North Node|Virgo|6|false	2382529.0;0;-15;P
+posicoes	North Node|Virgo|7|false	2382529.0;0;-45;P
+posicoes	North Node|Virgo|8|false	2382529.0;0;-75;P
+posicoes	North Node|Virgo|9|false	2382529.0;0;-105;P
+posicoes	Vertex|Cancer|6|false	2451545.0;-66;-89;C
+posicoes	Vertex|Cancer|7|false	2451545.0;44;-91;C
+posicoes	Vertex|Capricorn|6|false	2451545.0;44;134;C
+posicoes	Vertex|Capricorn|7|false	2451545.0;-66;69;C
+posicoes	Vertex|Gemini|6|false	2451545.0;-66;-123;C
+posicoes	Vertex|Gemini|7|false	2451545.0;45;-154;C
+posicoes	Vertex|Sagittarius|6|false	2451545.0;44;70;C
+posicoes	Vertex|Sagittarius|7|false	2451545.0;-66;38;C
