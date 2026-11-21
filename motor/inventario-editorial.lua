@@ -98,7 +98,7 @@ for _, name in ipairs(domain.bodies) do
     for house = 1, 12 do
       for _, retrograde in ipairs({false, true}) do
         local key = catalog.position_key({name=name, sign=sign, house=house, retrograde=retrograde})
-        local exclusion = reader.position_exclusion(name, retrograde)
+        local exclusion = reader.position_exclusion(name, retrograde, house)
         if exclusion then
           excluded[#excluded+1] = {key=key, reason=exclusion}
         else

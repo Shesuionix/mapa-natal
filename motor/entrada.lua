@@ -22,7 +22,10 @@ local movement_exclusions = {
   Vertex="ponto geométrico sem marcador de movimento"
 }
 
-function input.position_exclusion(name, marker)
+function input.position_exclusion(name, marker, house)
+  if name == "Vertex" and house and (house <= 3 or house >= 11) then
+    return "Vertex ocidental fora do perfil de casas por quadrantes (casas 1, 2, 3, 11 e 12)"
+  end
   return marker and movement_exclusions[name] or nil
 end
 
@@ -136,8 +139,8 @@ function input.read(path)
           position.name, position.house = name, tonumber(pos_house)
           position.retrograde = marker == "Retrograde, "
           position.stationary = marker == "Stationary, "
-          local exclusion = input.position_exclusion(name, position.retrograde or position.stationary)
-          if exclusion then fail(line_number, ("marcador %s inválido para %s (%s)"):format(marker:match("^%a+"), name, exclusion)) end
+          local exclusion = input.position_exclusion(name, position.retrograde or position.stationary, position.house)
+          if exclusion then fail(line_number, ("posição ou movimento inválido para %s (%s)"):format(name, exclusion)) end
           position_by_name[name] = position
         end
       end
