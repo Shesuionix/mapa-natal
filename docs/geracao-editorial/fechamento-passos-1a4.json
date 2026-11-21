@@ -1,0 +1,106 @@
+{
+  "estado": "concluido_no_escopo_autorizado",
+  "autorizacao": "Samuel: execute do 1 ao 4",
+  "data": "2026-11-21",
+  "entregas": {
+    "exclusoesVertex": 60,
+    "posicoesNovas": 296,
+    "estacionariasVenusNovas": 12,
+    "estacionariasSuplementaresDemonstradasAguardandoTexto": 288,
+    "leiturasManutencao": 16,
+    "parNetuno": "conferido, cenas distintas, preservado"
+  },
+  "commits": {
+    "vertex": "1b3d5a84030f83a45433ac85f119592c7b74c311",
+    "evidencias288": "653fb347860b856cdb6207b728055fd7de3cad4a",
+    "manutencao16": "c1d0fbdd162b0f3567bb6183fc0b847aa811eeaf",
+    "refinoVenus": "58ff9104d83618254d411f9493e58aadaf917fa7",
+    "estacionarias12": "57d234018ce14e032d714f44fd7ec77b4c7b06b3",
+    "posicoesA": "f9dd2f4411362ad042e6bf58c1b3c8ffde1a1752",
+    "posicoesB": "1d6dcd6b2c25bca36b9c86be06a87e3286eb521f",
+    "posicoesC": "1369dd4442b36449b5aff3f7cc9a638f1ae0b594"
+  },
+  "saldo": {
+    "publicadas": 5943,
+    "por_secao": {
+      "posicoes": 3684,
+      "aspectos": 760,
+      "estacionarias": 1296,
+      "casas": 179,
+      "eixos": 24
+    },
+    "pendentes": 16845,
+    "pendentes_por_secao": {
+      "casas": 11618,
+      "aspectos": 4939,
+      "estacionarias": 288
+    },
+    "universo_ampliado": 22788,
+    "cobertura_percentual": 26.079515534491836
+  },
+  "hashes_jsonl": {
+    "estacionarias-12-final.jsonl": "8c0ecfcb2f7a101aaa15e5caf84fc2e34f275d93d4022edd7e0ec0457f3bf054",
+    "manutencao-16-revisada.jsonl": "0d169fdff991d43ce5e61182f8795d17384a73e8b52d078d6975d6790555a468",
+    "posicoes-296-final.jsonl": "c6a3643006f6cdeffcd351c1af31970617469db3807a544f6fa47ccea307ea7d"
+  },
+  "testes": {
+    "perfilVertex": "60rejeicoes pelo leitor; mapa-base valido",
+    "evidencias": "296posicoes,288estacionarias suplementares e12Venus recalculadas",
+    "formato": "296+12novas e16manutencao aprovadas",
+    "cadastro": "324macros unicas e prosa identica aos JSONL",
+    "selecao": "324selecoes por descritor, position_key e positions; sem simulacao completa de captura",
+    "compilacao": "324macros instanciadas emLuaLaTeX,95paginas,391855bytes,sem erro fatal",
+    "regressaoAcervo": "247entradas no inventario, codigo0; cobertura contextual ainda incompleta"
+  },
+  "consumo_no_corte": {
+    "fonte": "eventos token_count dos logs locais, corte na ultima medicao disponivel; raciocinio ja incluido na saida",
+    "agentes": [
+      {
+        "agente": "/root",
+        "arquivo": "rollout-2026-11-16T22-07-42-01a1c88e-9a25-78b2-a267-dd8f7f0990e4_01a1e70b-a4d8-7071-a15f-d1bcf1c39610.jsonl",
+        "input_tokens": 18714823,
+        "cached_input_tokens": 18660224,
+        "output_tokens": 35629,
+        "reasoning_output_tokens": 11719,
+        "sem_cache_mais_saida": 90228
+      },
+      {
+        "agente": "/root/revisao296a",
+        "arquivo": "rollout-2026-11-21T12-00-44-01a1fe9f-bddb-73b0-88c2-16c4eed18c5f.jsonl",
+        "input_tokens": 2547846,
+        "cached_input_tokens": 2426624,
+        "output_tokens": 25598,
+        "reasoning_output_tokens": 1691,
+        "sem_cache_mais_saida": 146820
+      },
+      {
+        "agente": "/root/revisao296b",
+        "arquivo": "rollout-2026-11-21T12-00-53-01a1fe9f-e0d7-7dd1-a237-682ba6e8dfc0.jsonl",
+        "input_tokens": 2752767,
+        "cached_input_tokens": 2645120,
+        "output_tokens": 23458,
+        "reasoning_output_tokens": 2569,
+        "sem_cache_mais_saida": 131105
+      },
+      {
+        "agente": "/root/revisao296c",
+        "arquivo": "rollout-2026-11-21T12-01-02-01a1fea0-05c5-7bc1-bde9-164abdd0b1ce.jsonl",
+        "input_tokens": 996662,
+        "cached_input_tokens": 902528,
+        "output_tokens": 27676,
+        "reasoning_output_tokens": 1498,
+        "sem_cache_mais_saida": 121810
+      }
+    ],
+    "total_sem_cache_mais_saida": 489963,
+    "total_cache": 24634496,
+    "estimativa_original": 120000,
+    "desvio_percentual": 308.3025
+  },
+  "limites": [
+    "posicoes100%refere-se apenas ao perfil definido",
+    "288suplementares demonstradas, nao redigidas",
+    "PDFde teste nao e produto final diagramado",
+    "nao atribuirUSDsem tarifas do modelo utilizado"
+  ]
+}

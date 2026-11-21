@@ -1,5 +1,7 @@
 # Validade das combinações de posições
 
+Atualização de 21/11/2026: as 60 chaves de Vertex anteriormente em aberto foram excluídas do perfil convencional por quadrantes, com justificativa geométrica e arquivo dos rascunhos. O leitor e o inventário aplicam a regra. Veja [perfil de Vertex](geracao-editorial/perfil-vertex.md). Os números e relatos de busca abaixo documentam etapas históricas; para o saldo atual, execute o inventário e consulte os fechamentos da produção. As [288 estacionárias suplementares de Nodo e Lilith](geracao-editorial/estacionarias-suplementares.md) também passaram a ter evidência reproduzível.
+
 A chave editorial de posição é `corpo|signo|casa|movimento`. O grau e o minuto localizam o ponto no mapa. O leitor confere a casa informada contra o intervalo das cúspides e registra a divergência. Para confirmar uma chave nesta auditoria, a casa precisa corresponder ao intervalo e o signo precisa corresponder à longitude. A escolha de um texto exige a chave completa.
 
 ## Regras
