@@ -4661,6 +4661,18 @@ local position_library = {
   ["Venus|Taurus|7|stationary"] = 4670,
   ["Venus|Taurus|8|stationary"] = 4671,
   ["Venus|Taurus|9|stationary"] = 4672,
+  ["Venus|Virgo|10|stationary"] = 4673,
+  ["Venus|Virgo|11|stationary"] = 4674,
+  ["Venus|Virgo|12|stationary"] = 4675,
+  ["Venus|Virgo|1|stationary"] = 4676,
+  ["Venus|Virgo|2|stationary"] = 4677,
+  ["Venus|Virgo|3|stationary"] = 4678,
+  ["Venus|Virgo|4|stationary"] = 4679,
+  ["Venus|Virgo|5|stationary"] = 4680,
+  ["Venus|Virgo|6|stationary"] = 4681,
+  ["Venus|Virgo|7|stationary"] = 4682,
+  ["Venus|Virgo|8|stationary"] = 4683,
+  ["Venus|Virgo|9|stationary"] = 4684,
 }
 
 local axis_pairs = {
