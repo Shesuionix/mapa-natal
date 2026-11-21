@@ -1,0 +1,96 @@
+{
+  "conjunto": "288 estacionarias suplementares de Nodo Norte e Lilith",
+  "data": "2026-11-21",
+  "autorizacao": "Samuel: concluir as 288 estacionarias suplementares, com revisao cruzada e publicacao na main",
+  "base": "1e73a8d3f58d0b95b58579371bfae8b2f06407d7",
+  "estado": "concluido",
+  "publicacao": {
+    "commits": [
+      {"lote": 34, "commit": "bccc1badecc7abcdc5ed879b936b49c482a497a0", "textos": 100, "escopo": "Lilith estacionaria"},
+      {"lote": 35, "commit": "e8c8f3a4308af01187b47c5f5e92152330604fb3", "textos": 100, "escopo": "44 Lilith e 56 Nodo Norte"},
+      {"lote": 36, "commit": "6790691eb726ce8ffb8b1580be04ac09dfc54941", "textos": 88, "escopo": "Nodo Norte estacionario"}
+    ],
+    "confirmada_em": "origin/main",
+    "total_publicado": 288
+  },
+  "jsonl": [
+    {"lote": 34, "arquivo": "rodada/gaia34/lote-34-resposta.jsonl", "sha256": "23756123b88f4361b44c813602fb53399c3d7cda1487b3c0b4d080bbc1d436c9", "linhas": 100},
+    {"lote": 35, "arquivo": "rodada/gaia34/lote-35-resposta.jsonl", "sha256": "37eaf1fce2ca6ef9881cda5462148f53634f621dc91de417cd1168887e8223b8", "linhas": 100},
+    {"lote": 36, "arquivo": "rodada/gaia34/lote-36-resposta.jsonl", "sha256": "fe348f3beb91a33bf30b3727da56c6f29b02b92a6e9d83debe9f5e7388c6f456", "linhas": 88}
+  ],
+  "manifestos": [
+    "rodada/gaia34/lote-34-manifesto.json",
+    "rodada/gaia34/lote-35-manifesto.json",
+    "rodada/gaia34/lote-36-manifesto.json"
+  ],
+  "segmentos_finais_sha256": {
+    "lote34": {"A": "e962f8def58ff2465c5313f001b1b06e8f260531fdbed75a0d1723abef35acf3", "B": "6574c4a8fa7ac84fd23b8d483c48f8feb94c9eb19e2d01fbf7e8e75dace5d2c2", "C": "e394ec1ead8e4f76588e74f90cf85d7f6c931f74c51344143c4ea00acca351b4"},
+    "lote35": {"A": "e39bc35491e6450efd224fbe9e48bdcf48573a1fe244e939638ebd554bf25b56", "B": "540500f5bc39f55a9ce578945f920bdee6f1ebeb3dec9d104b8504acba80e3d4", "C": "46b0ee037ecd1337e1c3ae0f76ae3cb529f882ec0d607e051780f53cae52a06a"},
+    "lote36": {"A": "8907962b162ec7ef20a649f3a5c2cff885345bcdeb340677d771de86f1f4f57b", "B": "b56eb5f9f4ce4ebb8500cd69e0bcedc26dac1347820e90e3ba938a5db94ee14c", "C": "2f7d86e3af0eabba7f62306ac312ca04d1990f963c4459c758e5e4b4207088e3"}
+  },
+  "revisao": {
+    "modelo": "revisao cruzada A->B, B->C e C->A em cada lote, com correcoes e aprovacao do hash final",
+    "correcoes_por_segmento": {
+      "lote34": {"A": 17, "B": "19 + 1 do coordenador", "C": "20 + 9 do coordenador"},
+      "lote35": {"A": "15 + passada de convergencia (e pode 15->0)", "B": "14 + passada de convergencia (e pode 5->2)", "C": 20},
+      "lote36": {"A": 11, "B": 12, "C": 19}
+    },
+    "evidencias": [
+      "rodada/gaia34/lote-34-evidencias.json",
+      "rodada/gaia34/lote-35-evidencias.json",
+      "rodada/gaia34/lote-36-evidencias.json"
+    ]
+  },
+  "testes": {
+    "formato": "aprovado: 288/288 no ferramentas/lote-textos-etapa-6.py verificar",
+    "cadastro": "aprovado: 288/288 com catalogo, macro unica e prosa identica ao JSONL",
+    "selecao_motor": "aprovado: 288/288 descritores por position_key e positions; nao simula captura completa de nascimento",
+    "compilacao": "aprovado: LuaLaTeX em 3 documentos, 288 macros via csname, 85 paginas, 476413 bytes, sem erro fatal",
+    "inventario": "executado na simulacao e no envio de cada lote; 288 textos integrados e conferidos"
+  },
+  "auditoria": {
+    "erros": 0,
+    "pares_5gramas_10porcento": 0,
+    "reaproveitamento_biblioteca_20porcento": 0,
+    "aberturas_repetidas": ["numa conversa de corredor (2)", "voce abre a porta (2)", "voce defende uma ideia (2)", "voce entra num lugar (2)", "a lista do dia (2)", "voce tem um projeto (2)"],
+    "sem_marcador_lexical": 13,
+    "sem_marcador_conferidos_manualmente": true,
+    "corpo_palavras": {"min": 149, "mediana": 157, "max": 175}
+  },
+  "saldo": {
+    "publicadas": 6231,
+    "pendentes": 16557,
+    "universo": 22788,
+    "cobertura_percentual": 27.34333859926277,
+    "por_secao": {
+      "posicoes": {"publicadas": 3684, "pendentes": 0},
+      "estacionarias": {"publicadas": 1584, "pendentes": 0},
+      "eixos": {"publicadas": 24, "pendentes": 0},
+      "casas": {"publicadas": 179, "pendentes": 11618},
+      "aspectos": {"publicadas": 760, "pendentes": 4939}
+    },
+    "fonte": "motor/inventario-editorial.lua + docs/geracao-editorial/textos-faltantes.tsv"
+  },
+  "consumo": {
+    "fonte": "eventos assistant/message (usage) dos logs de sessao do DSH; raciocinio incluido na saida",
+    "por_lote": {"34": 769494, "35": 453693, "36": 397468},
+    "total_sem_cache_mais_saida": 1620656,
+    "entrada_sem_cache": 521079,
+    "entrada_com_cache": 145180800,
+    "saida": 1099577,
+    "passos": 690,
+    "estimativa_original": 600000,
+    "desvio_percentual": 170.10933333333334,
+    "por_texto": 5627.277777777778,
+    "custo_usd": null,
+    "motivo_custo": "sem tarifas verificaveis do provedor para a data; nao aplicadas tarifas DeepSeek de outro modelo",
+    "nota_atribuicao": "os lotes 35 e 36 se sobrepuseram na execucao; a divisao usa atribuicao por tarefa nos logs e metade do coordenador para cada lote entre 35 e 36. O total vem dos snapshots cumulativos e prevalece sobre a soma arredondada."
+  },
+  "limites": [
+    "13 textos nao usam marcador lexical de estacionariedade; foram conferidos manualmente e mantem a permanencia na cena",
+    "6 aberturas de 4 palavras aparecem duas vezes cada no conjunto de 288; nenhuma duplicacao literal de subtitulo ou corpo",
+    "a selecao foi testada por descritores de posicao, nao por captura completa de um nascimento",
+    "a compilacao testa a biblioteca em documento tecnico, nao um relatorio comercial diagramado",
+    "aspectos e casas nao foram trabalhados nesta autorizacao; as 60 exclusoes de Vertex seguem preservadas"
+  ]
+}
